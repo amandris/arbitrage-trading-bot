@@ -22,12 +22,11 @@ Supported exchanges
 Installation
 ------------
 
-git clone https://github.com/amandris/arbitrage-trading-bot.git
+ * `git clone https://github.com/amandris/arbitrage-trading-bot.git`
 
-composer install
+ * `composer install`
 
-Set the api keys of the exchanges you want to use in app/config/config.yml
-At least two exchange api keys should be setted.
+ * Set the api keys of the exchanges you want to use in `app/config/config.yml`. At least two exchange api keys should be setted.
 
-bin/console test:ticker 
+ * `bin/console test:ticker`
  
