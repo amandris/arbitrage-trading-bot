@@ -1,0 +1,36 @@
+services:
+    guzzle.client:
+        class: GuzzleHttp\Client
+
+    # -------  clients
+
+    app.client.bitstamp:
+        class: AppBundle\Service\Client\BitstampClient
+        arguments:
+            - '@guzzle.client'
+            - '%client.bitstamp%'
+            - '@session'
+
+    app.client.itbit:
+        class: AppBundle\Service\Client\ItbitClient
+        arguments:
+            - '@guzzle.client'
+            - '%client.itbit%'
+            - '@session'
+
+    # -------  services
+
+    app.bitstamp.service:
+        class: AppBundle\Service\BitstampService
+        arguments:
+            - '@app.client.bitstamp'
+
+    app.itbit.service:
+        class: AppBundle\Service\ItbitService
+        arguments:
+            - '@app.client.itbit'
+
+    app.ticker.service:
+        class: AppBundle\Service\TickerService
+        arguments:
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service' }
