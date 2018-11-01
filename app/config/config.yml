@@ -31,7 +31,7 @@ twig:
 
 doctrine:
     dbal:
-        driver: pdo_mysql
+        driver: '%database_driver%'
         host: '%database_host%'
         port: '%database_port%'
         dbname: '%database_name%'
@@ -59,6 +59,10 @@ app:
             client_id: "87648"
         itbit:
             base_uri: "https://api.itbit.com/v1"
+            api_key: "sdfddsdsd"
+            api_secret: "lfjhgfgddfldf"
+        kraken:
+            base_uri: "https://api.kraken.com/0"
             api_key: "sdfddsdsd"
             api_secret: "lfjhgfgddfldf"
 

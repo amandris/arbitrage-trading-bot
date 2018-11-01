@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Service\Client\ExternalClientInterface;
 
@@ -33,8 +34,16 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
         $responseJson = json_decode($response->getBody()->getContents());
 
         /** @var TickerDTO $tickerDTO */
-        $tickerDTO = new TickerDTO ('itbit', $responseJson->ask, $responseJson->bid);
+        $tickerDTO = new TickerDTO ('itbit', $responseJson->ask, $responseJson->bid, new \DateTime($responseJson->serverTimeUTC));
 
         return $tickerDTO;
+    }
+
+    /**
+     * @return BalanceDTO
+     */
+    public function getBalance(): BalanceDTO
+    {
+        // TODO: Implement getBalance() method.
     }
 }

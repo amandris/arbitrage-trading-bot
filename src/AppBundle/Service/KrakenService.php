@@ -5,17 +5,16 @@ namespace AppBundle\Service;
 use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Service\Client\ExternalClientInterface;
-use DateTime;
 
 /**
- * Class BitstampService
+ * Class KrakenService
  * @package AppBundle\Service
  */
-class BitstampService extends ClientAwareService implements ExchangeServiceInterface
+class KrakenService extends ClientAwareService implements ExchangeServiceInterface
 {
 
     /**
-     * BitstampService constructor.
+     * KrakenService constructor.
      * @param ExternalClientInterface $client
      */
     public function __construct(ExternalClientInterface $client)
@@ -30,16 +29,13 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
     {
         $response = $this->getClient()->request(
             'GET',
-            '/api/v2/ticker/btcusd/'
+            '/public/Ticker?pair=xbtusd'
         );
 
         $responseJson = json_decode($response->getBody()->getContents());
 
-        $timestamp = new DateTime();
-        $timestamp->setTimestamp($responseJson->timestamp);
-
         /** @var TickerDTO $tickerDTO */
-        $tickerDTO = new TickerDTO ('bitstamp', $responseJson->ask, $responseJson->bid, $timestamp);
+        $tickerDTO = new TickerDTO ('kraken', $responseJson->result->XXBTZUSD->a[0], $responseJson->result->XXBTZUSD->b[0], new \DateTime('now'));
 
         return $tickerDTO;
     }

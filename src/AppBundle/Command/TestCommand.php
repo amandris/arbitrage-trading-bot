@@ -3,6 +3,9 @@
 namespace AppBundle\Command;
 
 
+use AppBundle\DataTransferObject\TickerDTO;
+use AppBundle\Entity\Ticker;
+use AppBundle\Repository\TickerRepository;
 use AppBundle\Service\TickerService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,6 +24,9 @@ class TestCommand extends ContainerAwareCommand
     /** @var TickerService $tickerService */
     private $tickerService;
 
+    /** @var TickerRepository $tickerRepository */
+    private $tickerRepository;
+
     protected function configure()
     {
         $this->commandName = 'test:ticker';
@@ -37,6 +43,7 @@ class TestCommand extends ContainerAwareCommand
         $container = $this->getContainer();
 
         $this->tickerService = $container->get('app.ticker.service');
+        $this->tickerRepository = $container->get('app.ticker.repository');
 
     }
 
@@ -44,6 +51,18 @@ class TestCommand extends ContainerAwareCommand
     {
         $this->configureServices();
 
-        var_dump($this->tickerService->getTickers());
+        /** @var TickerDTO[] $tickerDTOs */
+        $tickerDTOs = $this->tickerService->getTickers();
+
+        foreach ($tickerDTOs as $tickerDTO){
+            $ticker = new Ticker();
+            $ticker->setName($tickerDTO->getName());
+            $ticker->setAsk($tickerDTO->getAsk());
+            $ticker->setBid($tickerDTO->getBid());
+            $ticker->setCreated($tickerDTO->getTimestamp());
+
+            $this->tickerRepository->save($ticker);
+        }
+        $output->writeln('---1');
     }
 }

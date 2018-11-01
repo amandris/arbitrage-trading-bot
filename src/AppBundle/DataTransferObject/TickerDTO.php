@@ -12,40 +12,47 @@ class TickerDTO
     protected $name;
 
     /**
-     * @var int $ask
+     * @var float $ask
      */
     protected $ask;
 
     /**
-     * @var int $bid
+     * @var float $bid
      */
     protected $bid;
 
     /**
+     * @var \DateTime $timestamp
+     */
+    protected $timestamp;
+
+    /**
      * TickerDTO constructor.
      * @param string $name
-     * @param int $ask
-     * @param int $bid
+     * @param float $ask
+     * @param float $bid
+     * @param $timestamp
      */
-    public function __construct($name, $ask, $bid)
+    public function __construct($name, $ask, $bid, $timestamp)
     {
         $this->name = $name;
         $this->ask = $ask;
         $this->bid = $bid;
+        $this->timestamp = $timestamp;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getAsk(): int
+    public function getAsk(): float
     {
         return $this->ask;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getBid(): int
+    public function getBid(): float
     {
         return $this->bid;
     }
@@ -56,5 +63,13 @@ class TickerDTO
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 }

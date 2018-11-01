@@ -9,14 +9,18 @@ services:
         arguments:
             - '@guzzle.client'
             - '%client.bitstamp%'
-            - '@session'
 
     app.client.itbit:
         class: AppBundle\Service\Client\ItbitClient
         arguments:
             - '@guzzle.client'
             - '%client.itbit%'
-            - '@session'
+
+    app.client.kraken:
+        class: AppBundle\Service\Client\KrakenClient
+        arguments:
+            - '@guzzle.client'
+            - '%client.kraken%'
 
     # -------  services
 
@@ -30,7 +34,20 @@ services:
         arguments:
             - '@app.client.itbit'
 
+    app.kraken.service:
+        class: AppBundle\Service\KrakenService
+        arguments:
+            - '@app.client.kraken'
+
     app.ticker.service:
         class: AppBundle\Service\TickerService
         arguments:
-            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service' }
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service'}
+
+    # -------  services
+
+    app.ticker.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Ticker
