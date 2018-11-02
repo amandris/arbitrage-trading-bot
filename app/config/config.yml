@@ -65,10 +65,10 @@ app:
             api_secret: "%itbit_api_secret%"
             user_id: "%itbit_user_id%"
         kraken:
-            enable: false
-            base_uri: "https://api.kraken.com/0"
-            api_key: ""
-            api_secret: ""
+            enable: true
+            base_uri: "https://api.kraken.com"
+            api_key: "%kraken_api_key%"
+            api_secret: "%kraken_api_secret%"
         okcoin:
             enable: false
             base_uri: "https://www.okcoin.com/api/v1"

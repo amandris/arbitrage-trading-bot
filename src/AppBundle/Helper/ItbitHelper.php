@@ -2,7 +2,10 @@
 
 namespace AppBundle\Helper;
 
-
+/**
+ * Class ItbitHelper
+ * @package AppBundle\Helper
+ */
 class ItbitHelper
 {
     /**

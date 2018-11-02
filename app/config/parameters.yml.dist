@@ -15,3 +15,10 @@ parameters:
     itbit_api_key: ~
     itbit_api_secret: ~
     itbit_user_id: ~
+
+    bitstamp_api_key: ~
+    bitstamp_api_secret: ~
+    bitstamp_client_id: ~
+
+    kraken_api_key: ~
+    kraken_api_secret: ~

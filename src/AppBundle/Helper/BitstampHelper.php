@@ -2,9 +2,12 @@
 
 namespace AppBundle\Helper;
 
-
 use Exception;
 
+/**
+ * Class BitstampHelper
+ * @package AppBundle\Helper
+ */
 class BitstampHelper
 {
     /**

@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
+use AppBundle\Helper\KrakenHelper;
 use AppBundle\Service\Client\ExternalClientInterface;
 
 /**
@@ -13,6 +14,10 @@ use AppBundle\Service\Client\ExternalClientInterface;
  */
 class KrakenService extends ClientAwareService implements ExchangeServiceInterface
 {
+    /**
+     * @var KrakenHelper $krakenHelper
+     */
+    private $krakenHelper;
 
     /**
      * KrakenService constructor.
@@ -21,6 +26,13 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
     public function __construct(ExternalClientInterface $client)
     {
         parent::__construct($client);
+
+        /** @var array $parameters */
+        $parameters = $client->getParameters();
+
+        $this->krakenHelper = new KrakenHelper( $parameters['api_key'],
+            $parameters['api_secret'],
+            $parameters['base_uri']);
     }
 
     /**
@@ -30,7 +42,7 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
     {
         $response = $this->getClient()->request(
             'GET',
-            '/public/Ticker?pair=xbtusd'
+            '/0/public/Ticker?pair=xbtusd'
         );
 
         $responseJson = json_decode($response->getBody()->getContents());
@@ -46,6 +58,18 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function getBalance(): BalanceDTO
     {
-        // TODO: Implement getBalance() method.
+        /** @var array $balance */
+        $balance = $this->krakenHelper->queryPrivate('Balance');
+
+        /** @var float $usd */
+        $usd = $balance['result']['ZUSD'];
+
+        /** @var float $btc */
+        $btc = $balance['result']['XXBT'];
+
+        /** @var BalanceDTO $balanceDTO */
+        $balanceDTO = new BalanceDTO ( Ticker::KRAKEN, $usd, $btc);
+
+        return $balanceDTO;
     }
 }
