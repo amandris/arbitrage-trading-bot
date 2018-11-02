@@ -14,6 +14,7 @@ class Ticker
     const ITBIT = 'itbit';
     const KRAKEN = 'kraken';
     const OKCOIN = 'okcoin';
+    const BINANCE = 'binance';
 
     /**
      * @var int $id

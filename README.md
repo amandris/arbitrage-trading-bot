@@ -17,7 +17,7 @@ Supported exchanges
  - [ ] Exmo
  - [ ] Cexio
  - [ ] Bittrex
- - [ ] Binance
+ - [x] Binance
 
 Installation
 ------------

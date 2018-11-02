@@ -74,4 +74,9 @@ app:
             base_uri: "https://www.okcoin.com/api/v1"
             api_key: ""
             api_secret: ""
+        binance:
+            enable: true
+            base_uri: "https://api.binance.com/api/v3"
+            api_key: ""
+            api_secret: ""
 
