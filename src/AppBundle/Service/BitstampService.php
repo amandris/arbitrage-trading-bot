@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\TickerDTO;
+use AppBundle\Entity\Ticker;
 use AppBundle\Service\Client\ExternalClientInterface;
 use DateTime;
 
@@ -39,7 +40,7 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
         $timestamp->setTimestamp($responseJson->timestamp);
 
         /** @var TickerDTO $tickerDTO */
-        $tickerDTO = new TickerDTO ('bitstamp', $responseJson->ask, $responseJson->bid, $timestamp);
+        $tickerDTO = new TickerDTO (Ticker::BITSTAMP, $responseJson->ask, $responseJson->bid, $timestamp);
 
         return $tickerDTO;
     }

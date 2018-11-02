@@ -72,4 +72,11 @@ class TickerDTO
     {
         return $this->timestamp;
     }
+
+    /**
+     * @return string
+     */
+    public function toString(){
+        return str_pad($this->getName(), 10).' Ask:'.number_format($this->ask, 2).'  Bid:'.number_format($this->bid, 2);
+    }
 }

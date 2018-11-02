@@ -22,6 +22,12 @@ services:
             - '@guzzle.client'
             - '%client.kraken%'
 
+    app.client.okcoin:
+        class: AppBundle\Service\Client\OkcoinClient
+        arguments:
+            - '@guzzle.client'
+            - '%client.okcoin%'
+
     # -------  services
 
     app.bitstamp.service:
@@ -39,10 +45,15 @@ services:
         arguments:
             - '@app.client.kraken'
 
+    app.okcoin.service:
+        class: AppBundle\Service\OkcoinService
+        arguments:
+            - '@app.client.okcoin'
+
     app.ticker.service:
         class: AppBundle\Service\TickerService
         arguments:
-            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service'}
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service'}
 
     # -------  services
 

@@ -10,3 +10,4 @@ parameters:
     mailer_user: ~
     mailer_password: ~
     secret: c27106760f38f188b64cb1935caa2295ba7ab639
+    interval_seconds : 5

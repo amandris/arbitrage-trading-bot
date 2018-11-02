@@ -10,6 +10,11 @@ use DateTime;
  */
 class Ticker
 {
+    const BITSTAMP = 'bitstamp';
+    const ITBIT = 'itbit';
+    const KRAKEN = 'kraken';
+    const OKCOIN = 'okcoin';
+
     /**
      * @var int $id
      */

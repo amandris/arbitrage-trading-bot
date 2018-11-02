@@ -53,16 +53,24 @@ swiftmailer:
 app:
     client:
         bitstamp:
+            enable: true
             base_uri: "https://www.bitstamp.net"
-            api_key: "sdfsd"
-            api_secret: "lfjhgldf"
-            client_id: "87648"
+            api_key: ""
+            api_secret: ""
+            client_id: ""
         itbit:
+            enable: true
             base_uri: "https://api.itbit.com/v1"
-            api_key: "sdfddsdsd"
-            api_secret: "lfjhgfgddfldf"
+            api_key: ""
+            api_secret: ""
         kraken:
+            enable: true
             base_uri: "https://api.kraken.com/0"
-            api_key: "sdfddsdsd"
-            api_secret: "lfjhgfgddfldf"
+            api_key: ""
+            api_secret: ""
+        okcoin:
+            enable: true
+            base_uri: "https://www.okcoin.com/api/v1"
+            api_key: ""
+            api_secret: ""
 

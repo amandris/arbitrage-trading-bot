@@ -6,15 +6,16 @@ use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
 use AppBundle\Service\Client\ExternalClientInterface;
+use DateTime;
 
 /**
- * Class ItbitService
+ * Class OkcoinService
  * @package AppBundle\Service
  */
-class ItbitService extends ClientAwareService implements ExchangeServiceInterface
+class OkcoinService extends ClientAwareService implements ExchangeServiceInterface
 {
     /**
-     * ItbitService constructor.
+     * OkcoinService constructor.
      * @param ExternalClientInterface $client
      */
     public function __construct(ExternalClientInterface $client)
@@ -29,13 +30,16 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
     {
         $response = $this->getClient()->request(
             'GET',
-            '/markets/XBTUSD/ticker/'
+            '/ticker.do?symbol=btc_usd'
         );
 
         $responseJson = json_decode($response->getBody()->getContents());
 
+        $timestamp = new DateTime();
+        $timestamp->setTimestamp($responseJson->date);
+
         /** @var TickerDTO $tickerDTO */
-        $tickerDTO = new TickerDTO (Ticker::ITBIT, $responseJson->ask, $responseJson->bid, new \DateTime($responseJson->serverTimeUTC));
+        $tickerDTO = new TickerDTO (Ticker::OKCOIN, $responseJson->ticker->buy, $responseJson->ticker->sell, $timestamp);
 
         return $tickerDTO;
     }

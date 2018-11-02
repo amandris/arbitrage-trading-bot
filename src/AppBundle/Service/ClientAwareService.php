@@ -10,8 +10,15 @@ use AppBundle\Service\Client\ExternalClientInterface;
  */
 abstract class ClientAwareService
 {
+    /**
+     * @var ExternalClientInterface $client
+     */
     protected $client;
 
+    /**
+     * ClientAwareService constructor.
+     * @param ExternalClientInterface $client
+     */
     public function __construct(ExternalClientInterface $client)
     {
         $this->client = $client;

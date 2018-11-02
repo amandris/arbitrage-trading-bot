@@ -31,8 +31,11 @@ class TickerService
         $result = [];
 
         foreach($this->exchangeServices as $name => $exchangeService){
-            $tickerDTO = $exchangeService->getTicker();
-            array_push($result, $tickerDTO);
+            $parameters = $exchangeService->getClient()->getParameters();
+            if($parameters['enable']) {
+                $tickerDTO = $exchangeService->getTicker();
+                array_push($result, $tickerDTO);
+            }
         }
 
         return $result;

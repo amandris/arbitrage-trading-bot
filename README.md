@@ -8,7 +8,7 @@ Supported exchanges
 
  - [x] Bitstamp
  - [ ] Bitfinex 
- - [ ] OkCoin
+ - [x] OkCoin
  - [ ] Poloniex
  - [x] Kraken
  - [x] ItBit
@@ -30,5 +30,5 @@ Installation
 
  * Set the api keys of the exchanges you want to use in `app/config/config.yml`. At least two exchange api keys should be setted.
 
- * `bin/console test:ticker`
+ * `bin/console bot:ticker`
  

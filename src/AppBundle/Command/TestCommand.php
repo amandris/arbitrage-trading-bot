@@ -27,13 +27,16 @@ class TestCommand extends ContainerAwareCommand
     /** @var TickerRepository $tickerRepository */
     private $tickerRepository;
 
+    /** @var int $interValSeconds */
+    private $interValSeconds;
+
     protected function configure()
     {
-        $this->commandName = 'test:ticker';
+        $this->commandName = 'bot:ticker';
 
         $this
             ->setName($this->commandName)
-            ->setDescription('Test')
+            ->setDescription('Gets prices from every enabled exchange and persists them on the DB')
             ->setHelp('');
     }
 
@@ -42,9 +45,9 @@ class TestCommand extends ContainerAwareCommand
         /** @var ContainerInterface $container */
         $container = $this->getContainer();
 
-        $this->tickerService = $container->get('app.ticker.service');
+        $this->tickerService    = $container->get('app.ticker.service');
         $this->tickerRepository = $container->get('app.ticker.repository');
-
+        $this->interValSeconds  = $container->getParameter('interval_seconds');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -54,15 +57,20 @@ class TestCommand extends ContainerAwareCommand
         /** @var TickerDTO[] $tickerDTOs */
         $tickerDTOs = $this->tickerService->getTickers();
 
-        foreach ($tickerDTOs as $tickerDTO){
-            $ticker = new Ticker();
-            $ticker->setName($tickerDTO->getName());
-            $ticker->setAsk($tickerDTO->getAsk());
-            $ticker->setBid($tickerDTO->getBid());
-            $ticker->setCreated($tickerDTO->getTimestamp());
+        while(true) {
+            $output->writeln(date_format(new \DateTime('now', new \DateTimeZone('Europe/Madrid')), 'd/m/Y H:i:s'));
+            foreach ($tickerDTOs as $tickerDTO) {
+                $ticker = new Ticker();
+                $ticker->setName($tickerDTO->getName());
+                $ticker->setAsk($tickerDTO->getAsk());
+                $ticker->setBid($tickerDTO->getBid());
+                $ticker->setCreated($tickerDTO->getTimestamp());
 
-            $this->tickerRepository->save($ticker);
+                $output->writeln('    '.$tickerDTO->toString());
+                $this->tickerRepository->save($ticker);
+            }
+
+            sleep($this->interValSeconds);
         }
-        $output->writeln('---1');
     }
 }
