@@ -55,6 +55,11 @@ services:
         arguments:
             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service'}
 
+    app.balance.service:
+        class: AppBundle\Service\BalanceService
+        arguments:
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service'}
+
     # -------  services
 
     app.ticker.repository:
@@ -62,3 +67,9 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - AppBundle\Entity\Ticker
+
+    app.balance.repository:
+            class: Doctrine\ORM\EntityRepository
+            factory: ['@doctrine.orm.default_entity_manager', getRepository]
+            arguments:
+                - AppBundle\Entity\Balance

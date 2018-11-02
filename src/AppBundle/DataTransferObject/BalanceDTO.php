@@ -57,4 +57,11 @@ class BalanceDTO
     {
         return $this->btc;
     }
+
+    /**
+     * @return string
+     */
+    public function toString(){
+        return str_pad($this->getName(), 10).' BTC:'.number_format($this->btc, 6).'  USD:'.number_format($this->usd, 2);
+    }
 }
