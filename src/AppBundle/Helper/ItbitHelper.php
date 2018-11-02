@@ -2,6 +2,7 @@
 
 namespace AppBundle\Helper;
 
+
 class ItbitHelper
 {
     /**
@@ -103,10 +104,7 @@ class ItbitHelper
      */
     private function sign_message($verb, $url, $body, $nonce, $timestamp)
     {
-
-        //Generate the message
         $message = stripslashes(json_encode(array($verb, $url, ($body == '' ? '' : addslashes($body)), (string)$nonce, (string)$timestamp)));
-        // Hash the message plus nonce
         $nonced_message = $this->nformat($nonce) . $message;
         $hash_digest = hash('sha256',$nonced_message, true);
         $hmac_digest = hash_hmac('sha512', utf8_encode($url) . $hash_digest, utf8_encode($this->secret),true);
@@ -114,38 +112,70 @@ class ItbitHelper
         return $sig;
     }
 
-    // Make sure the nonce doesn't get put into notation
+    /**
+     * @param $nonce
+     * @return string
+     */
     private function nformat($nonce){
         return number_format($nonce,0,'','');
     }
 
-    // Below are the public methods that should be used to interact with the API
-
+    /**
+     * @param string $wallet_id
+     * @param string $currency
+     * @return mixed|string
+     */
     public function wallet($wallet_id='', $currency = '')
     {
         return $this->curl('wallets'.($wallet_id != '' ? '/'.$wallet_id . ($currency != '' ? '/balances/'.$currency : '') : '?userId='.$this->userId));
     }
 
+    /**
+     * @param $wallet_id
+     * @param $currency
+     * @return mixed|string
+     */
     public function balance($wallet_id, $currency)
     {
         return $this->wallet($wallet_id, $currency);
     }
 
+    /**
+     * @param $wallet_id
+     * @param string $order_id
+     * @return mixed|string
+     */
     public function orders($wallet_id, $order_id='')
     {
         return $this->curl('wallets/'.$wallet_id.'/orders'.($order_id != '' ? '/'.$order_id : ''));
     }
 
+    /**
+     * @param $wallet_id
+     * @return mixed|string
+     */
     public function trades($wallet_id)
     {
         return $this->curl('wallets/'.$wallet_id.'/trades');
     }
 
+    /**
+     * @param $wallet_id
+     * @param $order_id
+     * @return mixed|string
+     */
     public function cancel($wallet_id, $order_id)
     {
         return $this->curl('wallets/'.$wallet_id.'/orders/'.$order_id,'','DELETE');
     }
 
+    /**
+     * @param $wallet_id
+     * @param $order_type
+     * @param $amount
+     * @param $price
+     * @return mixed|string
+     */
     public function create_order($wallet_id, $order_type, $amount, $price)
     {
         $order_data = array('side' => ($order_type == 'sell' ? 'sell' : 'buy'),
@@ -158,6 +188,12 @@ class ItbitHelper
         return $this->curl('wallets/'.$wallet_id.'/orders',$order_data,'POST');
     }
 
+    /**
+     * @param $wallet_id
+     * @param $amount
+     * @param $address
+     * @return mixed|string
+     */
     public function withdraw($wallet_id, $amount, $address)
     {
         $withdraw_data = array('currency' => 'XBT',
@@ -167,6 +203,10 @@ class ItbitHelper
         return $this->curl('wallets/'.$wallet_id.'/cryptocurrency_withdrawals',$withdraw_data,'POST');
     }
 
+    /**
+     * @param $wallet_id
+     * @return mixed|string
+     */
     public function deposit($wallet_id)
     {
         return $this->curl('wallets/'.$wallet_id.'/cryptocurrency_deposits',array('currency' => 'XBT'),'POST');

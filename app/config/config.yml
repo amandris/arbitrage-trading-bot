@@ -53,11 +53,11 @@ swiftmailer:
 app:
     client:
         bitstamp:
-            enable: false
-            base_uri: "https://www.bitstamp.net"
-            api_key: ""
-            api_secret: ""
-            client_id: ""
+            enable: true
+            base_uri: "https://www.bitstamp.net/api/v2"
+            api_key: "%bitstamp_api_key%"
+            api_secret: "%bitstamp_api_secret%"
+            client_id: "%bitstamp_client_id%"
         itbit:
             enable: true
             base_uri: "https://api.itbit.com/v1"
