@@ -22,3 +22,6 @@ parameters:
 
     kraken_api_key: ~
     kraken_api_secret: ~
+
+    binance_api_key: ~
+    binance_api_secret: ~

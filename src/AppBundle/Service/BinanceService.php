@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
+use AppBundle\Helper\BinanceHelper;
 use AppBundle\Service\Client\ExternalClientInterface;
 use DateTime;
 
@@ -15,6 +16,11 @@ use DateTime;
 class BinanceService extends ClientAwareService implements ExchangeServiceInterface
 {
     /**
+     * @var BinanceHelper $binanceHelper
+     */
+    private $binanceHelper;
+
+    /**
      * BinanceService constructor.
      * @param ExternalClientInterface $client
      */
@@ -24,6 +30,10 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
 
         /** @var array $parameters */
         $parameters = $client->getParameters();
+
+        $this->binanceHelper = new BinanceHelper(   $parameters['api_key'],
+                                                    $parameters['api_secret'],
+                                                    $parameters['base_uri']);
     }
 
     /**
@@ -33,7 +43,7 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
     {
         $response = $this->getClient()->request(
             'GET',
-            '/ticker/bookTicker?symbol=BTCUSDT'
+            '/api/v3/ticker/bookTicker?symbol=BTCUSDT'
         );
 
         $responseJson = json_decode($response->getBody()->getContents());
@@ -49,9 +59,31 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function getBalance(): BalanceDTO
     {
+        /** @var array $balance */
+        $balance = $this->binanceHelper->balances();
+
+        /**
+         * @var float $usd
+         */
+        $usd = 0;
+
+        /**
+         * @var float $btc
+         */
+        $btc = 0;
+
+        if($balance != null && count($balance) > 0 ) {
+            if(array_key_exists('USD', $balance)){
+                $usd = $balance['balances']['UDST'];
+            }
+
+            if(array_key_exists('BTC', $balance)){
+                $usd = $balance['balances']['BTC'];
+            }
+        }
 
         /** @var BalanceDTO $balanceDTO */
-        $balanceDTO = new BalanceDTO ( Ticker::BINANCE, 0, 0);
+        $balanceDTO = new BalanceDTO ( Ticker::BINANCE, $usd, $btc);
 
         return $balanceDTO;
     }
