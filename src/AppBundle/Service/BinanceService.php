@@ -73,12 +73,12 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
         $btc = 0;
 
         if($balance != null && count($balance) > 0 ) {
-            if(array_key_exists('USD', $balance)){
-                $usd = $balance['balances']['UDST'];
+            if(array_key_exists('USDT', $balance)){
+                $usd = $balance['USDT']['available'];
             }
 
             if(array_key_exists('BTC', $balance)){
-                $usd = $balance['balances']['BTC'];
+                $btc = $balance['BTC']['available'];
             }
         }
 

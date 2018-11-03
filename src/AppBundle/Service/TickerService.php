@@ -32,7 +32,7 @@ class TickerService
 
         foreach($this->exchangeServices as $name => $exchangeService){
             $parameters = $exchangeService->getClient()->getParameters();
-            if($parameters['enable']) {
+            if($parameters['enable'] && isset($parameters['api_key']) &&$parameters['api_key'] !== '' ) {
                 $tickerDTO = $exchangeService->getTicker();
                 array_push($result, $tickerDTO);
             }

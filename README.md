@@ -28,6 +28,8 @@ Installation
  
  * Set the database parameters in `app/config/parameters.yml`
 
+ * Create database and run `bin/console doctrine:schema:update --force`
+ 
  * Set the api keys of the exchanges you want to use in `app/config/parameters.yml`. At least two exchange api keys should be setted.
 
  * `bin/console bot:ticker`
