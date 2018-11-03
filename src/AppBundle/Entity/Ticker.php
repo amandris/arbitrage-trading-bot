@@ -15,6 +15,7 @@ class Ticker
     const KRAKEN = 'kraken';
     const OKCOIN = 'okcoin';
     const BINANCE = 'binance';
+    const CEXIO = 'cexio';
 
     /**
      * @var int $id

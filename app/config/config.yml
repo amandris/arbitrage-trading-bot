@@ -79,4 +79,10 @@ app:
             base_uri: "https://api.binance.com"
             api_key: "%binance_api_key%"
             api_secret: "%binance_api_secret%"
+        cexio:
+            enable: true
+            base_uri: "https://cex.io/api"
+            api_key: "%cexio_api_key%"
+            api_secret: "%cexio_api_secret%"
+            user_id: "%cexio_user_id%"
 

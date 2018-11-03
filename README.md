@@ -15,7 +15,7 @@ Supported exchanges
  - [ ] GDAX (Coinbase Pro)
  - [ ] QuadrigaCX
  - [ ] Exmo
- - [ ] Cexio
+ - [x] Cexio
  - [ ] Bittrex
  - [x] Binance
 
@@ -32,5 +32,9 @@ Installation
  
  * Set the api keys of the exchanges you want to use in `app/config/parameters.yml`. At least two exchange api keys should be setted.
 
- * `bin/console bot:ticker`
+ * `bin/console server:run localhost:8000`
+
+ * `bin/console bot:trade`
+ 
+ *  Open <http://localhost:8000> on your browser
  

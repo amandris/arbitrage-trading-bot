@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Class TestCommand
  * @package AppBundle\Command
  */
-class TickerCommand extends ContainerAwareCommand
+class TradeCommand extends ContainerAwareCommand
 {
     /** @var string $commandName*/
     private $commandName;
@@ -42,11 +42,11 @@ class TickerCommand extends ContainerAwareCommand
 
     protected function configure()
     {
-        $this->commandName = 'bot:ticker';
+        $this->commandName = 'bot:trade';
 
         $this
             ->setName($this->commandName)
-            ->setDescription('Gets prices from every enabled exchange and persists them on the DB')
+            ->setDescription('Arbitrage trade in several exchanges with USD/BTC pairs')
             ->setHelp('');
     }
 
@@ -68,6 +68,10 @@ class TickerCommand extends ContainerAwareCommand
 
         /** @var BalanceDTO[] $balanceDTOs */
         $balanceDTOs = $this->balanceService->getBalances();
+
+        if( count($balanceDTOs) < 2){
+            die('Error: At least two exchanges must be setted.');
+        }
 
         $now = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $output->writeln('Balances at '. date_format($now, 'd/m/Y H:i:s'));
