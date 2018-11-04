@@ -49,7 +49,7 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
 
         $responseJson = json_decode($response->getBody()->getContents());
 
-        $timestamp = new DateTime();
+        $timestamp = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $timestamp->setTimestamp($responseJson->timestamp);
 
         /** @var TickerDTO $tickerDTO */

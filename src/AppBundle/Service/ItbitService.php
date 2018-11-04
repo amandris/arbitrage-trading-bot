@@ -49,7 +49,7 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
         $responseJson = json_decode($response->getBody()->getContents());
 
         /** @var TickerDTO $tickerDTO */
-        $tickerDTO = new TickerDTO (Ticker::ITBIT, $responseJson->ask, $responseJson->bid, new \DateTime($responseJson->serverTimeUTC));
+        $tickerDTO = new TickerDTO (Ticker::ITBIT, $responseJson->ask, $responseJson->bid, new \DateTime($responseJson->serverTimeUTC, new \DateTimeZone('Europe/Madrid')));
 
         return $tickerDTO;
     }

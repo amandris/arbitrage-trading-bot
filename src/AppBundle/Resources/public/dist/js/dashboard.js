@@ -4,6 +4,10 @@ setInterval(function(){
             $("#balance-table").html(data);
         });
     }
+
+    $.post(Routing.generate('ticker', {}), function (data) {
+        $("#ticker-table").html(data);
+    });
 }, 3000);
 
 $("#start-btn").on( 'click', function (e) {

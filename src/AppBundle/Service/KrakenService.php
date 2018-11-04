@@ -48,7 +48,7 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
         $responseJson = json_decode($response->getBody()->getContents());
 
         /** @var TickerDTO $tickerDTO */
-        $tickerDTO = new TickerDTO (Ticker::KRAKEN, $responseJson->result->XXBTZUSD->a[0], $responseJson->result->XXBTZUSD->b[0], new \DateTime('now'));
+        $tickerDTO = new TickerDTO (Ticker::KRAKEN, $responseJson->result->XXBTZUSD->a[0], $responseJson->result->XXBTZUSD->b[0], new \DateTime('now', new \DateTimeZone('Europe/Madrid')));
 
         return $tickerDTO;
     }

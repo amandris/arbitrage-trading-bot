@@ -59,7 +59,6 @@ class BalanceRepository extends EntityRepository
         return $results;
     }
 
-
     /**
      * @param Balance $balance
      * @return Balance

@@ -77,19 +77,21 @@ class TradeCommand extends ContainerAwareCommand
             $this->getBalance($output);
         }
 
-        $previousRunning = $status->isRunning();
-
-        /** @var TickerDTO[] $tickerDTOs */
-        $tickerDTOs = $this->tickerService->getTickers();
-
         while(true) {
-            $output->writeln(date_format(new \DateTime('now', new \DateTimeZone('Europe/Madrid')), 'd/m/Y H:i:s'));
+            $now = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+
+            $previousRunning = $status->isRunning();
+
+            /** @var TickerDTO[] $tickerDTOs */
+            $tickerDTOs = $this->tickerService->getTickers();
+
+            $output->writeln(date_format($now, 'd/m/Y H:i:s'));
             foreach ($tickerDTOs as $tickerDTO) {
                 $ticker = new Ticker();
                 $ticker->setName($tickerDTO->getName());
                 $ticker->setAsk($tickerDTO->getAsk());
                 $ticker->setBid($tickerDTO->getBid());
-                $ticker->setCreated($tickerDTO->getTimestamp());
+                $ticker->setCreated($now);
 
                 $output->writeln('    '.$tickerDTO->toString());
                 $this->tickerRepository->save($ticker);

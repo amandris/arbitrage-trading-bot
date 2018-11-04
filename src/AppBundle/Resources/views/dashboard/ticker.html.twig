@@ -1,0 +1,39 @@
+<table class="table table-striped">
+    <tr>
+        <th style="width: 10px">Exchange</th>
+        <th>Initial ask</th>
+        <th>Current ask</th>
+        <th>Initial bid</th>
+        <th>Current bid</th>
+    </tr>
+    {% for ticker in tickers %}
+        <tr>
+
+            <td>{{ ticker.name }}</td>
+            <td>
+                {{ ticker.first.ask | number_format(2, '.', ',') }}
+            </td>
+            <td>
+                {% if ticker.last.ask > ticker.first.ask %}
+                    <span class="text-success">{{ ticker.last.ask | number_format(2, '.', ',') }}</span>
+                {% elseif ticker.last.ask < ticker.first.ask %}
+                    <span class="text-danger">{{ ticker.last.ask | number_format(2, '.', ',') }}</span>
+                {% else %}
+                    {{ ticker.last.ask | number_format(2, '.', ',') }}
+                {% endif %}
+            </td>
+            <td>
+                {{ ticker.first.bid | number_format(2, '.', ',') }}
+            </td>
+            <td>
+                {% if ticker.last.bid > ticker.first.bid %}
+                    <span class="text-success">{{ ticker.last.bid | number_format(2, '.', ',') }}</span>
+                {% elseif ticker.last.bid < ticker.first.bid %}
+                    <span class="text-danger">{{ ticker.last.bid | number_format(2, '.', ',') }}</span>
+                {% else %}
+                    {{ ticker.last.bid | number_format(2, '.', ',') }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

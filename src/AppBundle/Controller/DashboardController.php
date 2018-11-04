@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Status;
 use AppBundle\Repository\BalanceRepository;
 use AppBundle\Repository\StatusRepository;
+use AppBundle\Repository\TickerRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -132,6 +133,58 @@ class DashboardController extends Controller
 
         return $this->render('@App/dashboard/balance.html.twig', [
             'balances' => $result
+        ]);
+    }
+
+    /**
+     * @Route("/ticker", options={"expose"=true}, name="ticker")
+     * @param Request $request
+     */
+    public function tickerAction(Request $request)
+    {
+        /** @var StatusRepository $statusRepository */
+        $statusRepository = $this->get('app.status.repository');
+
+        /** @var TickerRepository $tickerRepository */
+        $tickerRepository = $this->get('app.ticker.repository');
+
+        /** @var Status $status */
+        $status = $statusRepository->findStatus();
+
+        $resultFirst    = [];
+        $resultLast     = [];
+        $exchangeNames  = [];
+        $result         = [];
+
+        if($status->isRunning() === true && $status->getStartDate()){
+            $firstTickers = $tickerRepository->findFirstTickers($status->getStartDate(), 12);
+            $lastTickers = $tickerRepository->findLastTickers($status->getStartDate(),12);
+
+            foreach($firstTickers as $firstTicker){
+                if(!array_key_exists($firstTicker->getName(), $resultFirst)){
+                    $resultFirst[$firstTicker->getName()] = ['ask'=>$firstTicker->getAsk(), 'bid'=>$firstTicker->getBid()];
+                    array_push($exchangeNames, $firstTicker->getName());
+                }
+            }
+
+            foreach($lastTickers as $lastTicker){
+                if(!array_key_exists($lastTicker->getName(), $resultLast)) {
+                    $resultLast[$lastTicker->getName()] = ['ask' => $lastTicker->getAsk(), 'bid' => $lastTicker->getBid()];
+                    array_push($exchangeNames, $lastTicker->getName());
+                }
+            }
+        }
+
+        $exchangeNames = array_unique($exchangeNames);
+
+        foreach ($exchangeNames as $exchangeName){
+            $firstTicker = array_key_exists($exchangeName, $resultFirst) ? $resultFirst[$exchangeName] : ['ask' => '', 'bid' => ''];
+            $lastTicker = array_key_exists($exchangeName, $resultLast) ? $resultLast[$exchangeName] : ['ask' => '', 'bid' => ''];
+            array_push($result, ['name' => $exchangeName , 'first' => $firstTicker , 'last' => $lastTicker]);
+        }
+
+        return $this->render('@App/dashboard/ticker.html.twig', [
+            'tickers' => $result
         ]);
     }
 }

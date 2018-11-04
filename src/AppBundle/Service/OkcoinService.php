@@ -35,7 +35,7 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
 
         $responseJson = json_decode($response->getBody()->getContents());
 
-        $timestamp = new DateTime();
+        $timestamp = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $timestamp->setTimestamp($responseJson->date);
 
         /** @var TickerDTO $tickerDTO */

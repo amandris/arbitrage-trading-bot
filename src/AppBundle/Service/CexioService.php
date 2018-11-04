@@ -49,7 +49,7 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
 
         $responseJson = json_decode($response->getBody()->getContents());
 
-        $timestamp = new DateTime();
+        $timestamp = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $timestamp->setTimestamp($responseJson->timestamp);
 
         /** @var TickerDTO $tickerDTO */
