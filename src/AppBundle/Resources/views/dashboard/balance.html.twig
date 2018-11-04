@@ -1,24 +1,24 @@
 <table class="table table-striped">
     <tr>
-        <th style="width: 10px">Exchange</th>
+        <th style="width: 10px;border-right: 1px solid grey;">Exchange</th>
         <th>Initial <i class="fa fa-dollar"></i></th>
-        <th>Current <i class="fa fa-dollar"></i></th>
+        <th style="border-right: 1px solid grey;">Current <i class="fa fa-dollar"></i></th>
         <th>Initial <i class="fa fa-btc"></i></th>
-        <th>Current <i class="fa fa-btc"></i></th>
+        <th style="border-right: 1px solid grey;">Current <i class="fa fa-btc"></i></th>
         <th>Profit</th>
     </tr>
     {% for balance in balances %}
         <tr>
 
-            <td>{{ balance.name }}</td>
+            <td style="border-right: 1px solid grey;">{{ balance.name }}</td>
             <td>
                 {{ balance.first.usd|number_format(2, '.', ',') }}
             </td>
-            <td>
+            <td style="border-right: 1px solid grey;">
                 {% if balance.last.usd > balance.first.usd %}
-                    <span class="text-success">{{ balance.last.usd | number_format(2, '.', ',') }}</span>
+                    <span class="text-success" style="font-weight: bold;">{{ balance.last.usd | number_format(2, '.', ',') }}</span>
                 {% elseif balance.last.usd < balance.first.usd%}
-                    <span class="text-danger">{{ balance.last.usd | number_format(2, '.', ',') }}</span>
+                    <span class="text-danger" style="font-weight: bold;">{{ balance.last.usd | number_format(2, '.', ',') }}</span>
                 {% else %}
                     {{ balance.last.usd | number_format(2, '.', ',') }}
                 {% endif %}
@@ -26,41 +26,41 @@
             <td>
                 {{ balance.first.btc | number_format(8, '.', ',') }}
             </td>
-            <td>
+            <td style="border-right: 1px solid grey;">
                 {% if balance.last.btc > balance.first.btc %}
-                    <span class="text-success">{{ balance.last.btc | number_format(8, '.', ',') }}</span>
+                    <span class="text-success" style="font-weight: bold;">{{ balance.last.btc | number_format(8, '.', ',') }}</span>
                 {% elseif balance.last.btc < balance.first.btc%}
-                    <span class="text-danger">{{ balance.last.btc | number_format(8, '.', ',') }}</span>
+                    <span class="text-danger" style="font-weight: bold;">{{ balance.last.btc | number_format(8, '.', ',') }}</span>
                 {% else %}
                     {{ balance.last.btc | number_format(8, '.', ',') }}
                 {% endif %}
             </td>
             <td>
                 {% if balance.last.usd > balance.first.usd %}
-                    <span class="text-success" style="padding-right: 20px;">
+                    <span class="text-success" style="padding-right: 20px;font-weight: bold;">
                         <i class="fa fa-dollar"></i>
                         {{ balance.last.usd - balance.first.usd | number_format(2, '.', ',') }}
-                        <i class="fa fa-arrow-up"></i>
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
                     </span>
                 {% elseif balance.last.usd < balance.first.usd %}
-                    <span class="text-danger" style="padding-right: 20px;">
+                    <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
                         <i class="fa fa-dollar"></i>
                         {{ balance.first.usd - balance.last.usd | number_format(2, '.', ',') }}
-                        <i class="fa fa-arrow-up"></i>
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
                     </span>
                 {% endif %}
 
                 {% if balance.last.btc > balance.first.btc %}
-                    <span class="text-success" style="padding-right: 20px;">
+                    <span class="text-success" style="padding-right: 20px;font-weight: bold;">
                         <i class="fa fa-btc"></i>
                         {{ (balance.last.btc - balance.first.btc) | number_format(8, '.', ',') }}
-                        <i class="fa fa-arrow-up"></i>
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
                     </span>
                 {% elseif balance.last.btc < balance.first.btc %}
-                    <span class="text-danger" style="padding-right: 20px;">
+                    <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
                         <i class="fa fa-btc"></i>
                         {{ (balance.first.btc - balance.last.btc) | number_format(8, '.', ',') }}
-                        <i class="fa fa-arrow-up"></i>
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
                     </span>
                 {% endif %}
 
