@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Balance;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -21,6 +22,43 @@ class BalanceRepository extends EntityRepository
         $balance = $this->findOneBy(['id' => $balanceId]);
         return $balance;
     }
+
+    /**
+     * @param DateTime $date
+     * @return Balance[]
+     */
+    public function findFirstBalances($date, $limit)
+    {
+        $queryBuilder = $this->createQueryBuilder('b')
+            ->where('b.created >= :date')
+            ->orderBy('b.created', 'ASC')
+            ->setParameter('date', $date)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        $results = $queryBuilder->getResult();
+
+        return $results;
+    }
+
+    /**
+     * @param DateTime $date
+     * @return Balance[]
+     */
+    public function findLastBalances($date, $limit)
+    {
+        $queryBuilder = $this->createQueryBuilder('b')
+            ->where('b.created >= :date')
+            ->orderBy('b.created', 'DESC')
+            ->setParameter('date', $date)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        $results = $queryBuilder->getResult();
+
+        return $results;
+    }
+
 
     /**
      * @param Balance $balance

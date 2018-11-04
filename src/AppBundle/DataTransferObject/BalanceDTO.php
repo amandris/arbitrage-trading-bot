@@ -12,20 +12,20 @@ class BalanceDTO
     protected $name;
 
     /**
-     * @var int $usd
+     * @var float $usd
      */
     protected $usd;
 
     /**
-     * @var int $btc
+     * @var float $btc
      */
     protected $btc;
 
     /**
      * BalanceDTO constructor.
      * @param string $name
-     * @param int $usd
-     * @param int $btc
+     * @param float $usd
+     * @param float $btc
      */
     public function __construct($name, $usd, $btc)
     {
@@ -43,17 +43,17 @@ class BalanceDTO
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getUsd(): int
+    public function getUsd(): float
     {
         return $this->usd;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getBtc(): int
+    public function getBtc(): float
     {
         return $this->btc;
     }

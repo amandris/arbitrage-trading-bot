@@ -9,14 +9,80 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Bot Parameters <small><span id="trading-since">Trading start time: {{ status.startDate | date('d/m/Y h:i:s') }}</span></small></h3>
+                </div>
 
+                <div class="box-body">
+                    <form id="trading-form">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Threshold (USD)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            <input type="number" min="1" step="any" class="form-control" id="threshold-usd" required="required" value="{{ status.thresholdUsd  }}" {{ status.running ? 'disabled' : '' }}>
+                                        </div>
+                                        <small>If the difference in USD between two exchanges is bigger than this value, a trade in placed in both exchanges.</small>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Order value (USD)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            <input type="number" min="1" step="any" class="form-control" id="order-value-usd" required="required" value="{{ status.orderValueUsd  }}" {{ status.running ? 'disabled' : '' }}>
+                                        </div>
+
+                                        <small>When an order is placed, this is the value in USD for both the buy and sell orders.</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Trading time (Minutes)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                            <input type="number" min="1" step="1" class="form-control" id="trading-time-minutes" value="{{ status.tradingTimeMinutes }}" {{ status.running ? 'disabled' : '' }}>
+                                        </div>
+
+                                        <small>Minutes the bot is trading. Leave this field empty for infinite time.</small>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="box-footer">
+                    <button id="start-btn" class="btn {{ status.running ? 'btn-default' : 'btn-primary' }}">Start</button>
+                    <button id="stop-btn" class="btn {{ status.running ? 'btn-danger' : 'btn-default' }}">Stop</button>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Balances</h3>
+                </div>
+                <div class="box-body no-padding" id="balance-table">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block scripts %}
     <script>
+        var running = {{ status.running == true ? 'true' : 'false' }};
     </script>
     <script src="{{ asset('build/js/dashboard.min.js') }}"></script>
 {% endblock %}

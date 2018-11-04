@@ -26,9 +26,19 @@ class Status
     protected $startDate;
 
     /**
-     * @var float $differenceUsd
+     * @var float $thresholdUsd
      */
-    protected $differenceUsd;
+    protected $thresholdUsd;
+
+    /**
+     * @var float $orderValueUsd
+     */
+    protected $orderValueUsd;
+
+    /**
+     * @var int $tradingTimeMinutes
+     */
+    protected $tradingTimeMinutes;
 
 
     /**
@@ -74,16 +84,48 @@ class Status
     /**
      * @return float
      */
-    public function getDifferenceUsd(): ?float
+    public function getThresholdUsd(): float
     {
-        return $this->differenceUsd;
+        return $this->thresholdUsd;
     }
 
     /**
-     * @param float $differenceUsd
+     * @param float $thresholdUsd
      */
-    public function setDifferenceUsd(float $differenceUsd)
+    public function setThresholdUsd(float $thresholdUsd)
     {
-        $this->differenceUsd = $differenceUsd;
+        $this->thresholdUsd = $thresholdUsd;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOrderValueUsd(): float
+    {
+        return $this->orderValueUsd;
+    }
+
+    /**
+     * @param float $orderValueUsd
+     */
+    public function setOrderValueUsd(float $orderValueUsd)
+    {
+        $this->orderValueUsd = $orderValueUsd;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTradingTimeMinutes():? int
+    {
+        return $this->tradingTimeMinutes;
+    }
+
+    /**
+     * @param int $tradingTimeMinutes
+     */
+    public function setTradingTimeMinutes(?int $tradingTimeMinutes)
+    {
+        $this->tradingTimeMinutes = $tradingTimeMinutes;
     }
 }

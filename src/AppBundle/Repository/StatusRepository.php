@@ -32,7 +32,9 @@ class StatusRepository extends EntityRepository
         if($status === null){
             $status = new Status();
             $status->setRunning(false);
-            $status->setDifferenceUsd(50);
+            $status->setThresholdUsd(50);
+            $status->setOrderValueUsd(20);
+            $status->setTradingTimeMinutes(null);
             $status->setStartDate(null);
 
             $this->save($status);

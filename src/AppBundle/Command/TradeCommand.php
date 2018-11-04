@@ -8,6 +8,7 @@ use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Balance;
 use AppBundle\Entity\Ticker;
 use AppBundle\Repository\BalanceRepository;
+use AppBundle\Repository\StatusRepository;
 use AppBundle\Repository\TickerRepository;
 use AppBundle\Service\BalanceService;
 use AppBundle\Service\TickerService;
@@ -34,6 +35,9 @@ class TradeCommand extends ContainerAwareCommand
     /** @var TickerRepository $tickerRepository */
     private $tickerRepository;
 
+    /** @var StatusRepository $statusRepository */
+    private $statusRepository;
+
     /** @var BalanceRepository $balanceRepository */
     private $balanceRepository;
 
@@ -59,6 +63,7 @@ class TradeCommand extends ContainerAwareCommand
         $this->balanceService       = $container->get('app.balance.service');
         $this->tickerRepository     = $container->get('app.ticker.repository');
         $this->balanceRepository    = $container->get('app.balance.repository');
+        $this->statusRepository     = $container->get('app.status.repository');
         $this->interValSeconds      = $container->getParameter('interval_seconds');
     }
 
@@ -66,6 +71,44 @@ class TradeCommand extends ContainerAwareCommand
     {
         $this->configureServices();
 
+        $status = $this->statusRepository->findStatus();
+
+        if( $status->isRunning() === true){
+            $this->getBalance($output);
+        }
+
+        $previousRunning = $status->isRunning();
+
+        /** @var TickerDTO[] $tickerDTOs */
+        $tickerDTOs = $this->tickerService->getTickers();
+
+        while(true) {
+            $output->writeln(date_format(new \DateTime('now', new \DateTimeZone('Europe/Madrid')), 'd/m/Y H:i:s'));
+            foreach ($tickerDTOs as $tickerDTO) {
+                $ticker = new Ticker();
+                $ticker->setName($tickerDTO->getName());
+                $ticker->setAsk($tickerDTO->getAsk());
+                $ticker->setBid($tickerDTO->getBid());
+                $ticker->setCreated($tickerDTO->getTimestamp());
+
+                $output->writeln('    '.$tickerDTO->toString());
+                $this->tickerRepository->save($ticker);
+            }
+
+            $status = $this->statusRepository->findStatus();
+
+            if($status->isRunning() === true && $status->isRunning() !== $previousRunning){
+                $this->getBalance($output);
+            }
+
+            sleep($this->interValSeconds);
+        }
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    function getBalance(OutputInterface $output){
         /** @var BalanceDTO[] $balanceDTOs */
         $balanceDTOs = $this->balanceService->getBalances();
 
@@ -84,29 +127,8 @@ class TradeCommand extends ContainerAwareCommand
             $balance->setCreated($now);
 
             $output->writeln('    '.$balanceDTO->toString());
+
             $this->balanceRepository->save($balance);
-        }
-
-        sleep($this->interValSeconds);
-
-
-        /** @var TickerDTO[] $tickerDTOs */
-        $tickerDTOs = $this->tickerService->getTickers();
-
-        while(true) {
-            $output->writeln(date_format(new \DateTime('now', new \DateTimeZone('Europe/Madrid')), 'd/m/Y H:i:s'));
-            foreach ($tickerDTOs as $tickerDTO) {
-                $ticker = new Ticker();
-                $ticker->setName($tickerDTO->getName());
-                $ticker->setAsk($tickerDTO->getAsk());
-                $ticker->setBid($tickerDTO->getBid());
-                $ticker->setCreated($tickerDTO->getTimestamp());
-
-                $output->writeln('    '.$tickerDTO->toString());
-                $this->tickerRepository->save($ticker);
-            }
-
-            sleep($this->interValSeconds);
         }
     }
 }

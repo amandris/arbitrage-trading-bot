@@ -19,16 +19,34 @@ AppBundle\Entity\Status:
             scale: 0
             length: null
             unique: false
-            nullable: true
+            nullable: false
             options: { "default": false }
             precision: 0
-        differenceUsd:
+        thresholdUsd:
             type: float
             scale: 2
             length: null
             unique: false
-            nullable: true
+            nullable: false
             precision: 7
+            options:
+                default: 0
+        orderValueUsd:
+            type: float
+            scale: 2
+            length: null
+            unique: false
+            nullable: false
+            precision: 7
+            options:
+                default: 0
+        tradingTimeMinutes:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
             options:
                 default: 0
         startDate:
