@@ -1,0 +1,41 @@
+AppBundle\Entity\Status:
+    type: entity
+    repositoryClass: AppBundle\Repository\StatusRepository
+    table: status
+    id:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        running:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            options: { "default": false }
+            precision: 0
+        differenceUsd:
+            type: float
+            scale: 2
+            length: null
+            unique: false
+            nullable: true
+            precision: 7
+            options:
+                default: 0
+        startDate:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+    lifecycleCallbacks: {  }

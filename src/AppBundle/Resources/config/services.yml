@@ -91,7 +91,13 @@ services:
             - AppBundle\Entity\Ticker
 
     app.balance.repository:
-            class: Doctrine\ORM\EntityRepository
-            factory: ['@doctrine.orm.default_entity_manager', getRepository]
-            arguments:
-                - AppBundle\Entity\Balance
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Balance
+
+    app.status.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Status

@@ -25,3 +25,7 @@ parameters:
 
     binance_api_key: ~
     binance_api_secret: ~
+
+    cexio_api_key: ~
+    cexio_api_secret: ~
+    cexio_user_id: ~

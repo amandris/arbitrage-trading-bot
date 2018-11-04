@@ -19,11 +19,22 @@ Supported exchanges
  - [ ] Bittrex
  - [x] Binance
 
+Prerequisites
+-------------
+
+ * PHP 7.1
+ * Composer
+ * Some RDBS (Mysql, Postgres, Sqlite, ...)
+ * Node.js
+ * Gulp
+
 Installation
 ------------
 
  * `git clone https://github.com/amandris/arbitrage-trading-bot.git`
 
+ * `cd arbitrage-trading-bot`
+ 
  * `composer install`
  
  * Set the database parameters in `app/config/parameters.yml`
@@ -31,6 +42,10 @@ Installation
  * Create database and run `bin/console doctrine:schema:update --force`
  
  * Set the api keys of the exchanges you want to use in `app/config/parameters.yml`. At least two exchange api keys should be setted.
+
+ * `npm install`
+ 
+ * `gulp`
 
  * `bin/console server:run localhost:8000`
 
