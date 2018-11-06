@@ -1,7 +1,7 @@
-AppBundle\Entity\Status:
+AppBundle\Entity\Difference:
     type: entity
-    repositoryClass: AppBundle\Repository\StatusRepository
-    table: status
+    repositoryClass: AppBundle\Repository\DifferenceRepository
+    table: difference
     id:
         id:
             type: integer
@@ -14,42 +14,28 @@ AppBundle\Entity\Status:
             generator:
                 strategy: IDENTITY
     fields:
-        running:
-            type: boolean
+        exchangeAskName:
+            type: string
             scale: 0
-            length: null
+            length: 128
             unique: false
             nullable: false
-            options: { "default": false }
             precision: 0
-        thresholdUsd:
-            type: float
-            scale: 2
-            length: null
-            unique: false
-            nullable: false
-            precision: 7
-            options:
-                default: 0
-        orderValueUsd:
-            type: float
-            scale: 2
-            length: null
-            unique: false
-            nullable: false
-            precision: 7
-            options:
-                default: 0
-        tradingTimeMinutes:
-            type: integer
+        exchangeBidName:
+            type: string
             scale: 0
-            length: null
+            length: 128
             unique: false
-            nullable: true
+            nullable: false
             precision: 0
-            options:
-                default: 0
-        addOrSubToOrderUsd:
+        exchangeNames:
+            type: string
+            scale: 0
+            length: 128
+            unique: false
+            nullable: false
+            precision: 0
+        ask:
             type: float
             scale: 2
             length: null
@@ -58,11 +44,29 @@ AppBundle\Entity\Status:
             precision: 7
             options:
                 default: 0
-        startDate:
+        bid:
+            type: float
+            scale: 2
+            length: null
+            unique: false
+            nullable: false
+            precision: 7
+            options:
+                default: 0
+        difference:
+            type: float
+            scale: 2
+            length: null
+            unique: false
+            nullable: false
+            precision: 7
+            options:
+                default: 0
+        created:
             type: datetime
             scale: 0
             length: null
             unique: false
-            nullable: true
+            nullable: false
             precision: 0
     lifecycleCallbacks: {  }

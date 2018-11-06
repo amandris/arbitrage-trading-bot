@@ -70,4 +70,12 @@ class TickerRepository extends EntityRepository
 
         return $ticker;
     }
+
+    /**
+     * Delete al rows in table
+     */
+    public function deleteAll(){
+        $query = $this->getEntityManager()->createQuery('DELETE AppBundle:Ticker');
+        $query->execute();
+    }
 }

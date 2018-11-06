@@ -6,10 +6,14 @@ use AppBundle\Entity\Status;
 use AppBundle\Repository\BalanceRepository;
 use AppBundle\Repository\StatusRepository;
 use AppBundle\Repository\TickerRepository;
+use AppBundle\Service\BalanceService;
+use AppBundle\Service\DifferenceService;
+use AppBundle\Service\TickerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DashboardController extends Controller
 {
@@ -39,19 +43,31 @@ class DashboardController extends Controller
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->get('app.status.repository');
 
+        /** @var BalanceRepository $balanceRepository */
+        $balanceRepository = $this->get('app.balance.repository');
+
+        /** @var TickerRepository $tickerRepository */
+        $tickerRepository = $this->get('app.ticker.repository');
+
         /** @var Status $status */
         $status = $statusRepository->findStatus();
+
         if($status->isRunning() === true){
             return new JsonResponse(['code' => 200, 'running' => false]);
         }
 
+        $tickerRepository->deleteAll();
+        $balanceRepository->deleteAll();
+
         $thresholdUsd = $request->get       ('thresholdUsd');
         $orderValueUsd = $request->get      ('orderValueUsd');
+        $addOrSubToOrderUsd = $request->get ('addOrSubToOrderUsd');
         $tradingTimeMinutes = $request->get ('tradingTimeMinutes') ?: null;
 
         $status->setTradingTimeMinutes  ($tradingTimeMinutes);
         $status->setOrderValueUsd       ($orderValueUsd);
         $status->setThresholdUsd        ($thresholdUsd);
+        $status->setAddOrSubToOrderUsd  ($addOrSubToOrderUsd);
         $status->setRunning             (true);
         $status->setStartDate           (new \DateTime('now', new \DateTimeZone('Europe/Madrid')));
 
@@ -77,11 +93,40 @@ class DashboardController extends Controller
         }
 
         $status->setRunning(false);
-        $status->setStartDate(null);
 
         $statusRepository->save($status);
 
         return new JsonResponse(['code' => 200, 'running' => false]);
+    }
+
+    /**
+     * @Route("/is-running", options={"expose"=true}, name="isRunning")
+     * @param Request $request
+     */
+    public function isRunningAction(Request $request)
+    {
+        /** @var StatusRepository $statusRepository */
+        $statusRepository = $this->get('app.status.repository');
+
+        /** @var Status $status */
+        $status = $statusRepository->findStatus();
+
+
+        if($status->isRunning() === true && $status->getTradingTimeMinutes() !== null) {
+
+            $now = new \DateTime('now',  new \DateTimeZone('Europe/Madrid'));
+
+            $startDate = $status->getStartDate()->add(new \DateInterval('PT'.($status->getTradingTimeMinutes() * 60).'S'));
+
+            if(($now->getTimestamp() + $now->getOffset()) > $startDate->getTimestamp()){
+                $status->setRunning(false);
+                $statusRepository->save($status);
+            }
+
+
+        }
+
+        return new Response($status->isRunning() ? 'ok' : 'ko');
     }
 
     /**
@@ -90,49 +135,11 @@ class DashboardController extends Controller
      */
     public function balanceAction(Request $request)
     {
-        /** @var StatusRepository $statusRepository */
-        $statusRepository = $this->get('app.status.repository');
-
-        /** @var BalanceRepository $balanceRepository */
-        $balanceRepository = $this->get('app.balance.repository');
-
-        /** @var Status $status */
-        $status = $statusRepository->findStatus();
-
-        $resultFirst    = [];
-        $resultLast     = [];
-        $exchangeNames  = [];
-        $result         = [];
-
-        if($status->isRunning() === true && $status->getStartDate()){
-            $firstBalances = $balanceRepository->findFirstBalances($status->getStartDate(), 12);
-            $lastBalances = $balanceRepository->findLastBalances($status->getStartDate(),12);
-
-            foreach($firstBalances as $firstBalance){
-                if(!array_key_exists($firstBalance->getName(), $resultFirst)){
-                    $resultFirst[$firstBalance->getName()] = ['usd'=>$firstBalance->getUsd(), 'btc'=>number_format($firstBalance->getBtc(), 8)];
-                    array_push($exchangeNames, $firstBalance->getName());
-                }
-            }
-
-            foreach($lastBalances as $lastBalance){
-                if(!array_key_exists($lastBalance->getName(), $resultLast)) {
-                    $resultLast[$lastBalance->getName()] = ['usd' => $lastBalance->getUsd(), 'btc' => number_format($lastBalance->getBtc() ,8)];
-                    array_push($exchangeNames, $lastBalance->getName());
-                }
-            }
-        }
-
-        $exchangeNames = array_unique($exchangeNames);
-
-        foreach ($exchangeNames as $exchangeName){
-            $firstBalance = array_key_exists($exchangeName, $resultFirst) ? $resultFirst[$exchangeName] : ['usd' => '', 'btc' => ''];
-            $lastBalance = array_key_exists($exchangeName, $resultLast) ? $resultLast[$exchangeName] : ['usd' => '', 'btc' => ''];
-            array_push($result, ['name' => $exchangeName , 'first' => $firstBalance , 'last' => $lastBalance]);
-        }
+        /** @var BalanceService $balanceService */
+        $balanceService = $this->get('app.balance.service');
 
         return $this->render('@App/dashboard/balance.html.twig', [
-            'balances' => $result
+            'balances' => $balanceService->getFormattedBalances()
         ]);
     }
 
@@ -142,49 +149,32 @@ class DashboardController extends Controller
      */
     public function tickerAction(Request $request)
     {
+        /** @var TickerService $tickerService */
+        $tickerService = $this->get('app.ticker.service');
+
+        return $this->render('@App/dashboard/ticker.html.twig', [
+            'tickers' => $tickerService->getFormattedTickers()
+        ]);
+    }
+
+    /**
+     * @Route("/difference", options={"expose"=true}, name="difference")
+     * @param Request $request
+     */
+    public function differenceAction(Request $request)
+    {
+        /** @var DifferenceService $differenceService */
+        $differenceService = $this->get('app.difference.service');
+
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->get('app.status.repository');
-
-        /** @var TickerRepository $tickerRepository */
-        $tickerRepository = $this->get('app.ticker.repository');
 
         /** @var Status $status */
         $status = $statusRepository->findStatus();
 
-        $resultFirst    = [];
-        $resultLast     = [];
-        $exchangeNames  = [];
-        $result         = [];
-
-        if($status->isRunning() === true && $status->getStartDate()){
-            $firstTickers = $tickerRepository->findFirstTickers($status->getStartDate(), 12);
-            $lastTickers = $tickerRepository->findLastTickers($status->getStartDate(),12);
-
-            foreach($firstTickers as $firstTicker){
-                if(!array_key_exists($firstTicker->getName(), $resultFirst)){
-                    $resultFirst[$firstTicker->getName()] = ['ask'=>$firstTicker->getAsk(), 'bid'=>$firstTicker->getBid()];
-                    array_push($exchangeNames, $firstTicker->getName());
-                }
-            }
-
-            foreach($lastTickers as $lastTicker){
-                if(!array_key_exists($lastTicker->getName(), $resultLast)) {
-                    $resultLast[$lastTicker->getName()] = ['ask' => $lastTicker->getAsk(), 'bid' => $lastTicker->getBid()];
-                    array_push($exchangeNames, $lastTicker->getName());
-                }
-            }
-        }
-
-        $exchangeNames = array_unique($exchangeNames);
-
-        foreach ($exchangeNames as $exchangeName){
-            $firstTicker = array_key_exists($exchangeName, $resultFirst) ? $resultFirst[$exchangeName] : ['ask' => '', 'bid' => ''];
-            $lastTicker = array_key_exists($exchangeName, $resultLast) ? $resultLast[$exchangeName] : ['ask' => '', 'bid' => ''];
-            array_push($result, ['name' => $exchangeName , 'first' => $firstTicker , 'last' => $lastTicker]);
-        }
-
-        return $this->render('@App/dashboard/ticker.html.twig', [
-            'tickers' => $result
+        return $this->render('@App/dashboard/difference.html.twig', [
+            'differences' => $differenceService->getFormattedDifferences(),
+            'thresholdUsd' => $status->getThresholdUsd()
         ]);
     }
 }

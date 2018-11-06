@@ -76,11 +76,21 @@ services:
         class: AppBundle\Service\TickerService
         arguments:
             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service'}
+            - '@app.status.repository'
+            - '@app.ticker.repository'
 
     app.balance.service:
         class: AppBundle\Service\BalanceService
         arguments:
             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service'}
+            - '@app.status.repository'
+            - '@app.balance.repository'
+
+    app.difference.service:
+        class: AppBundle\Service\DifferenceService
+        arguments:
+            - '@app.status.repository'
+            - '@app.difference.repository'
 
     # -------  services
 
@@ -95,6 +105,12 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - AppBundle\Entity\Balance
+
+    app.difference.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Difference
 
     app.status.repository:
         class: Doctrine\ORM\EntityRepository

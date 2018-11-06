@@ -19,7 +19,7 @@
                     <form id="trading-form">
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Threshold (USD)</label>
                                         <div class="input-group">
@@ -30,7 +30,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Order value (USD)</label>
                                         <div class="input-group">
@@ -41,7 +41,18 @@
                                         <small>When an order is placed, this is the value in USD for both the buy and sell orders.</small>
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Add or substract to order (USD)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            <input type="number" min="0" step="any" class="form-control" id="add-or-sub-to-order-usd" required="required" value="{{ status.addOrSubToOrderUsd  }}" {{ status.running ? 'disabled' : '' }}>
+                                        </div>
+
+                                        <small>The USD added to buy orders or substracted to sell orders to ensure the order is executed fast. The grear¡ter this value, the more likely the order is executed fast.</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Trading time (Minutes)</label>
                                         <div class="input-group">
@@ -67,22 +78,70 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="box">
+            <div class="box box-warning">
                 <div class="box-header">
                     <h3 class="box-title">Balances</h3>
                 </div>
-                <div class="box-body no-padding" id="balance-table">
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th style="width: 10px;border-right: 1px solid grey;">Exchange</th>
+                            <th>Initial <i class="fa fa-dollar"></i></th>
+                            <th style="border-right: 1px solid grey;">Current <i class="fa fa-dollar"></i></th>
+                            <th>Initial <i class="fa fa-btc"></i></th>
+                            <th style="border-right: 1px solid grey;">Current <i class="fa fa-btc"></i></th>
+                            <th>Profit</th>
+                        </tr>
+                        <tbody id="balance-table">
+
+                        </tbody>
+                    </table>
 
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="box">
+            <div class="box box-success">
                 <div class="box-header">
                     <h3 class="box-title">Ticker</h3>
                 </div>
-                <div class="box-body no-padding" id="ticker-table">
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th style="width: 10px;border-right: 1px solid grey;">Exchange</th>
+                            <th>Initial ask</th>
+                            <th style="border-right: 1px solid grey;">Current ask</th>
+                            <th>Initial bid</th>
+                            <th>Current bid</th>
+                        </tr>
+                        <tbody id="ticker-table">
 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-danger">
+                <div class="box-header">
+                    <h3 class="box-title">Differences</h3>
+                </div>
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Exchange Ask</th>
+                            <th>Exchange Bid</th>
+                            <th>Ask <i class="fa fa-dollar"></i></th>
+                            <th>Bid <i class="fa fa-dollar"></i></th>
+                            <th>Difference <i class="fa fa-dollar"></i></th>
+                        </tr>
+                        <tbody id="difference-table">
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

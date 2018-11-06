@@ -6,8 +6,10 @@ namespace AppBundle\Command;
 use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Balance;
+use AppBundle\Entity\Difference;
 use AppBundle\Entity\Ticker;
 use AppBundle\Repository\BalanceRepository;
+use AppBundle\Repository\DifferenceRepository;
 use AppBundle\Repository\StatusRepository;
 use AppBundle\Repository\TickerRepository;
 use AppBundle\Service\BalanceService;
@@ -34,6 +36,9 @@ class TradeCommand extends ContainerAwareCommand
 
     /** @var TickerRepository $tickerRepository */
     private $tickerRepository;
+
+    /** @var DifferenceRepository $differenceRepository */
+    private $differenceRepository;
 
     /** @var StatusRepository $statusRepository */
     private $statusRepository;
@@ -62,6 +67,7 @@ class TradeCommand extends ContainerAwareCommand
         $this->tickerService        = $container->get('app.ticker.service');
         $this->balanceService       = $container->get('app.balance.service');
         $this->tickerRepository     = $container->get('app.ticker.repository');
+        $this->differenceRepository = $container->get('app.difference.repository');
         $this->balanceRepository    = $container->get('app.balance.repository');
         $this->statusRepository     = $container->get('app.status.repository');
         $this->interValSeconds      = $container->getParameter('interval_seconds');
@@ -95,6 +101,39 @@ class TradeCommand extends ContainerAwareCommand
 
                 $output->writeln('    '.$tickerDTO->toString());
                 $this->tickerRepository->save($ticker);
+            }
+
+            $this->differenceRepository->deleteAll();
+
+            $observedExchanges = array();
+            foreach ($tickerDTOs as $askTickerDTO) {
+                array_push($observedExchanges, $askTickerDTO->getName());
+                foreach ($tickerDTOs as $bidTickerDTO) {
+                    if(in_array($bidTickerDTO->getName(), $observedExchanges)) {
+                        continue;
+                    }
+                    $difference = new Difference();
+                    $difference->setCreated($now);
+                    $difference->setBid($askTickerDTO->getBid());
+                    $difference->setAsk($bidTickerDTO->getAsk());
+                    $difference->setExchangeAskName($askTickerDTO->getName());
+                    $difference->setExchangeBidName($bidTickerDTO->getName());
+                    $difference->setExchangeNames($askTickerDTO->getName().'-'.$bidTickerDTO->getName());
+                    $difference->setDifference($askTickerDTO->getBid() - $bidTickerDTO->getAsk());
+
+                    $this->differenceRepository->save($difference);
+
+                    $difference = new Difference();
+                    $difference->setCreated($now);
+                    $difference->setBid($bidTickerDTO->getBid());
+                    $difference->setAsk($askTickerDTO->getAsk());
+                    $difference->setExchangeAskName($bidTickerDTO->getName());
+                    $difference->setExchangeBidName($askTickerDTO->getName());
+                    $difference->setExchangeNames($bidTickerDTO->getName().'-'.$askTickerDTO->getName());
+                    $difference->setDifference($bidTickerDTO->getBid() - $askTickerDTO->getAsk());
+
+                    $this->differenceRepository->save($difference);
+                }
             }
 
             $status = $this->statusRepository->findStatus();

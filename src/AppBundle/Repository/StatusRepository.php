@@ -40,6 +40,7 @@ class StatusRepository extends EntityRepository
             $status->setThresholdUsd(50);
             $status->setOrderValueUsd(20);
             $status->setTradingTimeMinutes(null);
+            $status->setAddOrSubToOrderUsd(3);
             $status->setStartDate(null);
 
             $this->save($status);

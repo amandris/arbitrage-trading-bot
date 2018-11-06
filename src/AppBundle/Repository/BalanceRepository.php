@@ -70,4 +70,12 @@ class BalanceRepository extends EntityRepository
 
         return $balance;
     }
+
+    /**
+     * Delete al rows in table
+     */
+    public function deleteAll(){
+        $query = $this->getEntityManager()->createQuery('DELETE AppBundle:Balance');
+        $query->execute();
+    }
 }

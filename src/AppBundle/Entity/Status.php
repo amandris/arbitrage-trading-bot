@@ -40,6 +40,11 @@ class Status
      */
     protected $tradingTimeMinutes;
 
+    /**
+     * @var float $addOrSubToOrderUsd;
+     */
+    protected $addOrSubToOrderUsd;
+
 
     /**
      * @return int
@@ -127,5 +132,21 @@ class Status
     public function setTradingTimeMinutes(?int $tradingTimeMinutes)
     {
         $this->tradingTimeMinutes = $tradingTimeMinutes;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddOrSubToOrderUsd(): float
+    {
+        return $this->addOrSubToOrderUsd;
+    }
+
+    /**
+     * @param float $addOrSubToOrderUsd
+     */
+    public function setAddOrSubToOrderUsd(float $addOrSubToOrderUsd)
+    {
+        $this->addOrSubToOrderUsd = $addOrSubToOrderUsd;
     }
 }
