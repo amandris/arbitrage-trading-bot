@@ -152,6 +152,7 @@
 {% block scripts %}
     <script>
         var running = {{ status.running == true ? 'true' : 'false' }};
+        var interval = {{ interval }};
     </script>
     <script src="{{ asset('build/js/dashboard.min.js') }}"></script>
 {% endblock %}

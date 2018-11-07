@@ -20,7 +20,7 @@ setInterval(function(){
     $.post(Routing.generate('difference', {}), function (data) {
         $("#difference-table").html(data);
     });
-}, 3000);
+}, 8 * 1000);
 
 $("#start-btn").on( 'click', function (e) {
     e.preventDefault();

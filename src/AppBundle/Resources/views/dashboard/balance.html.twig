@@ -11,7 +11,7 @@
         <td style="border-right: 1px solid grey;">{{ balance.name | capitalize }}</td>
         <td>
             {{ balance.first.usd|number_format(2, '.', ',') }}
-            {% set total_first_usd =  total_first_usd + balance.first.usd %}
+            {% set total_first_usd =  total_first_usd + (balance.first.usd is defined and balance.first.usd != ''? balance.first.usd : 0 )%}
         </td>
         <td style="border-right: 1px solid grey;">
             {% if balance.last.usd > balance.first.usd %}
@@ -21,11 +21,11 @@
             {% else %}
                 {{ balance.last.usd | number_format(2, '.', ',') }}
             {% endif %}
-            {% set total_last_usd =  total_last_usd + balance.last.usd %}
+            {% set total_last_usd =  total_last_usd + (balance.last.usd is defined and balance.last.usd != ''? balance.last.usd : 0 )%}
         </td>
         <td>
             {{ balance.first.btc | number_format(8, '.', ',') }}
-            {% set total_first_btc =  total_first_btc + balance.first.btc %}
+            {% set total_first_btc =  total_first_btc + (balance.first.btc is defined and balance.first.btc != ''? balance.first.btc : 0 )%}
         </td>
         <td style="border-right: 1px solid grey;">
             {% if balance.last.btc > balance.first.btc %}
@@ -35,41 +35,44 @@
             {% else %}
                 {{ balance.last.btc | number_format(8, '.', ',') }}
             {% endif %}
-            {% set total_last_btc =  total_last_btc + balance.last.btc %}
+            {% set total_last_btc =  total_last_btc + (balance.last.btc is defined and balance.last.btc != ''? balance.last.btc : 0 )%}
         </td>
         <td>
-            {% if balance.last.usd > balance.first.usd %}
-                <span class="text-success" style="padding-right: 20px;font-weight: bold;">
-                    <i class="fa fa-dollar"></i>
-                    {{ balance.last.usd - balance.first.usd | number_format(2, '.', ',') }}
-                    <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
-                </span>
-                {% set total_profit_usd =  total_profit_usd + (balance.last.usd - balance.first.usd) %}
-            {% elseif balance.last.usd < balance.first.usd %}
-                <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
-                    <i class="fa fa-dollar"></i>
-                    {{ balance.first.usd - balance.last.usd | number_format(2, '.', ',') }}
-                    <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
-                </span>
-                {% set total_profit_usd =  total_profit_usd + (balance.first.usd - balance.last.usd) %}
+            {% if balance.first.usd != '' and balance.last.usd != '' %}
+                {% if balance.last.usd > balance.first.usd %}
+                    <span class="text-success" style="padding-right: 20px;font-weight: bold;">
+                        <i class="fa fa-dollar"></i>
+                        {{ balance.last.usd - balance.first.usd | number_format(2, '.', ',') }}
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                    </span>
+                    {% set total_profit_usd =  total_profit_usd + (balance.last.usd - balance.first.usd) %}
+                {% elseif balance.last.usd < balance.first.usd %}
+                    <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
+                        <i class="fa fa-dollar"></i>
+                        {{ balance.first.usd - balance.last.usd | number_format(2, '.', ',') }}
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                    </span>
+                    {% set total_profit_usd =  total_profit_usd + (balance.first.usd - balance.last.usd) %}
+                {% endif %}
             {% endif %}
 
-            {% if balance.last.btc > balance.first.btc %}
-                <span class="text-success" style="padding-right: 20px;font-weight: bold;">
-                    <i class="fa fa-btc"></i>
-                    {{ (balance.last.btc - balance.first.btc) | number_format(8, '.', ',') }}
-                    <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
-                </span>
-                {% set total_profit_btc =  total_profit_btc + (balance.last.btc - balance.first.btc) %}
-            {% elseif balance.last.btc < balance.first.btc %}
-                <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
-                    <i class="fa fa-btc"></i>
-                    {{ (balance.first.btc - balance.last.btc) | number_format(8, '.', ',') }}
-                    <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
-                </span>
-                {% set total_profit_btc =  total_profit_btc + (balance.first.btc - balance.last.btc) %}
+            {% if balance.last.btc != '' and balance.first.btc != '' %}
+                {% if balance.last.btc > balance.first.btc %}
+                    <span class="text-success" style="padding-right: 20px;font-weight: bold;">
+                        <i class="fa fa-btc"></i>
+                        {{ (balance.last.btc - balance.first.btc) | number_format(8, '.', ',') }}
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                    </span>
+                    {% set total_profit_btc =  total_profit_btc + (balance.last.btc - balance.first.btc) %}
+                {% elseif balance.last.btc < balance.first.btc %}
+                    <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
+                        <i class="fa fa-btc"></i>
+                        {{ (balance.first.btc - balance.last.btc) | number_format(8, '.', ',') }}
+                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                    </span>
+                    {% set total_profit_btc =  total_profit_btc + (balance.first.btc - balance.last.btc) %}
+                {% endif %}
             {% endif %}
-
         </td>
     </tr>
 {% endfor %}

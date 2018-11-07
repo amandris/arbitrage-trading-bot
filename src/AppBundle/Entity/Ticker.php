@@ -16,6 +16,7 @@ class Ticker
     const OKCOIN = 'okcoin';
     const BINANCE = 'binance';
     const CEXIO = 'cexio';
+    const BITTREX = 'bittrex';
 
     /**
      * @var int $id

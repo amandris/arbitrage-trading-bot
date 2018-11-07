@@ -40,6 +40,12 @@ services:
             - '@guzzle.client'
             - '%client.cexio%'
 
+    app.client.bittrex:
+        class: AppBundle\Service\Client\BittrexClient
+        arguments:
+            - '@guzzle.client'
+            - '%client.bittrex%'
+
     # -------  services
 
     app.bitstamp.service:
@@ -72,17 +78,22 @@ services:
         arguments:
             - '@app.client.cexio'
 
+    app.bittrex.service:
+        class: AppBundle\Service\BittrexService
+        arguments:
+            - '@app.client.bittrex'
+
     app.ticker.service:
         class: AppBundle\Service\TickerService
         arguments:
-            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service'}
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service'}
             - '@app.status.repository'
             - '@app.ticker.repository'
 
     app.balance.service:
         class: AppBundle\Service\BalanceService
         arguments:
-            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service'}
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service'}
             - '@app.status.repository'
             - '@app.balance.repository'
 

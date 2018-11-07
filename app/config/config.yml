@@ -75,7 +75,7 @@ app:
             api_key: ""
             api_secret: ""
         binance:
-            enable: true
+            enable: false
             base_uri: "https://api.binance.com"
             api_key: "%binance_api_key%"
             api_secret: "%binance_api_secret%"
@@ -85,4 +85,9 @@ app:
             api_key: "%cexio_api_key%"
             api_secret: "%cexio_api_secret%"
             user_id: "%cexio_user_id%"
+        bittrex:
+            enable: true
+            base_uri: "https://bittrex.com/api/v1.1"
+            api_key: "%bittrex_api_key%"
+            api_secret: "%bittrex_api_secret%"
 

@@ -28,8 +28,11 @@ class DashboardController extends Controller
         /** @var Status $status */
         $status = $statusRepository->findStatus();
 
+        $interval = $this->getParameter('interval_seconds');
+
         return $this->render('@App/dashboard/index.html.twig', [
-            'status' => $status
+            'status' => $status,
+            'interval' => $interval
         ]);
     }
 

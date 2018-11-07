@@ -16,7 +16,7 @@ Supported exchanges
  - [ ] QuadrigaCX
  - [ ] Exmo
  - [x] Cexio
- - [ ] Bittrex
+ - [x] Bittrex
  - [x] Binance
 
 Prerequisites

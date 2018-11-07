@@ -29,3 +29,6 @@ parameters:
     cexio_api_key: ~
     cexio_api_secret: ~
     cexio_user_id: ~
+
+    bittrex_api_key: ~
+    bittrex_api_secret: ~
