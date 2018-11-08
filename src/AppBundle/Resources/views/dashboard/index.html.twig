@@ -26,7 +26,7 @@
                                             <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                                             <input type="number" min="1" step="any" class="form-control" id="threshold-usd" required="required" value="{{ status.thresholdUsd  }}" {{ status.running ? 'disabled' : '' }}>
                                         </div>
-                                        <small>If the difference in USD between two exchanges is bigger than this value, a trade in placed in both exchanges.</small>
+                                        <small>If the difference in USD between two exchanges is bigger than this value, a trade is placed in both exchanges.</small>
                                     </div>
 
                                 </div>
@@ -38,7 +38,7 @@
                                             <input type="number" min="1" step="any" class="form-control" id="order-value-usd" required="required" value="{{ status.orderValueUsd  }}" {{ status.running ? 'disabled' : '' }}>
                                         </div>
 
-                                        <small>When an order is placed, this is the value in USD for both the buy and sell orders.</small>
+                                        <small>When an order is placed, this is the value in USD for both, the buy and sell orders.</small>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -49,7 +49,7 @@
                                             <input type="number" min="0" step="any" class="form-control" id="add-or-sub-to-order-usd" required="required" value="{{ status.addOrSubToOrderUsd  }}" {{ status.running ? 'disabled' : '' }}>
                                         </div>
 
-                                        <small>The USD added to buy orders or substracted to sell orders to ensure the order is executed fast. The grear¡ter this value, the more likely the order is executed fast.</small>
+                                        <small>The USD added to buy orders or substracted to sell orders to ensure the order is executed fast. The greater this value, the more likely the order is executed fast.</small>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">

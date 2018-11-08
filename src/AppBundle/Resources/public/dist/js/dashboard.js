@@ -1,7 +1,6 @@
 setInterval(function(){
     if(running === true) {
         $.post(Routing.generate('isRunning', {}), function (data) {
-            console.log(data);
            if(data === 'ko'){
                running = false;
                stopRunning();

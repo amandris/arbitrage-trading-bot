@@ -62,8 +62,8 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
     public function getBalance(): BalanceDTO
     {
 
-        /** @var array $balance */
-        $balance = $this->bittrexHelper->getBalances();
+        /** @var array $balances */
+        $balances = $this->bittrexHelper->getBalances();
 
         /**
          * @var float $usd
@@ -75,13 +75,15 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
          */
         $btc = 0;
 
-        if($balance != null && count($balance) > 0 ) {
-            if(array_key_exists('USD', $balance)){
-                $usd = $balance['USD']['Available'];
-            }
+        if($balances != null && count($balances) > 0 ) {
+            foreach ($balances as $balance) {
+                if ($balance->Currency === 'BTC') {
+                    $btc = $balance->Available;
+                }
 
-            if(array_key_exists('BTC', $balance)){
-                $btc = $balance['BTC']['Available'];
+                if ($balance->Currency === 'USD') {
+                    $usd = $balance->Available;
+                }
             }
         }
 
