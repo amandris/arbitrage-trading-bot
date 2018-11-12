@@ -74,7 +74,7 @@ app:
             base_uri: "https://www.okcoin.com/api/v1"
             api_key: ""
             api_secret: ""
-        binance:
+        binance: #Binance does not suppor USD tradding. USDT is used instead. Enable Binance is not recomended
             enable: false
             base_uri: "https://api.binance.com"
             api_key: "%binance_api_key%"

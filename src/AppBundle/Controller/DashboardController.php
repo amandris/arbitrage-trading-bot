@@ -62,15 +62,17 @@ class DashboardController extends Controller
         $tickerRepository->deleteAll();
         $balanceRepository->deleteAll();
 
-        $thresholdUsd = $request->get       ('thresholdUsd');
-        $orderValueUsd = $request->get      ('orderValueUsd');
-        $addOrSubToOrderUsd = $request->get ('addOrSubToOrderUsd');
-        $tradingTimeMinutes = $request->get ('tradingTimeMinutes') ?: null;
+        $thresholdUsd =         $request->get('thresholdUsd');
+        $orderValueUsd =        $request->get('orderValueUsd');
+        $addOrSubToOrderUsd =   $request->get('addOrSubToOrderUsd');
+        $tradingTimeMinutes =   $request->get('tradingTimeMinutes') ?: null;
+        $maxOpenOrders =        $request->get('maxOpenOrders') ?: null;
 
         $status->setTradingTimeMinutes  ($tradingTimeMinutes);
         $status->setOrderValueUsd       ($orderValueUsd);
         $status->setThresholdUsd        ($thresholdUsd);
         $status->setAddOrSubToOrderUsd  ($addOrSubToOrderUsd);
+        $status->setMaxOpenOrders       ($maxOpenOrders);
         $status->setRunning             (true);
         $status->setStartDate           (new \DateTime('now', new \DateTimeZone('Europe/Madrid')));
 

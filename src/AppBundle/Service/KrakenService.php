@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\DataTransferObject\BalanceDTO;
+use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
 use AppBundle\Helper\KrakenHelper;
@@ -71,5 +72,25 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
         $balanceDTO = new BalanceDTO ( Ticker::KRAKEN, $usd, $btc);
 
         return $balanceDTO;
+    }
+
+    /**
+     * @param float $amount
+     * @param float $price
+     * @return OrderDTO
+     */
+    public function placeBuyOrder(float $amount, float $price): OrderDTO
+    {
+        // TODO: Implement placeBuyOrder() method.
+    }
+
+    /**
+     * @param float $amount
+     * @param float $price
+     * @return OrderDTO
+     */
+    public function placeSellOrder(float $amount, float $price): OrderDTO
+    {
+        // TODO: Implement placeSellOrder() method.
     }
 }

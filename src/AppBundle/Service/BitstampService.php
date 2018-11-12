@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\DataTransferObject\BalanceDTO;
+use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
 use AppBundle\Helper\BitstampHelper;
@@ -77,4 +78,58 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
 
         return $balanceDTO;
     }
+
+    /**
+     * @param float $amount
+     * @param float $price
+     * @return OrderDTO
+     */
+    public function placeBuyOrder(float $amount, float $price):OrderDTO
+    {
+        /** @var array $order */
+        $order = $this->bitstampHelper->buyBTC($amount, $price);
+
+        if(array_key_exists('error', $order)){
+            return null;
+        }
+
+        $timestamp  = new \DateTime($order['datetime'], new \DateTimeZone('Europe/Madrid'));
+        $id         = $order['id'];
+        $price      = $order['price'];
+        $amountBtc  = $order['amount'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::BITSTAMP, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_BUY);
+
+        return $orderDTO;
+    }
+
+    /**
+     * @param float $amount
+     * @param float $price
+     * @return OrderDTO
+     */
+    public function placeSellOrder(float $amount, float $price):OrderDTO
+    {
+        /** @var array $order */
+        $order = $this->bitstampHelper->sellBTC($amount, $price);
+
+        if(array_key_exists('error', $order)){
+            return null;
+        }
+
+        $timestamp  = new \DateTime($order['datetime'], new \DateTimeZone('Europe/Madrid'));
+        $id         = $order['id'];
+        $price      = $order['price'];
+        $amountBtc  = $order['amount'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::BITSTAMP, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_SELL);
+
+        return $orderDTO;
+    }
+
+
 }

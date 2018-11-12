@@ -45,6 +45,10 @@ class Status
      */
     protected $addOrSubToOrderUsd;
 
+    /**
+     * @var int $maxOpenOrders
+     */
+    protected $maxOpenOrders;
 
     /**
      * @return int
@@ -148,5 +152,21 @@ class Status
     public function setAddOrSubToOrderUsd(float $addOrSubToOrderUsd)
     {
         $this->addOrSubToOrderUsd = $addOrSubToOrderUsd;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxOpenOrders(): int
+    {
+        return $this->maxOpenOrders;
+    }
+
+    /**
+     * @param int $maxOpenOrders
+     */
+    public function setMaxOpenOrders(int $maxOpenOrders)
+    {
+        $this->maxOpenOrders = $maxOpenOrders;
     }
 }

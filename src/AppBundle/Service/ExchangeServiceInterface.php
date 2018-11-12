@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\DataTransferObject\BalanceDTO;
+use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Service\Client\ExternalClientInterface;
 
@@ -23,7 +24,17 @@ interface ExchangeServiceInterface
     public function getBalance():BalanceDTO;
 
     /**
-     * @return ExternalClientInterface
+     * @param float $amount
+     * @param float $price
+     * @return OrderDTO
      */
-    public function getClient(): ExternalClientInterface;
+    public function placeBuyOrder(float $amount, float $price):OrderDTO;
+
+    /**
+     * @param float $amount
+     * @param float $price
+     * @return OrderDTO
+     */
+    public function placeSellOrder(float $amount, float $price):OrderDTO;
+
 }

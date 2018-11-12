@@ -29,8 +29,9 @@ $("#start-btn").on( 'click', function (e) {
         var orderValueUsd = $("#order-value-usd").val();
         var tradingTimeMinutes = $("#trading-time-minutes").val();
         var addOrSubToOrderUsd = $("#add-or-sub-to-order-usd").val();
+        var maxOpenOrders = $("#max-open-orders").val();
 
-        $.post( Routing.generate('startTrading', {thresholdUsd: thresholdUsd, orderValueUsd:orderValueUsd, tradingTimeMinutes:tradingTimeMinutes, addOrSubToOrderUsd:addOrSubToOrderUsd}), function( data ) {
+        $.post( Routing.generate('startTrading', {thresholdUsd: thresholdUsd, orderValueUsd:orderValueUsd, tradingTimeMinutes:tradingTimeMinutes, addOrSubToOrderUsd:addOrSubToOrderUsd, maxOpenOrders:maxOpenOrders}), function( data ) {
             if(data.running === true) {
                 $("#start-btn").removeClass('btn-primary').addClass('btn-default');
                 $("#stop-btn").removeClass('btn-default').addClass('btn-danger');
@@ -38,6 +39,7 @@ $("#start-btn").on( 'click', function (e) {
                 $("#threshold-usd").prop('disabled', true);
                 $("#order-value-usd").prop('disabled', true);
                 $("#add-or-sub-to-order-usd").prop('disabled', true);
+                $("#max-open-orders").prop('disabled', true);
                 $("#trading-time-minutes").prop('disabled', true);
 
                 running = true;
@@ -68,4 +70,5 @@ function stopRunning(){
     $("#order-value-usd").prop('disabled', false);
     $("#add-or-sub-to-order-usd").prop('disabled', false);
     $("#trading-time-minutes").prop('disabled', false);
+    $("#max-open-orders").prop('disabled', false);
 }

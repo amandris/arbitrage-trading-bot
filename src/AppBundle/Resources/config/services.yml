@@ -103,7 +103,12 @@ services:
             - '@app.status.repository'
             - '@app.difference.repository'
 
-    # -------  services
+    app.trade.service:
+        class: AppBundle\Service\TradeService
+        arguments:
+             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service'}
+             - '@app.order_pair.repository'
+    # -------  repositories
 
     app.ticker.repository:
         class: Doctrine\ORM\EntityRepository
@@ -128,3 +133,9 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - AppBundle\Entity\Status
+
+    app.order_pair.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\OrderPair

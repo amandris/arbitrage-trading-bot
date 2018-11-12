@@ -25,8 +25,8 @@ class BitstampHelper
      */
     private $client_id;
 
-    /** @var
-     * string $base_uri
+    /**
+     * @var string $base_uri
      */
     private $base_uri;
 

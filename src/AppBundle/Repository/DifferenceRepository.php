@@ -60,6 +60,25 @@ class DifferenceRepository extends EntityRepository
     }
 
     /**
+     * @param DateTime $date
+     * @return Difference[]
+     */
+    public function findLastDifferencesGreaterThan($date, $thresholdUsd)
+    {
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->where('d.created >= :date')
+            ->andWhere('d.difference >= :thresholdUsd')
+            ->orderBy('d.difference', 'DESC')
+            ->setParameter('date', $date)
+            ->setParameter('thresholdUsd', $thresholdUsd)
+            ->getQuery();
+
+        $results = $queryBuilder->getResult();
+
+        return $results;
+    }
+
+    /**
      * @param Difference $difference
      * @return Difference
      */

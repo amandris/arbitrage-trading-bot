@@ -42,6 +42,7 @@ class StatusRepository extends EntityRepository
             $status->setTradingTimeMinutes(null);
             $status->setAddOrSubToOrderUsd(3);
             $status->setStartDate(null);
+            $status->setMaxOpenOrders(1);
 
             $this->save($status);
         }
