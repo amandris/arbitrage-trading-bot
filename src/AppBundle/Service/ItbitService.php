@@ -103,4 +103,12 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
     {
         // TODO: Implement placeSellOrder() method.
     }
+
+    /**
+     * @return OrderDTO[]
+     */
+    public function getOrders(): array
+    {
+        // TODO: Implement getOrders() method.
+    }
 }

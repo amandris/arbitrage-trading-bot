@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\OrderPair;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -20,6 +21,21 @@ class OrderPairRepository extends EntityRepository
         /** @var OrderPair $orderPair */
         $orderPair = $this->findOneBy(['id' => $orderPairId]);
         return $orderPair;
+    }
+
+    /**
+     * @return OrderPair[]
+     */
+    public function findOpenOrderPairs()
+    {
+        $queryBuilder = $this->createQueryBuilder('op')
+            ->where('op.buyOrderOpen = true')
+            ->orWhere('op.sellOrderOpen = true')
+            ->getQuery();
+
+        $results = $queryBuilder->getResult();
+
+        return $results;
     }
 
     /**

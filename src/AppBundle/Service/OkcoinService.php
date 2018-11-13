@@ -72,4 +72,12 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
     {
         // TODO: Implement placeSellOrder() method.
     }
+
+    /**
+     * @return OrderDTO[]
+     */
+    public function getOrders(): array
+    {
+        // TODO: Implement getOrders() method.
+    }
 }

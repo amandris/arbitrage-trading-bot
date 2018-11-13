@@ -37,4 +37,9 @@ interface ExchangeServiceInterface
      */
     public function placeSellOrder(float $amount, float $price):OrderDTO;
 
+    /**
+     * @return OrderDTO[]
+     */
+    public function getOrders():array;
+
 }

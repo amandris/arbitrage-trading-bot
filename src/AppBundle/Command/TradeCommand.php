@@ -4,13 +4,16 @@ namespace AppBundle\Command;
 
 
 use AppBundle\DataTransferObject\BalanceDTO;
+use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Balance;
 use AppBundle\Entity\Difference;
+use AppBundle\Entity\OrderPair;
 use AppBundle\Entity\Status;
 use AppBundle\Entity\Ticker;
 use AppBundle\Repository\BalanceRepository;
 use AppBundle\Repository\DifferenceRepository;
+use AppBundle\Repository\OrderPairRepository;
 use AppBundle\Repository\StatusRepository;
 use AppBundle\Repository\TickerRepository;
 use AppBundle\Service\BalanceService;
@@ -43,6 +46,9 @@ class TradeCommand extends ContainerAwareCommand
     /** @var TickerRepository $tickerRepository */
     private $tickerRepository;
 
+    /** @var OrderPairRepository $orderPairRepository */
+    private $orderPairRepository;
+
     /** @var DifferenceRepository $differenceRepository */
     private $differenceRepository;
 
@@ -74,6 +80,7 @@ class TradeCommand extends ContainerAwareCommand
         $this->balanceService       = $container->get('app.balance.service');
         $this->tradeService         = $container->get('app.trade.service');
         $this->tickerRepository     = $container->get('app.ticker.repository');
+        $this->orderPairRepository  = $container->get('app.order_pair.repository');
         $this->differenceRepository = $container->get('app.difference.repository');
         $this->balanceRepository    = $container->get('app.balance.repository');
         $this->statusRepository     = $container->get('app.status.repository');
@@ -103,14 +110,45 @@ class TradeCommand extends ContainerAwareCommand
 
             $this->getTickerAndDifferences($output);
 
-            /** @var Difference[] $differences */
-            $differences = $this->differenceRepository->findLastDifferencesGreaterThan($status->getStartDate(), $status->getThresholdUsd());
+            $balancesNewToBeReloaded = false;
 
-            foreach ($differences as $difference){
-                $this->tradeService->placeOrderPair($difference, $status);
+            if($status->isRunning()) {
+                /** @var Difference[] $differences */
+                $differences = $this->differenceRepository->findLastDifferencesGreaterThan($status->getStartDate(), $status->getThresholdUsd());
+
+                /** @var OrderPair[] $openOrderPairs */
+                $openOrderPairs = $this->orderPairRepository->findOpenOrderPairs();
+
+                foreach ($differences as $difference) {
+                    if ($status->getMaxOpenOrders() && $status->getMaxOpenOrders() > count($openOrderPairs)) {
+                        $this->tradeService->placeOrderPair($difference, $status);
+                        $openOrderPairs = $this->orderPairRepository->findOpenOrderPairs();
+                    }
+                }
+
+                /** @var OrderDTO[] $orders */
+                $orders = $this->tradeService->getOrders();
+                $orderIds = array_column($orders, 'orderId');
+
+                foreach ($openOrderPairs as $openOrderPair) {
+                    $orderHasChange = false;
+                    if (!in_array($openOrderPair->getBuyOrderId(), $orderIds)) {
+                        $openOrderPair->setBuyOrderOpen(false);
+                        $orderHasChange = true;
+                    }
+                    if (!in_array($openOrderPair->getSellOrderId(), $orderIds)) {
+                        $openOrderPair->setSellOrderOpen(false);
+                        $orderHasChange = true;
+                    }
+
+                    if ($orderHasChange) {
+                        $this->orderPairRepository->save($openOrderPair);
+                        $balancesNewToBeReloaded = true;
+                    }
+                }
             }
 
-            if($status->isRunning() === true && $status->isRunning() !== $previousRunning){
+            if($balancesNewToBeReloaded || ($status->isRunning() === true && $status->isRunning() !== $previousRunning)){
                 $this->getBalance($output);
             }
 

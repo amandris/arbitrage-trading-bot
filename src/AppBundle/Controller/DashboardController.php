@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Status;
 use AppBundle\Repository\BalanceRepository;
+use AppBundle\Repository\OrderPairRepository;
 use AppBundle\Repository\StatusRepository;
 use AppBundle\Repository\TickerRepository;
 use AppBundle\Service\BalanceService;
@@ -180,6 +181,26 @@ class DashboardController extends Controller
         return $this->render('@App/dashboard/difference.html.twig', [
             'differences' => $differenceService->getFormattedDifferences(),
             'thresholdUsd' => $status->getThresholdUsd()
+        ]);
+    }
+
+    /**
+     * @Route("/order-pair", options={"expose"=true}, name="orderPair")
+     * @param Request $request
+     */
+    public function orderPairAction(Request $request)
+    {
+        /** @var OrderPairRepository $orderPairRepository */
+        $orderPairRepository = $this->get('app.order_pair.repository');
+
+        /** @var StatusRepository $statusRepository */
+        $statusRepository = $this->get('app.status.repository');
+
+        /** @var Status $status */
+        $status = $statusRepository->findStatus();
+
+        return $this->render('@App/dashboard/order-pair.html.twig', [
+            'orderPairs' => $orderPairRepository->findAll()
         ]);
     }
 }

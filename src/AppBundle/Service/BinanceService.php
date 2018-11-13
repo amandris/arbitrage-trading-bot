@@ -108,4 +108,12 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
     {
         // TODO: Implement placeSellOrder() method.
     }
+
+    /**
+     * @return OrderDTO[]
+     */
+    public function getOrders(): array
+    {
+        // TODO: Implement getOrders() method.
+    }
 }

@@ -131,5 +131,31 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
         return $orderDTO;
     }
 
+    /**
+     * @return OrderDTO[]
+     */
+    public function getOrders(): array
+    {
+        /** @var array $openOrders */
+        $openOrders = $this->bitstampHelper->openOrders();
 
+        /** @var OrderDTO[] $result */
+        $result = [];
+
+        foreach($openOrders as $openOrder){
+            $timestamp  = new \DateTime($openOrder['datetime'], new \DateTimeZone('Europe/Madrid'));
+            $orderId    = $openOrder['id'];
+            $price      = $openOrder['price'];
+            $amountBtc  = $openOrder['amount'];
+            $amountUsd  = $price * $amountBtc;
+            $type       = $openOrder['type'] == 0 ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
+
+            /** @var OrderDTO $orderDTO */
+            $orderDTO = new OrderDTO($orderId, Ticker::BITSTAMP, $price, $amountUsd, $amountBtc, $timestamp, $type);
+
+            array_push($result, $orderDTO);
+        }
+
+        return $result;
+    }
 }

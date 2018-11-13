@@ -60,7 +60,7 @@
                                             <input type="number" min="1" step="1" class="form-control" id="max-open-orders" required="required" value="{{ status.maxOpenOrders  }}" {{ status.running ? 'disabled' : '' }}>
                                         </div>
 
-                                        <small>The number of orders the system will keep open.If the value is 1, no new order will be placed until the previous one is closed. Leave empty for infinite open orders.</small>
+                                        <small>The number of order pairs the system will keep open. If the value is 1, no new order pair will be placed until the previous one is closed. Leave empty for infinite open order pairs.</small>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -150,6 +150,36 @@
                             <th>Difference <i class="fa fa-dollar"></i></th>
                         </tr>
                         <tbody id="difference-table">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-danger">
+                <div class="box-header">
+                    <h3 class="box-title">Order Pairs</h3>
+                </div>
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Exchange Buy</th>
+                            <th>Btc Buy</th>
+                            <th>Price</th>
+                            <th>Usd paid</th>
+                            <th>Open</th>
+                            <th>Exchange Sell</th>
+                            <th>Btc Sell</th>
+                            <th>Price</th>
+                            <th>Usd received</th>
+                            <th>Open</th>
+                            <th>Estimated Profit</th>
+                        </tr>
+                        <tbody id="order-pair-table">
 
                         </tbody>
                     </table>

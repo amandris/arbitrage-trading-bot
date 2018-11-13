@@ -24,7 +24,8 @@ class DifferenceRepository extends EntityRepository
     }
 
     /**
-     * @param DateTime $date
+     * @param $date
+     * @param $limit
      * @return Difference[]
      */
     public function findFirstDifferences($date, $limit)
@@ -42,7 +43,8 @@ class DifferenceRepository extends EntityRepository
     }
 
     /**
-     * @param DateTime $date
+     * @param $date
+     * @param $limit
      * @return Difference[]
      */
     public function findLastDifferences($date, $limit)
@@ -60,7 +62,8 @@ class DifferenceRepository extends EntityRepository
     }
 
     /**
-     * @param DateTime $date
+     * @param $date
+     * @param $thresholdUsd
      * @return Difference[]
      */
     public function findLastDifferencesGreaterThan($date, $thresholdUsd)

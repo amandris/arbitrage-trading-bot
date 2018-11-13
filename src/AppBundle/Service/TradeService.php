@@ -36,6 +36,27 @@ class TradeService
     }
 
     /**
+     * @return OrderDTO[]
+     */
+    public function getOrders()
+    {
+        /** @var OrderDTO[] $result */
+        $result = [];
+
+        foreach($this->exchangeServices as $name => $exchangeService){
+            $parameters = $exchangeService->getClient()->getParameters();
+            if($parameters['enable']) {
+                $orderDTOs = $exchangeService->getOrders();
+                foreach ($orderDTOs as $orderDTO) {
+                    array_push($result, $orderDTO);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @param Difference $difference
      * @param Status $status
      * @return OrderPair
