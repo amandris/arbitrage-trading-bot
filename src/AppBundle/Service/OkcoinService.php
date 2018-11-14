@@ -6,6 +6,8 @@ use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
+use AppBundle\Helper\Okcoin\ApiKeyAuthentication;
+use AppBundle\Helper\OkcoinHelper;
 use AppBundle\Service\Client\ExternalClientInterface;
 use DateTime;
 
@@ -16,12 +18,22 @@ use DateTime;
 class OkcoinService extends ClientAwareService implements ExchangeServiceInterface
 {
     /**
+     * @var OkcoinHelper $okcoinHelper
+     */
+    private $okcoinHelper;
+
+    /**
      * OkcoinService constructor.
      * @param ExternalClientInterface $client
      */
     public function __construct(ExternalClientInterface $client)
     {
         parent::__construct($client);
+
+        /** @var array $parameters */
+        $parameters = $client->getParameters();
+
+        $this->okcoinHelper = new OkcoinHelper( new ApiKeyAuthentication($parameters['api_key'], $parameters['api_secret']));
     }
 
     /**
@@ -50,7 +62,22 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function getBalance(): BalanceDTO
     {
-        // TODO: Implement getBalance() method.
+        $apiKey = $this->getClient()->getParameters()['api_key'];
+        $params = array('api_key' => $apiKey);
+
+        /** @var \stdClass $balance */
+        $balance = $this->okcoinHelper->userinfoApi($params);
+
+        /** @var float $usd */
+        $usd = $balance->info->funds->free->usd;
+
+        /** @var float $btc */
+        $btc = $balance->info->funds->free->btc;
+
+        /** @var BalanceDTO $balanceDTO */
+        $balanceDTO = new BalanceDTO ( Ticker::OKCOIN, $usd, $btc);
+
+        return $balanceDTO;
     }
 
     /**

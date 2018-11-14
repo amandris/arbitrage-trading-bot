@@ -32,3 +32,6 @@ parameters:
 
     bittrex_api_key: ~
     bittrex_api_secret: ~
+
+    okcoin_api_key: ~
+    okcoin_api_secret: ~

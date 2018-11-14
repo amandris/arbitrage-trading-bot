@@ -96,7 +96,20 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function placeBuyOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeBuyOrder() method.
+        /** @var array $order */
+        $order = $this->binanceHelper->buy('BTCUSDT', $amount, $price);
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $timestamp->setTimestamp($order['transactTime']);
+        $id         = $order['clientOrderId'];
+        $price      = $order['price'];
+        $amountBtc  = $order['executedQty'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::BINANCE, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_BUY);
+
+        return $orderDTO;
     }
 
     /**
@@ -106,7 +119,20 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function placeSellOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeSellOrder() method.
+        /** @var array $order */
+        $order = $this->binanceHelper->sell('BTCUSDT', $amount, $price);
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $timestamp->setTimestamp($order['transactTime']);
+        $id         = $order['clientOrderId'];
+        $price      = $order['price'];
+        $amountBtc  = $order['executedQty'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::BINANCE, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_SELL);
+
+        return $orderDTO;
     }
 
     /**
@@ -114,6 +140,27 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function getOrders(): array
     {
-        // TODO: Implement getOrders() method.
+        /** @var array $openOrders */
+        $openOrders = $this->binanceHelper->openOrders('BTCUSDT');
+
+        /** @var OrderDTO[] $result */
+        $result = [];
+
+        foreach($openOrders as $openOrder){
+            $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+            $timestamp->setTimestamp($openOrder['time']);
+            $orderId    = $openOrder['clientOrderId'];
+            $price      = $openOrder['price'];
+            $amountBtc  = $openOrder['executedQty'];
+            $amountUsd  = $price * $amountBtc;
+            $type       = $openOrder['side'] == 'BUY' ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
+
+            /** @var OrderDTO $orderDTO */
+            $orderDTO = new OrderDTO($orderId, Ticker::BINANCE, $price, $amountUsd, $amountBtc, $timestamp, $type);
+
+            array_push($result, $orderDTO);
+        }
+
+        return $result;
     }
 }

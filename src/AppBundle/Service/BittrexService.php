@@ -101,7 +101,17 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function placeBuyOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeBuyOrder() method.
+        /** @var array $order */
+        $order = $this->bittrexHelper->buyLimit('USD-BTC', $amount, $price);
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $id         = $order['uuid'];
+        $amountUsd  = $price * $amount;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::BITTREX, $price, $amountUsd, $amount,$timestamp,OrderDTO::ORDER_TYPE_BUY);
+
+        return $orderDTO;
     }
 
     /**
@@ -111,7 +121,17 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function placeSellOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeSellOrder() method.
+        /** @var array $order */
+        $order = $this->bittrexHelper->sellLimit('USD-BTC', $amount, $price);
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $id         = $order['uuid'];
+        $amountUsd  = $price * $amount;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::BITTREX, $price, $amountUsd, $amount,$timestamp,OrderDTO::ORDER_TYPE_SELL);
+
+        return $orderDTO;
     }
 
     /**
@@ -119,6 +139,28 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function getOrders(): array
     {
-        // TODO: Implement getOrders() method.
+        /** @var array $openOrders */
+        $openOrders = $this->bittrexHelper->getOpenOrders('USD-BTC');
+
+        /** @var OrderDTO[] $result */
+        $result = [];
+
+        foreach($openOrders as $openOrder){
+            if(!$openOrder['closed']) {
+                $timestamp = new \DateTime($openOrder['datetime'], new \DateTimeZone('Europe/Madrid'));
+                $orderId = $openOrder['OrderUuid'];
+                $price = $openOrder['price'];
+                $amountBtc = $openOrder['amount'];
+                $amountUsd = $price * $amountBtc;
+                $type = $openOrder['OrderType'] == 'LIMIT_BUY' ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
+
+                /** @var OrderDTO $orderDTO */
+                $orderDTO = new OrderDTO($orderId, Ticker::BITTREX, $price, $amountUsd, $amountBtc, $timestamp, $type);
+
+                array_push($result, $orderDTO);
+            }
+        }
+
+        return $result;
     }
 }

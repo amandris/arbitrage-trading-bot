@@ -157,7 +157,7 @@ class Status
     /**
      * @return int
      */
-    public function getMaxOpenOrders(): int
+    public function getMaxOpenOrders()
     {
         return $this->maxOpenOrders;
     }
@@ -165,7 +165,7 @@ class Status
     /**
      * @param int $maxOpenOrders
      */
-    public function setMaxOpenOrders(int $maxOpenOrders)
+    public function setMaxOpenOrders($maxOpenOrders)
     {
         $this->maxOpenOrders = $maxOpenOrders;
     }

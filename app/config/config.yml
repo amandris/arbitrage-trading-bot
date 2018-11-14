@@ -70,10 +70,10 @@ app:
             api_key: "%kraken_api_key%"
             api_secret: "%kraken_api_secret%"
         okcoin:
-            enable: false
+            enable: true
             base_uri: "https://www.okcoin.com/api/v1"
-            api_key: ""
-            api_secret: ""
+            api_key: "%okcoin_api_key%"
+            api_secret: "%okcoin_api_secret%"
         binance: #Binance does not suppor USD tradding. USDT is used instead. Enable Binance is not recomended
             enable: false
             base_uri: "https://api.binance.com"

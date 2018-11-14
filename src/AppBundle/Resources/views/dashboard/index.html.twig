@@ -57,7 +57,7 @@
                                         <label for="exampleInputPassword1">Max open orders</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-line-chart"></i></span>
-                                            <input type="number" min="1" step="1" class="form-control" id="max-open-orders" required="required" value="{{ status.maxOpenOrders  }}" {{ status.running ? 'disabled' : '' }}>
+                                            <input type="number" min="1" step="1" class="form-control" id="max-open-orders" value="{{ status.maxOpenOrders  }}" {{ status.running ? 'disabled' : '' }}>
                                         </div>
 
                                         <small>The number of order pairs the system will keep open. If the value is 1, no new order pair will be placed until the previous one is closed. Leave empty for infinite open order pairs.</small>
