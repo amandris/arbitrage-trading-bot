@@ -91,7 +91,20 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
      */
     public function placeBuyOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeBuyOrder() method.
+        /** @var array $order */
+        $order = $this->cexioHelper->place_order('buy',$amount, $price, 'USD/BTC');
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $timestamp->setTimestamp($order['time']);
+        $id         = $order['id'];
+        $price      = $order['price'];
+        $amountBtc  = $order['amount'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::CEXIO, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_BUY);
+
+        return $orderDTO;
     }
 
     /**
@@ -101,7 +114,20 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
      */
     public function placeSellOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeSellOrder() method.
+        /** @var array $order */
+        $order = $this->cexioHelper->place_order('sell',$amount, $price, 'USD/BTC');
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $timestamp->setTimestamp($order['time']);
+        $id         = $order['id'];
+        $price      = $order['price'];
+        $amountBtc  = $order['amount'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::CEXIO, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_SELL);
+
+        return $orderDTO;
     }
 
     /**
@@ -109,6 +135,27 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
      */
     public function getOrders(): array
     {
-        // TODO: Implement getOrders() method.
+        /** @var array $openOrders */
+        $openOrders = $this->cexioHelper->open_orders('USD/BTC');
+
+        /** @var OrderDTO[] $result */
+        $result = [];
+
+        foreach($openOrders as $openOrder){
+            $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+            $timestamp->setTimestamp($openOrder['time']);
+            $orderId    = $openOrder['id'];
+            $price      = $openOrder['price'];
+            $amountBtc  = $openOrder['amount'];
+            $amountUsd  = $price * $amountBtc;
+            $type       = $openOrder['type'] == 'buy' ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
+
+            /** @var OrderDTO $orderDTO */
+            $orderDTO = new OrderDTO($orderId, Ticker::CEXIO, $price, $amountUsd, $amountBtc, $timestamp, $type);
+
+            array_push($result, $orderDTO);
+        }
+
+        return $result;
     }
 }

@@ -45,7 +45,7 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
     {
         $response = $this->getClient()->request(
             'GET',
-            '/ticker/btcusd/'
+            '/ticker/'
         );
 
         $responseJson = json_decode($response->getBody()->getContents());

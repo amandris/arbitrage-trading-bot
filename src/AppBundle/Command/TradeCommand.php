@@ -110,7 +110,7 @@ class TradeCommand extends ContainerAwareCommand
 
             $this->getTickerAndDifferences($output);
 
-            $balancesNewToBeReloaded = false;
+            $balancesNeedToBeReloaded = false;
 
             if($status->isRunning()) {
                 /** @var Difference[] $differences */
@@ -143,12 +143,12 @@ class TradeCommand extends ContainerAwareCommand
 
                     if ($orderHasChange) {
                         $this->orderPairRepository->save($openOrderPair);
-                        $balancesNewToBeReloaded = true;
+                        $balancesNeedToBeReloaded = true;
                     }
                 }
             }
 
-            if($balancesNewToBeReloaded || ($status->isRunning() === true && $status->isRunning() !== $previousRunning)){
+            if($balancesNeedToBeReloaded || ($status->isRunning() === true && $status->isRunning() !== $previousRunning)){
                 $this->getBalance($output);
             }
 
