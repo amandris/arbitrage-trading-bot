@@ -8,6 +8,7 @@ use AppBundle\Helper\BitstampHelper;
 use AppBundle\Helper\BittrexHelper;
 use AppBundle\Helper\CexioHelper;
 use AppBundle\Helper\ItbitHelper;
+use AppBundle\Helper\KrakenHelper;
 use AppBundle\Service\BalanceService;
 use AppBundle\Service\TickerService;
 use AppBundle\Service\TradeService;
@@ -80,6 +81,10 @@ class TestCommand extends ContainerAwareCommand
         $itbit_api_secret       = $this->getContainer()->getParameter('itbit_api_secret');
         $itbit_user_id          = $this->getContainer()->getParameter('itbit_user_id');
 
+        $kraken_api_key        = $this->getContainer()->getParameter('kraken_api_key');
+        $kraken_api_secret     = $this->getContainer()->getParameter('kraken_api_secret');
+
+
         /*
         $bitstampHelper = new BitstampHelper($bitstamp_api_key, $bitstamp_api_secret, $bitstamp_client_id, 'https://www.bitstamp.net/api/');
         $result = $bitstampHelper->buyBTC(0.5);
@@ -100,9 +105,16 @@ class TestCommand extends ContainerAwareCommand
         $result = $binanceHelper->sell('BTC', 0.1, 6000);
         */
 
+        /*
         $itbitHelper = new ItbitHelper($itbit_api_secret, $itbit_api_key, $itbit_user_id, 'https://api.itbit.com/v1/');
         $wallet = $itbitHelper->wallet()[0];
         $result = $itbitHelper->create_order($wallet->id, 'sell', 0.1, 3000);
+        */
+
+        $krakenHelper = new KrakenHelper($kraken_api_key, $kraken_api_secret, 'https://api.kraken.com');
+        $query = ['pair' => 'xbtusd', 'type' => 'buy', 'ordertype' => 'limit', 'price' => 54300, 'volumen' => 0.2];
+        $result = $krakenHelper->queryPrivate('AddOrder', $query);
+
 
         dump($result);
         die();

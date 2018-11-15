@@ -81,7 +81,26 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function placeBuyOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeBuyOrder() method.
+        $query = ['pair' => 'xbtusd', 'type' => 'buy', 'ordertype' => 'limit', 'price' => $price, 'volumen' => $amount];
+
+        /** @var array $order */
+        $order = $this->krakenHelper->queryPrivate('AddOrder', $query);
+
+        if(array_key_exists('error', $order) && count($order['error']) > 0){
+            return null;
+        }
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+
+        $id         = $order['refid'];
+        $price      = $order['price'];
+        $amountBtc  = $order['vol'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::KRAKEN, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_BUY);
+
+        return $orderDTO;
     }
 
     /**
@@ -91,7 +110,25 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function placeSellOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeSellOrder() method.
+        $query = ['pair' => 'xbtusd', 'type' => 'sell', 'ordertype' => 'limit', 'price' => $price, 'volumen' => $amount];
+
+        /** @var array $order */
+        $order = $this->krakenHelper->queryPrivate('AddOrder', $query);
+
+        if(array_key_exists('error', $order) && count($order['error']) > 0){
+            return null;
+        }
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $id         = $order['refid'];
+        $price      = $order['price'];
+        $amountBtc  = $order['vol'];
+        $amountUsd  = $price * $amountBtc;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::KRAKEN, $price, $amountUsd, $amountBtc,$timestamp,OrderDTO::ORDER_TYPE_SELL);
+
+        return $orderDTO;
     }
 
     /**
@@ -99,6 +136,29 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function getOrders(): array
     {
-        // TODO: Implement getOrders() method.
+        /** @var array $openOrders */
+        $openOrders = $this->krakenHelper->queryPrivate('OpenOrders');
+
+        /** @var OrderDTO[] $result */
+        $result = [];
+
+        foreach($openOrders['result']['open'] as $openOrder){
+            if($openOrder['status'] == 'open') {
+                $timestamp = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+                $timestamp->setTimestamp($openOrder['opentm']);
+                $orderId = $openOrder['refid'];
+                $price = $openOrder['price'];
+                $amountBtc = $openOrder['vol'];
+                $amountUsd = $price * $amountBtc;
+                $type = $openOrder['descr']['type'] == 'buy' ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
+
+                /** @var OrderDTO $orderDTO */
+                $orderDTO = new OrderDTO($orderId, Ticker::KRAKEN, $price, $amountUsd, $amountBtc, $timestamp, $type);
+
+                array_push($result, $orderDTO);
+            }
+        }
+
+        return $result;
     }
 }
