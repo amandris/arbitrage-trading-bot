@@ -99,7 +99,7 @@ class TradeCommand extends ContainerAwareCommand
         $status = $this->statusRepository->findStatus();
 
         if( $status->isRunning() === true){
-            $this->getBalance($output);
+            $this->getBalanceFromExchanges($output);
         }
 
         while(true) {
@@ -121,6 +121,21 @@ class TradeCommand extends ContainerAwareCommand
 
                 foreach ($differences as $difference) {
                     if ($status->getMaxOpenOrders() && $status->getMaxOpenOrders() > count($openOrderPairs)) {
+
+                        /** @var Balance $balanceUsd */
+                        $balanceUsd = $this->balanceRepository->findBalanceByExchange($difference->getExchangeAskName());
+
+                        /** @var Balance $balanceBtc */
+                        $balanceBtc = $this->balanceRepository->findBalanceByExchange($difference->getExchangeBidName());
+
+                        if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueUsd() + $status->getAddOrSubToOrderUsd())){
+                            continue;
+                        }
+
+                        if(!$balanceBtc || $balanceBtc->getBtc() < (($status->getOrderValueUsd() - $status->getAddOrSubToOrderUsd()) / $difference->getBid())){
+                            continue;
+                        }
+
                         $this->tradeService->placeOrderPair($difference, $status);
                         $openOrderPairs = $this->orderPairRepository->findOpenOrderPairs();
                     }
@@ -149,7 +164,7 @@ class TradeCommand extends ContainerAwareCommand
             }
 
             if($balancesNeedToBeReloaded || ($status->isRunning() === true && $status->isRunning() !== $previousRunning)){
-                $this->getBalance($output);
+                $this->getBalanceFromExchanges($output);
             }
 
             sleep($this->interValSeconds);
@@ -159,7 +174,7 @@ class TradeCommand extends ContainerAwareCommand
     /**
      * @param OutputInterface $output
      */
-    function getBalance(OutputInterface $output)
+    function getBalanceFromExchanges(OutputInterface $output)
     {
         /** @var BalanceDTO[] $balanceDTOs */
         $balanceDTOs = $this->balanceService->getBalances();

@@ -60,6 +60,25 @@ class BalanceRepository extends EntityRepository
     }
 
     /**
+     * @param string $exchange
+     * @return Balance[]
+     */
+    public function findBalanceByExchange($exchange)
+    {
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+
+        $queryBuilder = $this->createQueryBuilder('b')
+            ->where('b.created >= :date')
+            ->orderBy('b.created', 'DESC')
+            ->setParameter('date', $now)
+            ->getQuery();
+
+        $results = $queryBuilder->getOneOrNullResult();
+
+        return $results;
+    }
+
+    /**
      * @param Balance $balance
      * @return Balance
      */
