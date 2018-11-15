@@ -9,6 +9,8 @@ use AppBundle\Helper\BittrexHelper;
 use AppBundle\Helper\CexioHelper;
 use AppBundle\Helper\ItbitHelper;
 use AppBundle\Helper\KrakenHelper;
+use AppBundle\Helper\Okcoin\ApiKeyAuthentication;
+use AppBundle\Helper\OkcoinHelper;
 use AppBundle\Service\BalanceService;
 use AppBundle\Service\TickerService;
 use AppBundle\Service\TradeService;
@@ -84,6 +86,8 @@ class TestCommand extends ContainerAwareCommand
         $kraken_api_key        = $this->getContainer()->getParameter('kraken_api_key');
         $kraken_api_secret     = $this->getContainer()->getParameter('kraken_api_secret');
 
+        $okcoin_api_key        = $this->getContainer()->getParameter('okcoin_api_key');
+        $okcoin_api_secret     = $this->getContainer()->getParameter('okcoin_api_secret');
 
         /*
         $bitstampHelper = new BitstampHelper($bitstamp_api_key, $bitstamp_api_secret, $bitstamp_client_id, 'https://www.bitstamp.net/api/');
@@ -111,10 +115,17 @@ class TestCommand extends ContainerAwareCommand
         $result = $itbitHelper->create_order($wallet->id, 'sell', 0.1, 3000);
         */
 
+        /*
         $krakenHelper = new KrakenHelper($kraken_api_key, $kraken_api_secret, 'https://api.kraken.com');
         $query = ['pair' => 'xbtusd', 'type' => 'buy', 'ordertype' => 'limit', 'price' => 54300, 'volumen' => 0.2];
         $result = $krakenHelper->queryPrivate('AddOrder', $query);
+        */
 
+        $okcoinHelper = new OkcoinHelper( new ApiKeyAuthentication($okcoin_api_key, $okcoin_api_secret));
+        $buyParams = ['api_key' => $okcoin_api_key, 'symbol' => 'btc_usd', 'type'=> 'sell', 'price' => 5400, 'amount' => 0.3];
+        $orderParams = ['current_page' => 1, 'page_length' => 10, 'status' => 0];
+        $result = $okcoinHelper->orderHistoryApi($orderParams);
+        //$result = $okcoinHelper->tradeApi($buyParams);
 
         dump($result);
         die();

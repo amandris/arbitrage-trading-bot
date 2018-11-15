@@ -87,7 +87,27 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function placeBuyOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeBuyOrder() method.
+        /** @var string $apiKey */
+        $apiKey = $this->getClient()->getParameters()['api_key'];
+
+        /** @var array $params */
+        $params = ['api_key' => $apiKey, 'symbol' => 'btc_usd', 'type'=> 'buy', 'price' => $price, 'amount' => $amount];
+
+        /** @var array $order */
+        $order = $this->okcoinHelper->tradeApi($params);
+
+        if($order['result'] != 'true'){
+            return null;
+        }
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $id         = $order['order_id'];
+        $amountUsd  = $price * $amount;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::OKCOIN, $price, $amountUsd, $amount,$timestamp,OrderDTO::ORDER_TYPE_BUY);
+
+        return $orderDTO;
     }
 
     /**
@@ -97,7 +117,27 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function placeSellOrder(float $amount, float $price): OrderDTO
     {
-        // TODO: Implement placeSellOrder() method.
+        /** @var string $apiKey */
+        $apiKey = $this->getClient()->getParameters()['api_key'];
+
+        /** @var array $params */
+        $params = ['api_key' => $apiKey, 'symbol' => 'btc_usd', 'type'=> 'sell', 'price' => $price, 'amount' => $amount];
+
+        /** @var array $order */
+        $order = $this->okcoinHelper->tradeApi($params);
+
+        if($order['result'] != 'true'){
+            return null;
+        }
+
+        $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $id         = $order['order_id'];
+        $amountUsd  = $price * $amount;
+
+        /** @var OrderDTO $orderDTO */
+        $orderDTO = new OrderDTO($id, Ticker::OKCOIN, $price, $amountUsd, $amount,$timestamp,OrderDTO::ORDER_TYPE_SELL);
+
+        return $orderDTO;
     }
 
     /**
@@ -105,6 +145,34 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function getOrders(): array
     {
-        // TODO: Implement getOrders() method.
+        /** @var array $orderParams */
+        $orderParams = ['current_page' => 1, 'page_length' => 10, 'status' => 0];
+
+        /** @var array $openOrders */
+        $openOrders = $this->okcoinHelper->orderHistoryApi($orderParams);
+
+        /** @var OrderDTO[] $result */
+        $result = [];
+
+        if(!array_key_exists('orders', $openOrders)){
+            return $result;
+        }
+        foreach($openOrders['orders'] as $openOrder){
+            if($openOrder['status'] == 0 || $openOrder['status'] == 1) {
+                $timestamp = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+                $orderId = $openOrder['order_id'];
+                $price = $openOrder['price'];
+                $amountBtc = $openOrder['amount'];
+                $amountUsd = $price * $amountBtc;
+                $type = $openOrder['type'] == 'buy' ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
+
+                /** @var OrderDTO $orderDTO */
+                $orderDTO = new OrderDTO($orderId, Ticker::OKCOIN, $price, $amountUsd, $amountBtc, $timestamp, $type);
+
+                array_push($result, $orderDTO);
+            }
+        }
+
+        return $result;
     }
 }

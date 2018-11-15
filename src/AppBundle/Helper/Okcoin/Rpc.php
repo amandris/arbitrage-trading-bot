@@ -66,7 +66,6 @@ class Rpc {
 			switch ($authenticationClass) {
 
 				case 'AppBundle\Helper\Okcoin\ApiKeyAuthentication' :
-					//OKCoin POST请求加密流程
 					ksort($params);
 					$sign = "";
 					while ($key = key($params)) {
