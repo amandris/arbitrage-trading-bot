@@ -101,8 +101,12 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function placeBuyOrder(float $amount, float $price): OrderDTO
     {
-        /** @var array $order */
-        $order = $this->bittrexHelper->buyLimit('USD-BTC', $amount, $price);
+        try {
+            /** @var array $order */
+            $order = $this->bittrexHelper->buyLimit('USD-BTC', $amount, $price);
+        }catch(\Exception $e){
+            return null;
+        }
 
         $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $id         = $order['uuid'];
@@ -121,8 +125,12 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function placeSellOrder(float $amount, float $price): OrderDTO
     {
-        /** @var array $order */
-        $order = $this->bittrexHelper->sellLimit('USD-BTC', $amount, $price);
+        try{
+            /** @var array $order */
+            $order = $this->bittrexHelper->sellLimit('USD-BTC', $amount, $price);
+        }catch(\Exception $e){
+            return null;
+        }
 
         $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $id         = $order['uuid'];
@@ -139,8 +147,12 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      */
     public function getOrders(): array
     {
-        /** @var array $openOrders */
-        $openOrders = $this->bittrexHelper->getOpenOrders('USD-BTC');
+        try {
+            /** @var array $openOrders */
+            $openOrders = $this->bittrexHelper->getOpenOrders('USD-BTC');
+        }catch(\Exception $e){
+            return null;
+        }
 
         /** @var OrderDTO[] $result */
         $result = [];

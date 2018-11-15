@@ -92,7 +92,11 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
     public function placeBuyOrder(float $amount, float $price): OrderDTO
     {
         /** @var array $order */
-        $order = $this->cexioHelper->place_order('buy',$amount, $price, 'USD/BTC');
+        $order = $this->cexioHelper->place_order('buy',$amount, $price, 'BTC/USD');
+
+        if(array_key_exists('error', $order)){
+            return null;
+        }
 
         $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $timestamp->setTimestamp($order['time']);
@@ -115,7 +119,11 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
     public function placeSellOrder(float $amount, float $price): OrderDTO
     {
         /** @var array $order */
-        $order = $this->cexioHelper->place_order('sell',$amount, $price, 'USD/BTC');
+        $order = $this->cexioHelper->place_order('sell',$amount, $price, 'BTC/USD');
+
+        if(array_key_exists('error', $order)){
+            return null;
+        }
 
         $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
         $timestamp->setTimestamp($order['time']);
@@ -136,7 +144,7 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
     public function getOrders(): array
     {
         /** @var array $openOrders */
-        $openOrders = $this->cexioHelper->open_orders('USD/BTC');
+        $openOrders = $this->cexioHelper->open_orders('BTC/USD');
 
         /** @var OrderDTO[] $result */
         $result = [];

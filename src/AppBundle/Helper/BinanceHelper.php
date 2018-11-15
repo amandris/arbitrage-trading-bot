@@ -162,6 +162,7 @@ class BinanceHelper
     {
         $params['timestamp'] = number_format(microtime(true)*1000,0,'.','');
         $query = http_build_query($params, '', '&');
+
         $signature = hash_hmac('sha256', $query, $this->api_secret);
         $opt = [
             "http" => [
@@ -200,7 +201,7 @@ class BinanceHelper
             "side" => $side,
             "type" => $type,
             "quantity" => $quantity,
-            "recvWindow" => 60000
+            "recvWindow" => 200000
         ];
         if ( $type == "LIMIT" ) {
             $opt["price"] = $price;
@@ -230,7 +231,7 @@ class BinanceHelper
             "side" => $side,
             "type" => $type,
             "quantity" => $quantity,
-            "recvWindow" => 60000
+            "recvWindow" => 200000
         ];
         if ( $type == "LIMIT" ) {
             $opt["price"] = $price;

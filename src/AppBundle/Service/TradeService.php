@@ -95,13 +95,15 @@ class TradeService
             /** @var OrderDTO $sellOrderDTO */
             $sellOrderDTO = $sellExchangeService->placeSellOrder($status->getOrderValueUsd() / $finalBidPrice, $finalBidPrice);
 
-            $orderPair->setSellOrderId($sellOrderDTO->getOrderId());
-            $orderPair->setSellOrderAmountBtc($sellOrderDTO->getAmountBTC());
-            $orderPair->setSellOrderAmountUsd($sellOrderDTO->getAmountUSD());
-            $orderPair->setSellOrderExchange($difference->getExchangeBidName());
-            $orderPair->setSellOrderPrice($finalBidPrice);
-            $orderPair->setSellOrderOpen(true);
-            $orderPair->setSellOrderCreated($sellOrderDTO->getCreated());
+            if($sellOrderDTO != null) {
+                $orderPair->setSellOrderId($sellOrderDTO->getOrderId());
+                $orderPair->setSellOrderAmountBtc($sellOrderDTO->getAmountBTC());
+                $orderPair->setSellOrderAmountUsd($sellOrderDTO->getAmountUSD());
+                $orderPair->setSellOrderExchange($difference->getExchangeBidName());
+                $orderPair->setSellOrderPrice($finalBidPrice);
+                $orderPair->setSellOrderOpen(true);
+                $orderPair->setSellOrderCreated($sellOrderDTO->getCreated());
+            }
 
             $this->orderPairRepository->save($orderPair);
         }

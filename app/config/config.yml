@@ -85,8 +85,8 @@ app:
             api_key: "%cexio_api_key%"
             api_secret: "%cexio_api_secret%"
             user_id: "%cexio_user_id%"
-        bittrex:
-            enable: true
+        bittrex:  #Bittrex does not suppor USD trading. USDT is used instead. Enable Bittrex is not recommended
+            enable: false
             base_uri: "https://bittrex.com/api/v1.1"
             api_key: "%bittrex_api_key%"
             api_secret: "%bittrex_api_secret%"
