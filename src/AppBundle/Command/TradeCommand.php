@@ -110,6 +110,7 @@ class TradeCommand extends ContainerAwareCommand
 
             $this->getTickerAndDifferences($output);
 
+            /** @var boolean $balancesNeedToBeReloaded */
             $balancesNeedToBeReloaded = false;
 
             if($status->isRunning()) {
@@ -136,7 +137,21 @@ class TradeCommand extends ContainerAwareCommand
                             continue;
                         }
 
-                        $this->tradeService->placeOrderPair($difference, $status);
+                        /** @var boolean $exchangeAsOpenOrder */
+                        $exchangeAsOpenOrder = false;
+
+                        //check if there are open order on those exchanges
+                        foreach ($openOrderPairs as $openOrderPair) {
+                            if( $openOrderPair->getBuyOrderExchange() === $difference->getExchangeAskName() || $openOrderPair->getBuyOrderExchange() === $difference->getExchangeBidName() ||
+                                $openOrderPair->getSellOrderExchange() === $difference->getExchangeAskName() || $openOrderPair->getSellOrderExchange() === $difference->getExchangeBidName()){
+                                $exchangeAsOpenOrder = true;
+                                break;
+                            }
+                        }
+
+                        if($exchangeAsOpenOrder) {
+                            $this->tradeService->placeOrderPair($difference, $status);
+                        }
                         $openOrderPairs = $this->orderPairRepository->findOpenOrderPairs();
                     }
                 }

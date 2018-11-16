@@ -2,9 +2,12 @@
 
 namespace AppBundle\Helper;
 
+/**
+ * Class QuadrigacxHelper
+ * @package AppBundle\Helper
+ */
 class QuadrigacxHelper
 {
-
     /**
      * @var string $base_uri
      */
@@ -29,13 +32,11 @@ class QuadrigacxHelper
     }
 
     /**
-     * Load credentials from file. This is not necessary for Public
-     * API calls such as the Ticker.
-     *
-     * This will attempt to read the given filename for credentials,
-     * defaulting to $HOME/.quadriga.conf
+     * @param null $filename
+     * @return bool
      */
-    public function load_credentials($filename = NULL) {
+    public function load_credentials($filename = NULL)
+    {
         if ($filename === NULL) {
             $filename = getenv('HOME') . DIRECTORY_SEPARATOR . '.quadriga.conf';
         }
@@ -69,15 +70,11 @@ class QuadrigacxHelper
     }
 
     /**
-     * Common function to create a new cURL object for all API calls both
-     * Public and Private.
-     *
-     * Parameters:
-     * str $api_func - The API Function to call; Complete query string
-     *                 including any '?' GET variables required.
-     *                 Example: 'ticker?book=btc_usd'
+     * @param $api_func
+     * @return null|resource
      */
-    private function _curler($api_func) {
+    private function _curler($api_func)
+    {
         if (strlen($api_func) < 1) {
             return NULL;
         }
@@ -89,13 +86,12 @@ class QuadrigacxHelper
     }
 
     /**
-     * Common functionality to generate a cURL object and retrieve
-     * data from the Public API Functions which do not require
-     * authentication and use HTTP GET variables.
-     *
-     * Returns a json_decoded array or FALSE on failure.
+     * @param string $api_func
+     * @param array $gets
+     * @return bool|mixed
      */
-    private function _public_api($api_func = '', $gets = array()) {
+    private function _public_api($api_func = '', $gets = array())
+    {
         // Refuse to call a non-existent API Function.
         if (strlen($api_func) < 1) {
             return FALSE;
@@ -119,13 +115,12 @@ class QuadrigacxHelper
     }
 
     /**
-     * Common functionality to generate a cURL object and retrieve
-     * data from the Private API Functions which require authentication
-     * (loaded credentials) and use HTTP POST variables.
-     *
-     * Returns a json_decoded array or FALSE on failure.
+     * @param string $api_func
+     * @param array $post
+     * @return bool|mixed
      */
-    private function _private_api($api_func = '', $post = array()) {
+    private function _private_api($api_func = '', $post = array())
+    {
         // Refuse to call a non-existent API Function.
         if (strlen($api_func) < 1) {
             return FALSE;
@@ -160,11 +155,10 @@ class QuadrigacxHelper
     }
 
     /**
-     * Return an array of all valid book names.
-     *
-     * This will be useful as more books get added; Simply update this list.
+     * @return array
      */
-    public function get_books() {
+    public function get_books()
+    {
         return array(
             'btc_cad',
             'btc_usd',
@@ -174,15 +168,11 @@ class QuadrigacxHelper
     }
 
     /**
-     * Check that a given book is valid.
-     *
-     * If the book is valid, return TRUE.
-     * If the book is of the form "min_maj" (reversed, see API
-     * documentation for details), return FALSE.
-     * If either currency code is not recognized, or the two
-     * currencies do not form a valid book (ex "cad_usd") return NULL.
+     * @param $book
+     * @return bool|null
      */
-    public function validate_book($book) {
+    public function validate_book($book)
+    {
         $valid_books = $this->get_books();
         foreach ($valid_books as $b) {
             if ($book == $b) { return TRUE; }
@@ -191,18 +181,24 @@ class QuadrigacxHelper
         return NULL;
     }
 
-    public function reverse_book($book) {
+    /**
+     * @param $book
+     * @return null|string
+     */
+    public function reverse_book($book)
+    {
         $currencies = explode('_', $book);
         if (count($currencies) != 2) { return NULL; }
         return implode('_', array($currencies[1], $currencies[0]));
     }
 
     /**
-     * Round off the given amount depending on the major currency.
-     * Return the rounded value, or 0 on error (On the assumption it
-     * is better to pass '0' to the API than NULL)
+     * @param $book
+     * @param $amount
+     * @return float|int
      */
-    public function book_round($book, $amount) {
+    public function book_round($book, $amount)
+    {
         $currencies = explode('_', $book);
         if (count($currencies) != 2) { return 0; }
         $maj = $currencies[0];
@@ -216,19 +212,12 @@ class QuadrigacxHelper
         return round($amount, $precision);
     }
 
-    /**** PUBLIC API CALLS ****/
-
     /**
-     * The QuadrigaCX Ticker returns data regarding the
-     * trading information for a given book (default btc_cad).
-     *
-     * Available books are:
-     *   btc_cad
-     *   btc_usd
-     *   eth_btc
-     *   eth_cad
+     * @param null $book
+     * @return bool|mixed
      */
-    public function ticker($book = NULL) {
+    public function ticker($book = NULL)
+    {
         if ($book === NULL) {
             return $this->_public_api('ticker');
         } else {
@@ -237,14 +226,12 @@ class QuadrigacxHelper
     }
 
     /**
-     * The public Order Book returns a listing of all open
-     * orders for a given book (default btc_cad).
-     *
-     * Optional Parameters:
-     *   str  $book  - The order book to retrieve.
-     *   bool $group - Whether or not to group orders of the same price (Default true).
+     * @param null $book
+     * @param bool $group
+     * @return bool|mixed
      */
-    public function order_book($book = NULL, $group = TRUE) {
+    public function order_book($book = NULL, $group = TRUE)
+    {
         $gets = array();
         if ($book !== NULL) {
             $gets['book'] = $book;
@@ -255,14 +242,10 @@ class QuadrigacxHelper
         return $this->_public_api('order_book', $gets);
     }
 
-    /**
-     * Transactions returns a list of recent trades
-     *
-     * Optional Parameters:
-     *   str $book - The order book to retrieve (Default: btc_cad)
-     *   str $time - Time frame for exported data ('minute' / 'hour', Default: hour)
-     */
-    public function transactions($book = NULL, $time = NULL) {
+    //**
+
+    public function transactions($book = NULL, $time = NULL)
+    {
         $gets = array();
         if ($book !== NULL) {
             $gets['book'] = $book;
@@ -273,40 +256,22 @@ class QuadrigacxHelper
         return $this->_public_api('transactions', $gets);
     }
 
-    /**** PRIVATE API CALLS ****/
-
-    /**
-     * Obtain balance of a QuadrigaCX account.
-     *
-     * Returns array of account's balances, such as but not limited to:
-     *
-     *    cad_balance - CAD balance
-     *    btc_balance - BTC balance
-     *    cad_reserved - CAD reserved in open orders
-     *    btc_reserved - BTC reserved in open orders
-     *    cad_available - CAD available for trading
-     *    btc_available - BTC available for trading
-     *    fee - customer trading fee
-     */
-    public function balance() {
+    public function balance()
+    {
         return $this->_private_api('balance');
     }
 
-    /**
-     * Return array of account's current open orders.
-     */
-    public function open_orders() {
+    public function open_orders()
+    {
         return $this->_private_api('open_orders');
     }
 
     /**
-     * Return array of a specific order.
-     *
-     * Parameters:
-     *   str $id – a single or array of 64 characters long
-     *             hex string(s) taken from the list of orders
+     * @param string $id
+     * @return bool|mixed
      */
-    public function lookup_order($id = '') {
+    public function lookup_order($id = '')
+    {
         if (is_array($id)) {
             $id = json_encode($id);
         }
@@ -314,9 +279,11 @@ class QuadrigacxHelper
     }
 
     /**
-     * Cancel an order. Returns TRUE on success, FALSE otherwise.
+     * @param string $id
+     * @return bool
      */
-    public function cancel_order($id = '') {
+    public function cancel_order($id = '')
+    {
         // Strip '0x' from start of string
         if (substr($id, 0, 2) == '0x') {
             $id = substr($id, 2, 64);
@@ -335,20 +302,15 @@ class QuadrigacxHelper
     }
 
     /**
-     * Return list of account's transaction history.
-     *
-     * Parameters:
-     *   str  $book  - The book to retrieve (Default: btc_cad)
-     *   int  $offset - Skip a number of transactions returned from the API
-     *                  (Default: 0)
-     *   int  $limit - Limit the number of results returned from the API
-     *                 (Default: 100)
-     *   bool $sort - Sort the list by date+time TRUE = ASC, FALSE = DESC
-     *                (Default: Do not sort)
-     *   str  $prune - Prune the results: 'trades' shows only trades,
-     *                'funds' shows only funding transactions. (Default: no pruning)
+     * @param null $book
+     * @param int $offset
+     * @param int $limit
+     * @param null $sort
+     * @param null $prune
+     * @return array|bool|mixed
      */
-    public function user_transactions($book = NULL, $offset = 0, $limit = 100, $sort = NULL, $prune = NULL) {
+    public function user_transactions($book = NULL, $offset = 0, $limit = 100, $sort = NULL, $prune = NULL)
+    {
         $post_array = array();
         if ($book !== NULL) {
             $post_array['book'] = $book;
@@ -385,27 +347,24 @@ class QuadrigacxHelper
         }
     }
 
-    /**
-     * Returns a string of a Bitcoin address for deposits into a
-     * QuadrigaCX account.
-     */
-    public function bitcoin_deposit_address() {
+
+    public function bitcoin_deposit_address()
+    {
         return $this->_private_api('bitcoin_deposit_address');
     }
-    /* Alias for bitcoin_deposit_address */
-    public function btc_in() {
+
+    public function btc_in()
+    {
         return $this->bitcoin_deposit_address();
     }
 
     /**
-     * Request the QuadrigaCX API generate a new transaction to send
-     * BTC to a given address. Returns TRUE on success, FALSE on failure.
-     *
-     * Parameters:
-     *   str $addr - The bitcoin address to send to.
-     *   flt $amount - The amount to send.
+     * @param string $addr
+     * @param int $amount
+     * @return bool
      */
-    public function bitcoin_wthdrawal($addr = '', $amount = 0) {
+    public function bitcoin_wthdrawal($addr = '', $amount = 0)
+    {
         // Do not attempt a withdrawal through the API unless the address
         // appears valid and the amount > 0
         if (strlen($addr) != 34 || floatval($amount) == 0) {
@@ -419,32 +378,35 @@ class QuadrigacxHelper
             return FALSE;
         }
     }
-    /* Alias for function bitcoin_withdrawal */
-    public function btc_out($address, $amount) {
+
+    /**
+     * @param $address
+     * @param $amount
+     * @return mixed
+     */
+    public function btc_out($address, $amount)
+    {
         return $this->bitcoin_withdrawal($address, $amount);
     }
 
-    /**
-     * Returns a Ethereum address for deposits into a QuadrigaCX account.
-     */
-    public function ether_deposit_address() {
+
+    public function ether_deposit_address()
+    {
         return $this->_private_api('ether_deposit_address');
     }
-    /* Alias for function ether_deposit_address */
-    public function eth_in() {
+
+    public function eth_in()
+    {
         return $this->ether_deposit_address();
     }
 
     /**
-     * Request the QuadrigaCX API generate a new transaction to send
-     * Ethereum to a given address. Returns TRUE on success, FALSE on
-     * failure.
-     *
-     * Parameters:
-     *   str $addr - The Ethereum address to send to.
-     *   flt $amount - The amount to send.
+     * @param string $addr
+     * @param int $amount
+     * @return bool
      */
-    public function ether_withdrawal($addr = '', $amount = 0) {
+    public function ether_withdrawal($addr = '', $amount = 0)
+    {
         // Refuse to ask for an empty transaction
         if (floatval($amount) == 0) {
             return FALSE;
@@ -457,18 +419,25 @@ class QuadrigacxHelper
             return FALSE;
         }
     }
-    /* Alias for function ether_withdrawal */
-    public function eth_out($address, $amount) {
+
+    /**
+     * @param $address
+     * @param $amount
+     * @return bool
+     */
+    public function eth_out($address, $amount)
+    {
         return $this->ether_withdrawal($address, $amount);
     }
 
     /**
-     * Place a Buy order with the QuadrigaCX API. If $price is
-     * specified, it will be passed along to the API which
-     * creates a Limit Order, otherwise a Market Order is placed.
-     * See the API documentation for more info.
+     * @param null $book
+     * @param int $amount
+     * @param null $price
+     * @return bool|mixed
      */
-    public function buy($book = NULL, $amount = 0, $price = NULL) {
+    public function buy($book = NULL, $amount = 0, $price = NULL)
+    {
         $post = array();
 
         if (floatval($amount) == 0) {
@@ -487,12 +456,13 @@ class QuadrigacxHelper
     }
 
     /**
-     * Place a Sell order with the QuadrigaCX API. If $price is
-     * specified, it will be passed along to the API which
-     * creates a Limit Order, otherwise a Market Order is placed.
-     * See the API documentation for more info.
+     * @param null $book
+     * @param int $amount
+     * @param null $price
+     * @return bool|mixed
      */
-    public function sell($book = NULL, $amount = 0, $price = NULL) {
+    public function sell($book = NULL, $amount = 0, $price = NULL)
+    {
         $post = array();
 
         if (floatval($amount) == 0) {
@@ -511,18 +481,12 @@ class QuadrigacxHelper
     }
 
     /**
-     * The exchange function determines if the given book is either valid
-     * or reversed, and issues a Sell Order or Buy Order as appropriate. If
-     * a reversed book is givem (ex "cad_btc") then the ticker values for
-     * the correct book are checked, the amount adjusted, and an Order
-     * placed.
-     *
-     * Examples:
-     *   exchange btc_cad 1 = Sell 1 on the btc_cad book
-     *   exchange cad_btc 1 = Check ticker, adjust amount, reverse book and
-     *                        place Buy Order on the btc_cad book
+     * @param null $book
+     * @param int $amount
+     * @return bool|mixed
      */
-    public function exchange($book = NULL, $amount = 0) {
+    public function exchange($book = NULL, $amount = 0)
+    {
         $vbook = $this->validate_book($book);
         if ($vbook === TRUE) {
             // Book is valid so simply place a Sell Order for the specified amount
