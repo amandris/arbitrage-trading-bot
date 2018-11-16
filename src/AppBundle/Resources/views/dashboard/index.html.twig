@@ -20,8 +20,17 @@
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Threshold (USD)</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                            <input type="number" min="1" step="any" class="form-control" id="threshold-usd" required="required" value="{{ status.thresholdUsd  }}" {{ status.running ? 'disabled' : '' }}>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-danger" id="decrease-threshold-usd">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </button>
+                                            </div>
+                                            <input type="text" class="form-control" id="threshold-usd" required="required" value="{{ status.thresholdUsd  }}">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-success" id="increase-threshold-usd">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </div>
                                         </div>
                                         <small>If the difference in USD between two exchanges is bigger than this value, a trade is placed in both exchanges.</small>
                                     </div>
@@ -31,25 +40,42 @@
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Order value (USD)</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                            <input type="number" min="1" step="any" class="form-control" id="order-value-usd" required="required" value="{{ status.orderValueUsd  }}" {{ status.running ? 'disabled' : '' }}>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-danger" id="decrease-order-value-usd">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </button>
+                                            </div>
+                                            <input type="text" class="form-control" id="order-value-usd" required="required" value="{{ status.orderValueUsd  }}">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-success" id="increase-order-value-usd">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </div>
                                         </div>
-
                                         <small>When an order is placed, this is the value in USD for both, the buy and sell orders.</small>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Add or substract to order (USD)</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                            <input type="number" min="0" step="any" class="form-control" id="add-or-sub-to-order-usd" required="required" value="{{ status.addOrSubToOrderUsd  }}" {{ status.running ? 'disabled' : '' }}>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-danger" id="decrease-add-or-sub-to-order-usd">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </button>
+                                            </div>
+                                            <input type="text" class="form-control" id="add-or-sub-to-order-usd" required="required" value="{{ status.addOrSubToOrderUsd  }}">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-success" id="increase-add-or-sub-to-order-usd">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </div>
                                         </div>
 
                                         <small>The USD added to buy orders or substracted to sell orders to ensure the order is executed fast. The greater this value, the more likely the order is executed fast.</small>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Max open orders</label>
                                         <div class="input-group">

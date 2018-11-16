@@ -202,4 +202,38 @@ class DashboardController extends Controller
             'orderPairs' => $orderPairRepository->findAll()
         ]);
     }
+
+    /**
+     * @Route("/change-trade-parameters", options={"expose"=true}, name="changeTradeParameters")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeValuesAction(Request $request)
+    {
+        /** @var StatusRepository $statusRepository */
+        $statusRepository = $this->get('app.status.repository');
+
+        /** @var Status $status */
+        $status = $statusRepository->findStatus();
+
+        $thresholdUsd =         $request->get('thresholdUsd');
+        $orderValueUsd =        $request->get('orderValueUsd');
+        $addOrSubToOrderUsd =   $request->get('addOrSubToOrderUsd');
+
+        if($thresholdUsd && is_int(intval($thresholdUsd))) {
+            $status->setThresholdUsd(intval($thresholdUsd) <= 1 ? 1 : intval($thresholdUsd));
+        }
+
+        if($orderValueUsd && is_int(intval($orderValueUsd))) {
+            $status->setOrderValueUsd(intval($orderValueUsd) <= 5 ? 5 : intval($orderValueUsd));
+        }
+
+        if($addOrSubToOrderUsd && is_int(intval($addOrSubToOrderUsd))) {
+            $status->setAddOrSubToOrderUsd(intval($addOrSubToOrderUsd) <= 0 ? 0 : intval($addOrSubToOrderUsd));
+        }
+
+        $statusRepository->save($status);
+
+        return new JsonResponse(['thresholdUsd' => $status->getThresholdUsd(), 'orderValueUsd' => $status->getOrderValueUsd(), 'addOrSubToOrderUsd' => $status->getAddOrSubToOrderUsd()]);
+    }
 }

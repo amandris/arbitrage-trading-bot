@@ -30,9 +30,6 @@ $( document ).ready(function() {
                     $("#start-btn").removeClass('btn-primary').addClass('btn-default');
                     $("#stop-btn").removeClass('btn-default').addClass('btn-danger');
                     $("#trading-since").html("Trading start time: " + data.startDate);
-                    $("#threshold-usd").prop('disabled', true);
-                    $("#order-value-usd").prop('disabled', true);
-                    $("#add-or-sub-to-order-usd").prop('disabled', true);
                     $("#max-open-orders").prop('disabled', true);
                     $("#trading-time-minutes").prop('disabled', true);
 
@@ -55,15 +52,98 @@ $( document ).ready(function() {
             }
         });
     });
+
+    $("#increase-threshold-usd").on('click', function (e) {
+        var thresholdUsd = $("#threshold-usd").val();
+        if(!thresholdUsd || isNaN(thresholdUsd)){
+            thresholdUsd = 0;
+        }
+        thresholdUsd ++;
+        $("#threshold-usd").val(thresholdUsd);
+        postTradeParameters();
+    });
+
+    $("#decrease-threshold-usd").on('click', function (e) {
+        var thresholdUsd = $("#threshold-usd").val();
+        if(!thresholdUsd || isNaN(thresholdUsd)){
+            thresholdUsd = 0;
+        }
+        thresholdUsd --;
+        if(thresholdUsd <= 1){
+            thresholdUsd = 1;
+        }
+        $("#threshold-usd").val(thresholdUsd);
+        postTradeParameters();
+    });
+
+    $("#increase-order-value-usd").on('click', function (e) {
+        var orderValueUsd = $("#order-value-usd").val();
+        if(!orderValueUsd || isNaN(orderValueUsd)){
+            orderValueUsd = 0;
+        }
+        orderValueUsd ++;
+        $("#order-value-usd").val(orderValueUsd);
+        postTradeParameters();
+    });
+
+    $("#decrease-order-value-usd").on('click', function (e) {
+        var orderValueUsd = $("#order-value-usd").val();
+        if(!orderValueUsd || isNaN(orderValueUsd)){
+            orderValueUsd = 0;
+        }
+        orderValueUsd --;
+        if(orderValueUsd <= 5){
+            orderValueUsd = 5;
+        }
+        $("#order-value-usd").val(orderValueUsd);
+        postTradeParameters();
+    });
+
+    $("#increase-add-or-sub-to-order-usd").on('click', function (e) {
+        var addOrSubToOrderUsd = $("#add-or-sub-to-order-usd").val();
+        if(!addOrSubToOrderUsd || isNaN(addOrSubToOrderUsd)){
+            addOrSubToOrderUsd = 0;
+        }
+        addOrSubToOrderUsd ++;
+        $("#add-or-sub-to-order-usd").val(addOrSubToOrderUsd);
+        postTradeParameters();
+    });
+
+    $("#decrease-add-or-sub-to-order-usd").on('click', function (e) {
+        var addOrSubToOrderUsd = $("#add-or-sub-to-order-usd").val();
+        if(!addOrSubToOrderUsd || isNaN(addOrSubToOrderUsd)){
+            addOrSubToOrderUsd = 0;
+        }
+        addOrSubToOrderUsd --;
+        if(addOrSubToOrderUsd <= 0){
+            addOrSubToOrderUsd = 0;
+        }
+        $("#add-or-sub-to-order-usd").val(addOrSubToOrderUsd);
+        postTradeParameters();
+    });
+
+    $("#threshold-usd, #order-value-usd, #add-or-sub-to-order-usd").on('change', function (e) {
+        if(running === true) {
+            postTradeParameters();
+        }
+    });
 });
+
+function postTradeParameters() {
+    var thresholdUsd = $("#threshold-usd").val();
+    var orderValueUsd = $("#order-value-usd").val();
+    var addOrSubToOrderUsd = $("#add-or-sub-to-order-usd").val();
+    $.post(Routing.generate('changeTradeParameters', {thresholdUsd:thresholdUsd, orderValueUsd:orderValueUsd, addOrSubToOrderUsd:addOrSubToOrderUsd}), function (data) {
+        $("#threshold-usd").val(data.thresholdUsd);
+        $("#order-value-usd").val(data.orderValueUsd)
+        $("#add-or-sub-to-order-usd").val(data.addOrSubToOrderUsd)
+    });
+}
 
 function stopRunning(){
     $("#start-btn").removeClass('btn-default').addClass('btn-primary');
     $("#stop-btn").removeClass('btn-danger').addClass('btn-default');
     $("#trading-since").html("");
-    $("#threshold-usd").prop('disabled', false);
-    $("#order-value-usd").prop('disabled', false);
-    $("#add-or-sub-to-order-usd").prop('disabled', false);
     $("#trading-time-minutes").prop('disabled', false);
     $("#max-open-orders").prop('disabled', false);
 }
