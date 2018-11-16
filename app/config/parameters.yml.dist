@@ -35,3 +35,7 @@ parameters:
 
     okcoin_api_key: ~
     okcoin_api_secret: ~
+
+    quadrigacx_api_key: ~
+    quadrigacx_api_secret: ~
+    quadrigacx_client_id: ~

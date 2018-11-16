@@ -13,7 +13,7 @@ Supported exchanges
  - [x] Kraken
  - [x] ItBit
  - [ ] GDAX (Coinbase Pro)
- - [ ] QuadrigaCX
+ - [x] QuadrigaCX
  - [ ] Exmo
  - [x] Cexio
  - [x] Bittrex

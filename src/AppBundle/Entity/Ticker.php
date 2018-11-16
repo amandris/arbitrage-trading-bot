@@ -17,6 +17,7 @@ class Ticker
     const BINANCE = 'binance';
     const CEXIO = 'cexio';
     const BITTREX = 'bittrex';
+    const QUADRIGACX = 'quadrigacx';
 
     /**
      * @var int $id

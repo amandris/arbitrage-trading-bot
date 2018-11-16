@@ -91,8 +91,12 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
     {
         $query = ['pair' => 'xbtusd', 'type' => 'buy', 'ordertype' => 'limit', 'price' => $price, 'volumen' => $amount];
 
-        /** @var array $order */
-        $order = $this->krakenHelper->queryPrivate('AddOrder', $query);
+        try {
+            /** @var array $order */
+            $order = $this->krakenHelper->queryPrivate('AddOrder', $query);
+        } catch (\Exception $e){
+            return null;
+        }
 
         if(array_key_exists('error', $order) && count($order['error']) > 0){
             return null;
@@ -120,8 +124,12 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
     {
         $query = ['pair' => 'xbtusd', 'type' => 'sell', 'ordertype' => 'limit', 'price' => $price, 'volumen' => $amount];
 
-        /** @var array $order */
-        $order = $this->krakenHelper->queryPrivate('AddOrder', $query);
+        try {
+            /** @var array $order */
+            $order = $this->krakenHelper->queryPrivate('AddOrder', $query);
+        } catch (\Exception $e){
+            return null;
+        }
 
         if(array_key_exists('error', $order) && count($order['error']) > 0){
             return null;
@@ -144,8 +152,12 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
      */
     public function getOrders(): array
     {
-        /** @var array $openOrders */
-        $openOrders = $this->krakenHelper->queryPrivate('OpenOrders');
+        try {
+            /** @var array $openOrders */
+            $openOrders = $this->krakenHelper->queryPrivate('OpenOrders');
+        } catch (\Exception $e){
+            return [];
+        }
 
         /** @var OrderDTO[] $result */
         $result = [];

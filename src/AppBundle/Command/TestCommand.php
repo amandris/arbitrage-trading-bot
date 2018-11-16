@@ -11,6 +11,7 @@ use AppBundle\Helper\ItbitHelper;
 use AppBundle\Helper\KrakenHelper;
 use AppBundle\Helper\Okcoin\ApiKeyAuthentication;
 use AppBundle\Helper\OkcoinHelper;
+use AppBundle\Helper\QuadrigacxHelper;
 use AppBundle\Service\BalanceService;
 use AppBundle\Service\TickerService;
 use AppBundle\Service\TradeService;
@@ -83,11 +84,15 @@ class TestCommand extends ContainerAwareCommand
         $itbit_api_secret       = $this->getContainer()->getParameter('itbit_api_secret');
         $itbit_user_id          = $this->getContainer()->getParameter('itbit_user_id');
 
-        $kraken_api_key        = $this->getContainer()->getParameter('kraken_api_key');
-        $kraken_api_secret     = $this->getContainer()->getParameter('kraken_api_secret');
+        $kraken_api_key         = $this->getContainer()->getParameter('kraken_api_key');
+        $kraken_api_secret      = $this->getContainer()->getParameter('kraken_api_secret');
 
-        $okcoin_api_key        = $this->getContainer()->getParameter('okcoin_api_key');
-        $okcoin_api_secret     = $this->getContainer()->getParameter('okcoin_api_secret');
+        $okcoin_api_key         = $this->getContainer()->getParameter('okcoin_api_key');
+        $okcoin_api_secret      = $this->getContainer()->getParameter('okcoin_api_secret');
+
+        $quadrigacx_api_key     = $this->getContainer()->getParameter('quadrigacx_api_key');
+        $quadrigacx_api_secret  = $this->getContainer()->getParameter('quadrigacx_api_secret');
+        $quadrigacx_client_id   = $this->getContainer()->getParameter('quadrigacx_client_id');
 
         /*
         $bitstampHelper = new BitstampHelper($bitstamp_api_key, $bitstamp_api_secret, $bitstamp_client_id, 'https://www.bitstamp.net/api/');
@@ -121,11 +126,16 @@ class TestCommand extends ContainerAwareCommand
         $result = $krakenHelper->queryPrivate('AddOrder', $query);
         */
 
+        /*
         $okcoinHelper = new OkcoinHelper( new ApiKeyAuthentication($okcoin_api_key, $okcoin_api_secret));
         $buyParams = ['api_key' => $okcoin_api_key, 'symbol' => 'btc_usd', 'type'=> 'sell', 'price' => 5400, 'amount' => 0.3];
         $orderParams = ['current_page' => 1, 'page_length' => 10, 'status' => 0];
         $result = $okcoinHelper->orderHistoryApi($orderParams);
         //$result = $okcoinHelper->tradeApi($buyParams);
+        */
+
+        $quadrigacxHelper = new QuadrigacxHelper($quadrigacx_api_key, $quadrigacx_api_secret, $quadrigacx_client_id, 'https://api.quadrigacx.com/v2/');
+        $result = $quadrigacxHelper->buy('btc_usd', 4, 1000);
 
         dump($result);
         die();

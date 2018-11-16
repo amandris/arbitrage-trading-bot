@@ -90,4 +90,10 @@ app:
             base_uri: "https://bittrex.com/api/v1.1"
             api_key: "%bittrex_api_key%"
             api_secret: "%bittrex_api_secret%"
+        quadrigacx:
+            enable: true
+            base_uri: "https://api.quadrigacx.com/v2"
+            api_key: "%quadrigacx_api_key%"
+            api_secret: "%quadrigacx_api_secret%"
+            client_id: "%quadrigacx_client_id%"
 

@@ -46,6 +46,12 @@ services:
             - '@guzzle.client'
             - '%client.bittrex%'
 
+    app.client.quadrigacx:
+        class: AppBundle\Service\Client\QuadrigacxClient
+        arguments:
+            - '@guzzle.client'
+            - '%client.quadrigacx%'
+
     # -------  services
 
     app.bitstamp.service:
@@ -83,17 +89,22 @@ services:
         arguments:
             - '@app.client.bittrex'
 
+    app.quadrigacx.service:
+        class: AppBundle\Service\QuadrigacxService
+        arguments:
+            - '@app.client.quadrigacx'
+
     app.ticker.service:
         class: AppBundle\Service\TickerService
         arguments:
-            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service'}
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service', quadrigacx: '@app.quadrigacx.service'}
             - '@app.status.repository'
             - '@app.ticker.repository'
 
     app.balance.service:
         class: AppBundle\Service\BalanceService
         arguments:
-            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service'}
+            - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service', quadrigacx: '@app.quadrigacx.service'}
             - '@app.status.repository'
             - '@app.balance.repository'
 
@@ -106,7 +117,7 @@ services:
     app.trade.service:
         class: AppBundle\Service\TradeService
         arguments:
-             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service'}
+             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service', quadrigacx: '@app.quadrigacx.service'}
              - '@app.order_pair.repository'
     # -------  repositories
 
