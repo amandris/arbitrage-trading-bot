@@ -112,10 +112,10 @@ class Rpc {
 			$body = $response['body'];
 			$json = json_decode($body);
 		} catch (Exception $e) {
-			echo "Invalid response body" . $response['statusCode'] . $response['body'];
+			echo "Ok Coin: Invalid response body" . $response['statusCode'] . $response['body'];
 		}
 		if ($json === null) {
-			echo "Invalid response body" . $response['statusCode'] . $response['body'];
+			echo "Ok Coin: Invalid response body" . $response['statusCode'] . $response['body'];
 		}
 		if (isset($json -> error)) {
 			throw new Exception($json -> error, $response['statusCode'], $response['body']);

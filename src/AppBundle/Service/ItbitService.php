@@ -40,7 +40,7 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO
+    public function getTicker():? TickerDTO
     {
         $response = $this->getClient()->request(
             'GET',
@@ -58,7 +58,7 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
     /**
      * @return BalanceDTO
      */
-    public function getBalance(): BalanceDTO
+    public function getBalance():? BalanceDTO
     {
         $responseJson = $this->itbitHelper->wallet()[0];
 
@@ -154,13 +154,13 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
         $result = [];
 
         foreach($openOrders as $openOrder){
-            if($openOrder['status'] == 'open') {
-                $timestamp = new \DateTime($openOrder['createdTime'], new \DateTimeZone('Europe/Madrid'));
-                $orderId = $openOrder['id'];
-                $price = $openOrder['price'];
-                $amountBtc = $openOrder['amount'];
+            if($openOrder->status == 'open') {
+                $timestamp = new \DateTime($openOrder->createdTime, new \DateTimeZone('Europe/Madrid'));
+                $orderId = $openOrder->id;
+                $price = $openOrder->price;
+                $amountBtc = $openOrder->amount;
                 $amountUsd = $price * $amountBtc;
-                $type = $openOrder['side'] == 'buy' ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
+                $type = $openOrder->side == 'buy' ? OrderDTO::ORDER_TYPE_BUY : OrderDTO::ORDER_TYPE_SELL;
 
                 /** @var OrderDTO $orderDTO */
                 $orderDTO = new OrderDTO($orderId, Ticker::ITBIT, $price, $amountUsd, $amountBtc, $timestamp, $type);

@@ -9,7 +9,6 @@ use AppBundle\Entity\Ticker;
 use AppBundle\Helper\Okcoin\ApiKeyAuthentication;
 use AppBundle\Helper\OkcoinHelper;
 use AppBundle\Service\Client\ExternalClientInterface;
-use DateTime;
 
 /**
  * Class OkcoinService
@@ -39,7 +38,7 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO
+    public function getTicker():? TickerDTO
     {
         $response = $this->getClient()->request(
             'GET',
@@ -60,7 +59,7 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
     /**
      * @return BalanceDTO
      */
-    public function getBalance(): BalanceDTO
+    public function getBalance():? BalanceDTO
     {
         $apiKey = $this->getClient()->getParameters()['api_key'];
         $params = array('api_key' => $apiKey);
@@ -154,7 +153,7 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
         /** @var OrderDTO[] $result */
         $result = [];
 
-        if(!array_key_exists('orders', $openOrders)){
+        if(!$openOrders || !array_key_exists('orders', $openOrders)){
             return $result;
         }
         foreach($openOrders['orders'] as $openOrder){

@@ -210,6 +210,8 @@ class TradeCommand extends ContainerAwareCommand
         /** @var TickerDTO[] $tickerDTOs */
         $tickerDTOs = $this->tickerService->getTickers();
 
+        $this->tickerRepository->deleteAll();
+
         $output->writeln(date_format($now, 'd/m/Y H:i:s'));
         foreach ($tickerDTOs as $tickerDTO) {
             $ticker = new Ticker();
@@ -231,27 +233,31 @@ class TradeCommand extends ContainerAwareCommand
                 if(in_array($bidTickerDTO->getName(), $observedExchanges)) {
                     continue;
                 }
-                $difference = new Difference();
-                $difference->setCreated($now);
-                $difference->setBid($askTickerDTO->getBid());
-                $difference->setAsk($bidTickerDTO->getAsk());
-                $difference->setExchangeAskName($askTickerDTO->getName());
-                $difference->setExchangeBidName($bidTickerDTO->getName());
-                $difference->setExchangeNames($askTickerDTO->getName().'-'.$bidTickerDTO->getName());
-                $difference->setDifference($askTickerDTO->getBid() - $bidTickerDTO->getAsk());
+                if($askTickerDTO->getBid() - $bidTickerDTO->getAsk() >= 0) {
+                    $difference = new Difference();
+                    $difference->setCreated($now);
+                    $difference->setBid($askTickerDTO->getBid());
+                    $difference->setAsk($bidTickerDTO->getAsk());
+                    $difference->setExchangeAskName($askTickerDTO->getName());
+                    $difference->setExchangeBidName($bidTickerDTO->getName());
+                    $difference->setExchangeNames($askTickerDTO->getName() . '-' . $bidTickerDTO->getName());
+                    $difference->setDifference($askTickerDTO->getBid() - $bidTickerDTO->getAsk());
 
-                $this->differenceRepository->save($difference);
+                    $this->differenceRepository->save($difference);
+                }
 
-                $difference = new Difference();
-                $difference->setCreated($now);
-                $difference->setBid($bidTickerDTO->getBid());
-                $difference->setAsk($askTickerDTO->getAsk());
-                $difference->setExchangeAskName($bidTickerDTO->getName());
-                $difference->setExchangeBidName($askTickerDTO->getName());
-                $difference->setExchangeNames($bidTickerDTO->getName().'-'.$askTickerDTO->getName());
-                $difference->setDifference($bidTickerDTO->getBid() - $askTickerDTO->getAsk());
+                if($bidTickerDTO->getBid() - $askTickerDTO->getAsk() >= 0) {
+                    $difference = new Difference();
+                    $difference->setCreated($now);
+                    $difference->setBid($bidTickerDTO->getBid());
+                    $difference->setAsk($askTickerDTO->getAsk());
+                    $difference->setExchangeAskName($bidTickerDTO->getName());
+                    $difference->setExchangeBidName($askTickerDTO->getName());
+                    $difference->setExchangeNames($bidTickerDTO->getName() . '-' . $askTickerDTO->getName());
+                    $difference->setDifference($bidTickerDTO->getBid() - $askTickerDTO->getAsk());
 
-                $this->differenceRepository->save($difference);
+                    $this->differenceRepository->save($difference);
+                }
             }
         }
     }

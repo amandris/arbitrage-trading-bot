@@ -47,7 +47,9 @@ class BalanceService
             $parameters = $exchangeService->getClient()->getParameters();
             if($parameters['enable']) {
                 $balanceDTO = $exchangeService->getBalance();
-                array_push($result, $balanceDTO);
+                if($balanceDTO) {
+                    array_push($result, $balanceDTO);
+                }
             }
         }
 

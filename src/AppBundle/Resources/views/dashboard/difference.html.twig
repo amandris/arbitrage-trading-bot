@@ -12,7 +12,7 @@
             {% if difference.difference >= thresholdUsd %}
                 <span class="text-success" style="font-weight: bold;">{{ difference.difference | number_format(2, '.', ',') }}</span>
             {% else %}
-                <span class="text-danger" style="font-weight: bold;">{{ difference.difference | number_format(2, '.', ',') }}</span>
+                <span class="text-default" style="font-weight: bold;">{{ difference.difference | number_format(2, '.', ',') }}</span>
             {% endif %}
         </td>
     </tr>

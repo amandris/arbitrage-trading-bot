@@ -3,28 +3,10 @@
 
         <td style="border-right: 1px solid grey;">{{ ticker.name | capitalize }}</td>
         <td>
-            {{ ticker.first.ask | number_format(2, '.', ',') }}
-        </td>
-        <td style="border-right: 1px solid grey;">
-            {% if ticker.last.ask > ticker.first.ask %}
-                <span class="text-success" style="font-weight: bold;">{{ ticker.last.ask | number_format(2, '.', ',') }}</span>
-            {% elseif ticker.last.ask < ticker.first.ask %}
-                <span class="text-danger" style="font-weight: bold;">{{ ticker.last.ask | number_format(2, '.', ',') }}</span>
-            {% else %}
-                {{ ticker.last.ask | number_format(2, '.', ',') }}
-            {% endif %}
+            {{ ticker.ask | number_format(2, '.', ',') }}
         </td>
         <td>
-            {{ ticker.first.bid | number_format(2, '.', ',') }}
-        </td>
-        <td>
-            {% if ticker.last.bid > ticker.first.bid %}
-                <span class="text-success" style="font-weight: bold;">{{ ticker.last.bid | number_format(2, '.', ',') }}</span>
-            {% elseif ticker.last.bid < ticker.first.bid %}
-                <span class="text-danger" style="font-weight: bold;">{{ ticker.last.bid | number_format(2, '.', ',') }}</span>
-            {% else %}
-                {{ ticker.last.bid | number_format(2, '.', ',') }}
-            {% endif %}
+            {{ ticker.bid | number_format(2, '.', ',') }}
         </td>
     </tr>
 {% endfor %}

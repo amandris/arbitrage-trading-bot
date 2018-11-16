@@ -1,8 +1,5 @@
 {% extends '@App/base.html.twig' %}
 
-{% block page_title %}Dashboard{% endblock %}
-{% block page_description %}Bitcoin Trading Bot management console{% endblock %}
-
 {% block styles %}
     <link rel="stylesheet" href="{{ asset('build/css/dashboard.min.css') }}">
 {% endblock %}
@@ -19,7 +16,7 @@
                     <form id="trading-form">
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Threshold (USD)</label>
                                         <div class="input-group">
@@ -30,7 +27,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Order value (USD)</label>
                                         <div class="input-group">
@@ -63,7 +60,7 @@
                                         <small>The number of order pairs the system will keep open. If the value is 1, no new order pair will be placed until the previous one is closed. Leave empty for infinite open order pairs.</small>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Trading time (Minutes)</label>
                                         <div class="input-group">
@@ -88,7 +85,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="box box-warning">
                 <div class="box-header">
                     <h3 class="box-title">Balances</h3>
@@ -104,14 +101,12 @@
                             <th>Profit</th>
                         </tr>
                         <tbody id="balance-table">
-
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="box box-success">
                 <div class="box-header">
                     <h3 class="box-title">Ticker</h3>
@@ -120,10 +115,8 @@
                     <table class="table table-striped">
                         <tr>
                             <th style="width: 10px;border-right: 1px solid grey;">Exchange</th>
-                            <th>Initial ask</th>
-                            <th style="border-right: 1px solid grey;">Current ask</th>
-                            <th>Initial bid</th>
-                            <th>Current bid</th>
+                            <th>Ask</th>
+                            <th>Bid</th>
                         </tr>
                         <tbody id="ticker-table">
 
@@ -132,10 +125,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="box box-danger">
                 <div class="box-header">
                     <h3 class="box-title">Differences</h3>
@@ -160,7 +150,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-danger">
+            <div class="box box-info">
                 <div class="box-header">
                     <h3 class="box-title">Order Pairs</h3>
                 </div>

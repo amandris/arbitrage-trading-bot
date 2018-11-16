@@ -8,7 +8,6 @@ use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
 use AppBundle\Helper\BitstampHelper;
 use AppBundle\Service\Client\ExternalClientInterface;
-use DateTime;
 
 /**
  * Class BitstampService
@@ -41,7 +40,7 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO
+    public function getTicker():? TickerDTO
     {
         $response = $this->getClient()->request(
             'GET',
@@ -62,7 +61,7 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
     /**
      * @return BalanceDTO
      */
-    public function getBalance(): BalanceDTO
+    public function getBalance():? BalanceDTO
     {
         /** @var array $balance */
         $balance = $this->bitstampHelper->balance();

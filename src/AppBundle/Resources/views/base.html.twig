@@ -14,30 +14,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-collapse">
 <div class="wrapper">
     <header class="main-header">
         <a href="{{ path('dashboard') }}" class="logo">
-            <span class="logo-mini"><b>BT</b>B</span>
             <span class="logo-lg"><b>Bitcoin Trading </b>BOT</span>
         </a>
-        {{ block("nav_bar", "@App/elements/nav_bar.html.twig") }}
+        <nav class="navbar navbar-static-top" role="navigation">
+        </nav>
     </header>
 
-    {{ block("side_bar", "@App/elements/side_bar.html.twig") }}
-
     <div class="content-wrapper">
-        <section class="content-header">
-            <h1>
-                {{ block('page_title') }}
-                <small>{{ block('page_description') }}</small>
-            </h1>
-        </section>
         <section class="content container-fluid">
-            {% include '@App/elements/flashMessages.html.twig' %}
-
             {{ block("body") }}
-
         </section>
     </div>
 </div>

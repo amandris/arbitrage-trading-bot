@@ -40,7 +40,7 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO
+    public function getTicker():? TickerDTO
     {
         $response = $this->getClient()->request(
             'GET',
@@ -60,7 +60,7 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
     /**
      * @return BalanceDTO
      */
-    public function getBalance(): BalanceDTO
+    public function getBalance():? BalanceDTO
     {
 
         /** @var array $balances */

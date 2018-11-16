@@ -1,4 +1,6 @@
 $( document ).ready(function() {
+    getAjaxData();
+
     setInterval(function(){
         if(running === true) {
             $.post(Routing.generate('isRunning', {}), function (data) {
@@ -7,24 +9,10 @@ $( document ).ready(function() {
                     stopRunning();
                 }
             });
-
-            $.post(Routing.generate('balance', {}), function (data) {
-                $("#balance-table").html(data);
-            });
         }
 
-        $.post(Routing.generate('ticker', {}), function (data) {
-            $("#ticker-table").html(data);
-        });
-
-        $.post(Routing.generate('difference', {}), function (data) {
-            $("#difference-table").html(data);
-        });
-
-        $.post(Routing.generate('orderPair', {}), function (data) {
-            $("#order-pair-table").html(data);
-        });
-    }, 8 * 1000);
+        getAjaxData();
+    }, interval * 1000);
 
 
     $("#start-btn").on( 'click', function (e) {
@@ -78,4 +66,22 @@ function stopRunning(){
     $("#add-or-sub-to-order-usd").prop('disabled', false);
     $("#trading-time-minutes").prop('disabled', false);
     $("#max-open-orders").prop('disabled', false);
+}
+
+function getAjaxData(){
+    $.post(Routing.generate('balance', {}), function (data) {
+        $("#balance-table").html(data);
+    });
+
+    $.post(Routing.generate('ticker', {}), function (data) {
+        $("#ticker-table").html(data);
+    });
+
+    $.post(Routing.generate('difference', {}), function (data) {
+        $("#difference-table").html(data);
+    });
+
+    $.post(Routing.generate('orderPair', {}), function (data) {
+        $("#order-pair-table").html(data);
+    });
 }

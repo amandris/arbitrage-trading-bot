@@ -8,7 +8,6 @@ use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
 use AppBundle\Helper\BinanceHelper;
 use AppBundle\Service\Client\ExternalClientInterface;
-use DateTime;
 
 /**
  * Class BinanceService
@@ -40,7 +39,7 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO
+    public function getTicker():? TickerDTO
     {
         $response = $this->getClient()->request(
             'GET',
@@ -58,7 +57,7 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
     /**
      * @return BalanceDTO
      */
-    public function getBalance(): BalanceDTO
+    public function getBalance():? BalanceDTO
     {
         /** @var array $balance */
         $balance = $this->binanceHelper->balances();

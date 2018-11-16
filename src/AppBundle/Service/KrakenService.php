@@ -39,12 +39,16 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO
+    public function getTicker():? TickerDTO
     {
-        $response = $this->getClient()->request(
-            'GET',
-            '/0/public/Ticker?pair=xbtusd'
-        );
+        try {
+            $response = $this->getClient()->request(
+                'GET',
+                '/0/public/Ticker?pair=xbtusd'
+            );
+        }catch (\Exception $e){
+            return null;
+        }
 
         $responseJson = json_decode($response->getBody()->getContents());
 
@@ -57,10 +61,14 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
     /**
      * @return BalanceDTO
      */
-    public function getBalance(): BalanceDTO
+    public function getBalance():? BalanceDTO
     {
-        /** @var array $balance */
-        $balance = $this->krakenHelper->queryPrivate('Balance');
+        try {
+            /** @var array $balance */
+            $balance = $this->krakenHelper->queryPrivate('Balance');
+        } catch (\Exception $e){
+            return null;
+        }
 
         /** @var float $usd */
         $usd = $balance['result']['ZUSD'];

@@ -155,11 +155,10 @@ class DashboardController extends Controller
      */
     public function tickerAction(Request $request)
     {
-        /** @var TickerService $tickerService */
-        $tickerService = $this->get('app.ticker.service');
+        $tickerRepository = $this->get('app.ticker.repository');
 
         return $this->render('@App/dashboard/ticker.html.twig', [
-            'tickers' => $tickerService->getFormattedTickers()
+            'tickers' => $tickerRepository->findAll()
         ]);
     }
 

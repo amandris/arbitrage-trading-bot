@@ -41,7 +41,7 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO
+    public function getTicker():? TickerDTO
     {
         $response = $this->getClient()->request(
             'GET',
@@ -62,7 +62,7 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
     /**
      * @return BalanceDTO
      */
-    public function getBalance(): BalanceDTO
+    public function getBalance():? BalanceDTO
     {
 
         /** @var array $balance */

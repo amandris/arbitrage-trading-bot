@@ -48,51 +48,10 @@ class TickerService
             $parameters = $exchangeService->getClient()->getParameters();
             if($parameters['enable'] && isset($parameters['api_key']) &&$parameters['api_key'] !== '' ) {
                 $tickerDTO = $exchangeService->getTicker();
-                array_push($result, $tickerDTO);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFormattedTickers()
-    {
-        /** @var Status $status */
-        $status = $this->statusRepository->findStatus();
-
-        $resultFirst    = [];
-        $resultLast     = [];
-        $exchangeNames  = [];
-        $result         = [];
-
-        if($status->getStartDate()){
-            $firstTickers = $this->tickerRepository->findFirstTickers($status->getStartDate(), 12);
-            $lastTickers = $this->tickerRepository->findLastTickers($status->getStartDate(),12);
-
-            foreach($firstTickers as $firstTicker){
-                if(!array_key_exists($firstTicker->getName(), $resultFirst)){
-                    $resultFirst[$firstTicker->getName()] = ['ask'=>$firstTicker->getAsk(), 'bid'=>$firstTicker->getBid()];
-                    array_push($exchangeNames, $firstTicker->getName());
+                if($tickerDTO != null) {
+                    array_push($result, $tickerDTO);
                 }
             }
-
-            foreach($lastTickers as $lastTicker){
-                if(!array_key_exists($lastTicker->getName(), $resultLast)) {
-                    $resultLast[$lastTicker->getName()] = ['ask' => $lastTicker->getAsk(), 'bid' => $lastTicker->getBid()];
-                    array_push($exchangeNames, $lastTicker->getName());
-                }
-            }
-        }
-
-        $exchangeNames = array_unique($exchangeNames);
-
-        foreach ($exchangeNames as $exchangeName){
-            $firstTicker = array_key_exists($exchangeName, $resultFirst) ? $resultFirst[$exchangeName] : ['ask' => '', 'bid' => ''];
-            $lastTicker = array_key_exists($exchangeName, $resultLast) ? $resultLast[$exchangeName] : ['ask' => '', 'bid' => ''];
-            array_push($result, ['name' => $exchangeName , 'first' => $firstTicker , 'last' => $lastTicker]);
         }
 
         return $result;

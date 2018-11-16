@@ -16,12 +16,12 @@ interface ExchangeServiceInterface
     /**
      * @return TickerDTO
      */
-    public function getTicker():TickerDTO;
+    public function getTicker():?TickerDTO;
 
     /**
      * @return BalanceDTO
      */
-    public function getBalance():BalanceDTO;
+    public function getBalance():?BalanceDTO;
 
     /**
      * @param float $amount
