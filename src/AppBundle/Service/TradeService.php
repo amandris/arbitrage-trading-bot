@@ -61,23 +61,27 @@ class TradeService
      * @param Status $status
      * @return OrderPair
      */
-    public function placeOrderPair($difference, $status):OrderPair
+    public function placeOrderPair($difference, $status):?OrderPair
     {
-        /** @var ExchangeServiceInterface $buyExchangeService */
-        $buyExchangeService = $this->getExchangeServiceByName($difference->getExchangeAskName());
-
         /** @var ExchangeServiceInterface $sellExchangeService */
-        $sellExchangeService = $this->getExchangeServiceByName($difference->getExchangeBidName());
+        $sellExchangeService = $this->getExchangeServiceByName($difference->getExchangeSellName());
 
-        if($buyExchangeService == null || $sellExchangeService == null){
+        /** @var ExchangeServiceInterface $buyExchangeService */
+        $buyExchangeService = $this->getExchangeServiceByName($difference->getExchangeBuyName());
+
+        if($sellExchangeService == null || $buyExchangeService == null){
             return null;
         }
 
         $finalAskPrice = $difference->getAsk() + $status->getAddOrSubToOrderUsd();
         $finalBidPrice = $difference->getBid() - $status->getAddOrSubToOrderUsd();
 
+        /** @var float $amountToBuy */
+        $amountToBuy = round($status->getOrderValueUsd() / $finalAskPrice, 8);
+
+
         /** @var OrderDTO $buyOrderDTO */
-        $buyOrderDTO = $buyExchangeService->placeBuyOrder($status->getOrderValueUsd() / $finalAskPrice, $finalAskPrice);
+        $buyOrderDTO = $buyExchangeService->placeBuyOrder($amountToBuy, $finalAskPrice);
 
         /** @var OrderPair $orderPair */
         $orderPair = null;
@@ -87,19 +91,24 @@ class TradeService
             $orderPair->setBuyOrderId($buyOrderDTO->getOrderId());
             $orderPair->setBuyOrderAmountBtc($buyOrderDTO->getAmountBTC());
             $orderPair->setBuyOrderAmountUsd($buyOrderDTO->getAmountUSD());
-            $orderPair->setBuyOrderExchange($difference->getExchangeAskName());
+            $orderPair->setBuyOrderExchange($difference->getExchangeBuyName());
             $orderPair->setBuyOrderPrice($finalAskPrice);
             $orderPair->setBuyOrderOpen(true);
             $orderPair->setBuyOrderCreated($buyOrderDTO->getCreated());
 
+            /** @var float $amountToSell */
+            $amountToSell = round($status->getOrderValueUsd() / $finalBidPrice, 8);
+
             /** @var OrderDTO $sellOrderDTO */
-            $sellOrderDTO = $sellExchangeService->placeSellOrder($status->getOrderValueUsd() / $finalBidPrice, $finalBidPrice);
+
+            dump('---Se va a vender '. $amountToSell.'a '. $finalBidPrice);
+            $sellOrderDTO = $sellExchangeService->placeSellOrder($amountToSell, $finalBidPrice);
 
             if($sellOrderDTO != null) {
                 $orderPair->setSellOrderId($sellOrderDTO->getOrderId());
                 $orderPair->setSellOrderAmountBtc($sellOrderDTO->getAmountBTC());
                 $orderPair->setSellOrderAmountUsd($sellOrderDTO->getAmountUSD());
-                $orderPair->setSellOrderExchange($difference->getExchangeBidName());
+                $orderPair->setSellOrderExchange($difference->getExchangeSellName());
                 $orderPair->setSellOrderPrice($finalBidPrice);
                 $orderPair->setSellOrderOpen(true);
                 $orderPair->setSellOrderCreated($sellOrderDTO->getCreated());

@@ -84,7 +84,7 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price): OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         /** @var string $apiKey */
         $apiKey = $this->getClient()->getParameters()['api_key'];
@@ -114,7 +114,7 @@ class OkcoinService extends ClientAwareService implements ExchangeServiceInterfa
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price): OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         /** @var string $apiKey */
         $apiKey = $this->getClient()->getParameters()['api_key'];

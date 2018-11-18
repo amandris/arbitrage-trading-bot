@@ -50,7 +50,7 @@
                     <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
                         <i class="fa fa-dollar"></i>
                         {{ balance.first.usd - balance.last.usd | number_format(2, '.', ',') }}
-                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                        <i class="fa fa-arrow-down" style="font-weight: bold;"></i>
                     </span>
                     {% set total_profit_usd =  total_profit_usd + (balance.first.usd - balance.last.usd) %}
                 {% endif %}
@@ -68,7 +68,7 @@
                     <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
                         <i class="fa fa-btc"></i>
                         {{ (balance.first.btc - balance.last.btc) | number_format(8, '.', ',') }}
-                        <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                        <i class="fa fa-arrow-down" style="font-weight: bold;"></i>
                     </span>
                     {% set total_profit_btc =  total_profit_btc + (balance.first.btc - balance.last.btc) %}
                 {% endif %}
@@ -106,14 +106,14 @@
         {% if total_last_usd > total_first_usd %}
             <span class="text-success" style="padding-right: 20px;font-weight: bold;">
                     <i class="fa fa-dollar"></i>
-                {{ total_last_usd - total_first_usd | number_format(2, '.', ',') }}
+                {{ (total_last_usd - total_first_usd) | number_format(2, '.', ',') }}
                 <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
             </span>
         {% elseif total_last_usd < total_first_usd %}
             <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
                     <i class="fa fa-dollar"></i>
-                {{ total_first_usd - total_last_usd | number_format(2, '.', ',') }}
-                <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                {{ (total_first_usd - total_last_usd) | number_format(2, '.', ',') }}
+                <i class="fa fa-arrow-down" style="font-weight: bold;"></i>
             </span>
         {% endif %}
 
@@ -127,7 +127,7 @@
             <span class="text-danger" style="padding-right: 20px;font-weight: bold;">
                     <i class="fa fa-btc"></i>
                 {{ (total_first_btc - total_last_btc) | number_format(8, '.', ',') }}
-                <i class="fa fa-arrow-up" style="font-weight: bold;"></i>
+                <i class="fa fa-arrow-down" style="font-weight: bold;"></i>
             </span>
         {% endif %}
 

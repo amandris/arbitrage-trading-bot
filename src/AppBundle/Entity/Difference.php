@@ -18,12 +18,12 @@ class Difference
     /**
      * @var string
      */
-    protected $exchangeAskName;
+    protected $exchangeSellName;
 
     /**
      * @var string
      */
-    protected $exchangeBidName;
+    protected $exchangeBuyName;
 
 
     /**
@@ -62,33 +62,33 @@ class Difference
     /**
      * @return string
      */
-    public function getExchangeAskName(): string
+    public function getExchangeSellName(): string
     {
-        return $this->exchangeAskName;
+        return $this->exchangeSellName;
     }
 
     /**
-     * @param string $exchangeAskName
+     * @param string $exchangeSellName
      */
-    public function setExchangeAskName(string $exchangeAskName)
+    public function setExchangeSellName(string $exchangeSellName)
     {
-        $this->exchangeAskName = $exchangeAskName;
+        $this->exchangeSellName = $exchangeSellName;
     }
 
     /**
      * @return string
      */
-    public function getExchangeBidName(): string
+    public function getExchangeBuyName(): string
     {
-        return $this->exchangeBidName;
+        return $this->exchangeBuyName;
     }
 
     /**
-     * @param string $exchangeBidName
+     * @param string $exchangeBuyName
      */
-    public function setExchangeBidName(string $exchangeBidName)
+    public function setExchangeBuyName(string $exchangeBuyName)
     {
-        $this->exchangeBidName = $exchangeBidName;
+        $this->exchangeBuyName = $exchangeBuyName;
     }
 
     /**

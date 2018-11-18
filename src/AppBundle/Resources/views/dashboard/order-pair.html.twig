@@ -23,7 +23,7 @@
             {% endif %}
         </td>
         <td>
-            <i class="fa fa-btc"></i> {{ orderPair.sellOrderAmountBtc - orderPair.buyOrderAmountBtc }}
+            <i class="fa fa-btc"></i> {{ (orderPair.buyOrderAmountBtc - orderPair.sellOrderAmountBtc) | number_format(8, '.', ',') }}
         </td>
     </tr>
 {% endfor %}

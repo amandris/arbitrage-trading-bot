@@ -67,10 +67,10 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
         $balance = $this->bitstampHelper->balance();
 
         /** @var float $usd */
-        $usd = $balance['btc_available'];
+        $usd = $balance['usd_available'];
 
         /** @var float $btc */
-        $btc = $balance['usd_available'];
+        $btc = $balance['btc_available'];
 
         /** @var BalanceDTO $balanceDTO */
         $balanceDTO = new BalanceDTO ( Ticker::BITSTAMP, $usd, $btc);
@@ -83,12 +83,13 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price):OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         /** @var array $order */
         $order = $this->bitstampHelper->buyBTC($amount, $price);
 
         if(array_key_exists('error', $order)){
+            var_dump($order);
             return null;
         }
 
@@ -109,12 +110,13 @@ class BitstampService extends ClientAwareService implements ExchangeServiceInter
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price):OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         /** @var array $order */
         $order = $this->bitstampHelper->sellBTC($amount, $price);
 
         if(array_key_exists('error', $order)){
+            var_dump($order);
             return null;
         }
 

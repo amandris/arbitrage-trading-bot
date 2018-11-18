@@ -14,14 +14,14 @@ AppBundle\Entity\Difference:
             generator:
                 strategy: IDENTITY
     fields:
-        exchangeAskName:
+        exchangeSellName:
             type: string
             scale: 0
             length: 128
             unique: false
             nullable: false
             precision: 0
-        exchangeBidName:
+        exchangeBuyName:
             type: string
             scale: 0
             length: 128

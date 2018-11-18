@@ -89,7 +89,7 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price): OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         /** @var array $order */
         $order = $this->cexioHelper->place_order('buy',$amount, $price, 'BTC/USD');
@@ -116,7 +116,7 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price): OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         /** @var array $order */
         $order = $this->cexioHelper->place_order('sell',$amount, $price, 'BTC/USD');

@@ -47,7 +47,7 @@ AppBundle\Entity\OrderPair:
             scale: 0
             length: null
             unique: false
-            nullable: false
+            nullable: true
             options: { "default": false }
             precision: 0
         buyOrderOpen:

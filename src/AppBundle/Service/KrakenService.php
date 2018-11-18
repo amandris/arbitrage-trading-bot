@@ -87,7 +87,7 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price): OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         $query = ['pair' => 'xbtusd', 'type' => 'buy', 'ordertype' => 'limit', 'price' => $price, 'volumen' => $amount];
 
@@ -120,7 +120,7 @@ class KrakenService extends ClientAwareService implements ExchangeServiceInterfa
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price): OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         $query = ['pair' => 'xbtusd', 'type' => 'sell', 'ordertype' => 'limit', 'price' => $price, 'volumen' => $amount];
 

@@ -28,14 +28,14 @@ interface ExchangeServiceInterface
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price):OrderDTO;
+    public function placeBuyOrder(float $amount, float $price):?OrderDTO;
 
     /**
      * @param float $amount
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price):OrderDTO;
+    public function placeSellOrder(float $amount, float $price):?OrderDTO;
 
     /**
      * @return OrderDTO[]

@@ -124,10 +124,10 @@ class TradeCommand extends ContainerAwareCommand
                     if ($status->getMaxOpenOrders() && $status->getMaxOpenOrders() > count($openOrderPairs)) {
 
                         /** @var Balance $balanceUsd */
-                        $balanceUsd = $this->balanceRepository->findBalanceByExchange($difference->getExchangeAskName());
+                        $balanceBtc = $this->balanceRepository->findBalanceByExchange($difference->getExchangeSellName());
 
                         /** @var Balance $balanceBtc */
-                        $balanceBtc = $this->balanceRepository->findBalanceByExchange($difference->getExchangeBidName());
+                        $balanceUsd = $this->balanceRepository->findBalanceByExchange($difference->getExchangeBuyName());
 
                         if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueUsd() + $status->getAddOrSubToOrderUsd())){
                             continue;
@@ -137,19 +137,18 @@ class TradeCommand extends ContainerAwareCommand
                             continue;
                         }
 
-                        /** @var boolean $exchangeAsOpenOrder */
-                        $exchangeAsOpenOrder = false;
-
+                        /** @var boolean $exchangeHasOpenOrder */
+                        $exchangeHasOpenOrder = false;
                         //check if there are open order on those exchanges
                         foreach ($openOrderPairs as $openOrderPair) {
-                            if( $openOrderPair->getBuyOrderExchange() === $difference->getExchangeAskName() || $openOrderPair->getBuyOrderExchange() === $difference->getExchangeBidName() ||
-                                $openOrderPair->getSellOrderExchange() === $difference->getExchangeAskName() || $openOrderPair->getSellOrderExchange() === $difference->getExchangeBidName()){
-                                $exchangeAsOpenOrder = true;
+                            if( $openOrderPair->getBuyOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getBuyOrderExchange() === $difference->getExchangeBuyName() ||
+                                $openOrderPair->getSellOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getSellOrderExchange() === $difference->getExchangeBuyName()){
+                                $exchangeHasOpenOrder = true;
                                 break;
                             }
                         }
 
-                        if($exchangeAsOpenOrder) {
+                        if(!$exchangeHasOpenOrder) {
                             $this->tradeService->placeOrderPair($difference, $status);
                         }
                         $openOrderPairs = $this->orderPairRepository->findOpenOrderPairs();
@@ -181,6 +180,8 @@ class TradeCommand extends ContainerAwareCommand
             if($balancesNeedToBeReloaded || ($status->isRunning() === true && $status->isRunning() !== $previousRunning)){
                 $this->getBalanceFromExchanges($output);
             }
+
+            $status = $this->statusRepository->findStatus();
 
             sleep($this->interValSeconds);
         }
@@ -253,8 +254,8 @@ class TradeCommand extends ContainerAwareCommand
                     $difference->setCreated($now);
                     $difference->setBid($askTickerDTO->getBid());
                     $difference->setAsk($bidTickerDTO->getAsk());
-                    $difference->setExchangeAskName($askTickerDTO->getName());
-                    $difference->setExchangeBidName($bidTickerDTO->getName());
+                    $difference->setExchangeSellName($askTickerDTO->getName());
+                    $difference->setExchangeBuyName($bidTickerDTO->getName());
                     $difference->setExchangeNames($askTickerDTO->getName() . '-' . $bidTickerDTO->getName());
                     $difference->setDifference($askTickerDTO->getBid() - $bidTickerDTO->getAsk());
 
@@ -266,8 +267,8 @@ class TradeCommand extends ContainerAwareCommand
                     $difference->setCreated($now);
                     $difference->setBid($bidTickerDTO->getBid());
                     $difference->setAsk($askTickerDTO->getAsk());
-                    $difference->setExchangeAskName($bidTickerDTO->getName());
-                    $difference->setExchangeBidName($askTickerDTO->getName());
+                    $difference->setExchangeSellName($bidTickerDTO->getName());
+                    $difference->setExchangeBuyName($askTickerDTO->getName());
                     $difference->setExchangeNames($bidTickerDTO->getName() . '-' . $askTickerDTO->getName());
                     $difference->setDifference($bidTickerDTO->getBid() - $askTickerDTO->getAsk());
 

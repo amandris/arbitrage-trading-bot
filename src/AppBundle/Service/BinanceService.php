@@ -93,7 +93,7 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price): OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         /** @var array $order */
         $order = $this->binanceHelper->buy('BTCUSDT', $amount, $price);
@@ -116,7 +116,7 @@ class BinanceService extends ClientAwareService implements ExchangeServiceInterf
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price): OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         /** @var array $order */
         $order = $this->binanceHelper->sell('BTCUSDT', $amount, $price);

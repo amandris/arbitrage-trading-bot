@@ -151,6 +151,7 @@ class QuadrigacxHelper
                 'Content-Type: application/json; charset=utf-8',
                 'Content-Length: ' . strlen($post_json))
         );
+
         return json_decode(curl_exec($curler));
     }
 
@@ -261,9 +262,13 @@ class QuadrigacxHelper
         return $this->_private_api('balance');
     }
 
-    public function open_orders()
+    public function open_orders($book = NULL)
     {
-        return $this->_private_api('open_orders');
+        $post_array = array();
+        if ($book !== NULL) {
+            $post_array['book'] = $book;
+        }
+        return $this->_private_api('open_orders', $post_array);
     }
 
     /**

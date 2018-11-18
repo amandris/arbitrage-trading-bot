@@ -192,7 +192,7 @@ class OrderPair
     /**
      * @return string
      */
-    public function getSellOrderId(): string
+    public function getSellOrderId():? string
     {
         return $this->sellOrderId;
     }
@@ -208,7 +208,7 @@ class OrderPair
     /**
      * @return string
      */
-    public function getSellOrderExchange(): string
+    public function getSellOrderExchange():? string
     {
         return $this->sellOrderExchange;
     }
@@ -224,7 +224,7 @@ class OrderPair
     /**
      * @return float
      */
-    public function getSellOrderAmountBtc(): float
+    public function getSellOrderAmountBtc():? float
     {
         return $this->sellOrderAmountBtc;
     }
@@ -240,7 +240,7 @@ class OrderPair
     /**
      * @return float
      */
-    public function getSellOrderAmountUsd(): float
+    public function getSellOrderAmountUsd():? float
     {
         return $this->sellOrderAmountUsd;
     }
@@ -256,7 +256,7 @@ class OrderPair
     /**
      * @return float
      */
-    public function getSellOrderPrice(): float
+    public function getSellOrderPrice():? float
     {
         return $this->sellOrderPrice;
     }
@@ -272,7 +272,7 @@ class OrderPair
     /**
      * @return bool
      */
-    public function isSellOrderOpen(): bool
+    public function isSellOrderOpen():? bool
     {
         return $this->sellOrderOpen;
     }
@@ -288,7 +288,7 @@ class OrderPair
     /**
      * @return DateTime
      */
-    public function getBuyOrderCreated(): DateTime
+    public function getBuyOrderCreated():? DateTime
     {
         return $this->buyOrderCreated;
     }
@@ -304,7 +304,7 @@ class OrderPair
     /**
      * @return DateTime
      */
-    public function getSellOrderCreated(): DateTime
+    public function getSellOrderCreated():? DateTime
     {
         return $this->sellOrderCreated;
     }

@@ -68,10 +68,10 @@ class QuadrigacxService extends ClientAwareService implements ExchangeServiceInt
         $balance = $this->quadrigacxHelper->balance();
 
         /** @var float $usd */
-        $usd = $balance->btc_available;
+        $usd = $balance->usd_available;
 
         /** @var float $btc */
-        $btc = $balance->usd_available;
+        $btc = $balance->btc_available;
 
         /** @var BalanceDTO $balanceDTO */
         $balanceDTO = new BalanceDTO ( Ticker::QUADRIGACX, $usd, $btc);
@@ -84,12 +84,12 @@ class QuadrigacxService extends ClientAwareService implements ExchangeServiceInt
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price):OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         /** @var Stdclass $order */
         $order = $this->quadrigacxHelper->buy('btc_usd', $amount, $price);
 
-        if($order && $order->error){
+        if($order && property_exists($order, 'error')){
             return null;
         }
 
@@ -110,12 +110,12 @@ class QuadrigacxService extends ClientAwareService implements ExchangeServiceInt
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price):OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         /** @var Stdclass $order */
-        $order = $this->quadrigacxHelper->buy('btc_usd', $amount, $price);
+        $order = $this->quadrigacxHelper->sell('btc_usd', $amount, $price);
 
-        if($order && $order->error){
+        if($order && property_exists($order, 'error')){
             return null;
         }
 
@@ -137,7 +137,7 @@ class QuadrigacxService extends ClientAwareService implements ExchangeServiceInt
     public function getOrders(): array
     {
         /** @var array $openOrders */
-        $openOrders = $this->quadrigacxHelper->open_orders();
+        $openOrders = $this->quadrigacxHelper->open_orders('btc_usd');
 
         /** @var OrderDTO[] $result */
         $result = [];

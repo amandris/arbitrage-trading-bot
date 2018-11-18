@@ -89,7 +89,7 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price): OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         $wallet = $this->itbitHelper->wallet()[0];
 
@@ -117,7 +117,7 @@ class ItbitService extends ClientAwareService implements ExchangeServiceInterfac
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price): OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         $wallet = $this->itbitHelper->wallet()[0];
 

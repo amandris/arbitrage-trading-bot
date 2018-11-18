@@ -99,7 +99,7 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      * @param float $price
      * @return OrderDTO
      */
-    public function placeBuyOrder(float $amount, float $price): OrderDTO
+    public function placeBuyOrder(float $amount, float $price):? OrderDTO
     {
         try {
             /** @var array $order */
@@ -123,7 +123,7 @@ class BittrexService extends ClientAwareService implements ExchangeServiceInterf
      * @param float $price
      * @return OrderDTO
      */
-    public function placeSellOrder(float $amount, float $price): OrderDTO
+    public function placeSellOrder(float $amount, float $price):? OrderDTO
     {
         try{
             /** @var array $order */

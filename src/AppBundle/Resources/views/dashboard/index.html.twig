@@ -14,7 +14,7 @@
 
                 <div class="box-body">
                     <form id="trading-form">
-                        <div class="form-group">
+                        <div class="form-group" style="margin-bottom: -20px;">
                             <div class="row">
                                 <div class="col-lg-2">
                                     <div class="form-group">
@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
 
-                                        <small>The USD added to buy orders or substracted to sell orders to ensure the order is executed fast. The greater this value, the more likely the order is executed fast.</small>
+                                        <small>This is the USD amount added or substracted to buy or sell orders to ensure the order is executed fast. The greater this value, the more likely the order is executed fast.</small>
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
@@ -83,7 +83,7 @@
                                             <input type="number" min="1" step="1" class="form-control" id="max-open-orders" value="{{ status.maxOpenOrders  }}" {{ status.running ? 'disabled' : '' }}>
                                         </div>
 
-                                        <small>The number of order pairs the system will keep open. If the value is 1, no new order pair will be placed until the previous one is closed. Leave empty for infinite open order pairs.</small>
+                                        <small>This is the maximum amount of order pairs the system will keep open at any moment. Leave empty for infinite open order pairs.</small>
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
@@ -141,8 +141,8 @@
                     <table class="table table-striped">
                         <tr>
                             <th style="width: 10px;border-right: 1px solid grey;">Exchange</th>
-                            <th>Ask</th>
-                            <th>Bid</th>
+                            <th>Ask <i class="fa fa-dollar"></i></th>
+                            <th>Bid <i class="fa fa-dollar"></i></th>
                         </tr>
                         <tbody id="ticker-table">
 
@@ -159,8 +159,8 @@
                 <div class="box-body no-padding">
                     <table class="table table-striped">
                         <tr>
-                            <th>Exchange Ask</th>
-                            <th>Exchange Bid</th>
+                            <th>Exchange Buy</th>
+                            <th>Exchange Sell</th>
                             <th>Ask <i class="fa fa-dollar"></i></th>
                             <th>Bid <i class="fa fa-dollar"></i></th>
                             <th>Difference <i class="fa fa-dollar"></i></th>

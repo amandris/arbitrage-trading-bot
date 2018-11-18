@@ -31,6 +31,7 @@ class OrderPairRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('op')
             ->where('op.buyOrderOpen = true')
             ->orWhere('op.sellOrderOpen = true')
+            ->orWhere('op.sellOrderOpen is NULL')
             ->getQuery();
 
         $results = $queryBuilder->getResult();
