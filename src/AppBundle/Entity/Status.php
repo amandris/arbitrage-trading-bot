@@ -31,9 +31,9 @@ class Status
     protected $thresholdUsd;
 
     /**
-     * @var float $orderValueUsd
+     * @var float $orderValueBtc
      */
-    protected $orderValueUsd;
+    protected $orderValueBtc;
 
     /**
      * @var int $tradingTimeMinutes
@@ -109,17 +109,17 @@ class Status
     /**
      * @return float
      */
-    public function getOrderValueUsd(): float
+    public function getOrderValueBtc(): float
     {
-        return $this->orderValueUsd;
+        return $this->orderValueBtc;
     }
 
     /**
-     * @param float $orderValueUsd
+     * @param float $orderValueBtc
      */
-    public function setOrderValueUsd(float $orderValueUsd)
+    public function setOrderValueBtc(float $orderValueBtc)
     {
-        $this->orderValueUsd = $orderValueUsd;
+        $this->orderValueBtc = $orderValueBtc;
     }
 
     /**

@@ -38,21 +38,21 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Order value (USD)</label>
+                                        <label for="exampleInputPassword1">Order value (BTC)</label>
                                         <div class="input-group">
                                             <div class="input-group-btn">
-                                                <button type="button" class="btn btn-danger" id="decrease-order-value-usd">
+                                                <button type="button" class="btn btn-danger" id="decrease-order-value-btc">
                                                     <span class="glyphicon glyphicon-minus"></span>
                                                 </button>
                                             </div>
-                                            <input type="text" class="form-control" id="order-value-usd" required="required" value="{{ status.orderValueUsd  }}">
+                                            <input type="text" class="form-control" id="order-value-btc" required="required" value="{{ status.orderValueBtc  }}">
                                             <div class="input-group-btn">
-                                                <button type="button" class="btn btn-success" id="increase-order-value-usd">
+                                                <button type="button" class="btn btn-success" id="increase-order-value-btc">
                                                     <span class="glyphicon glyphicon-plus"></span>
                                                 </button>
                                             </div>
                                         </div>
-                                        <small>When an order is placed, this is the value in USD for both, the buy and sell orders.</small>
+                                        <small>When an order is placed, this is the value in BTC for both, the buy and sell orders.</small>
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
 
-                                        <small>This is the USD amount added or substracted to buy or sell orders to ensure the order is executed fast. The greater this value, the more likely the order is executed fast.</small>
+                                        <small>This is the USD amount added or subtracted to buy or sell order limit price to ensure the order is executed quickly.</small>
                                     </div>
                                 </div>
                                 <div class="col-lg-2">

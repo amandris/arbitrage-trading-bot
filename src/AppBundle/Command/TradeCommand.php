@@ -129,11 +129,11 @@ class TradeCommand extends ContainerAwareCommand
                         /** @var Balance $balanceBtc */
                         $balanceUsd = $this->balanceRepository->findBalanceByExchange($difference->getExchangeBuyName());
 
-                        if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueUsd() + $status->getAddOrSubToOrderUsd())){
+                        if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueBtc() * ($difference->getAsk() + $status->getAddOrSubToOrderUsd()))){
                             continue;
                         }
 
-                        if(!$balanceBtc || $balanceBtc->getBtc() < (($status->getOrderValueUsd() - $status->getAddOrSubToOrderUsd()) / $difference->getBid())){
+                        if(!$balanceBtc || $balanceBtc->getBtc() < ($status->getOrderValueBtc() - ($status->getAddOrSubToOrderUsd()) / $difference->getBid())){
                             continue;
                         }
 

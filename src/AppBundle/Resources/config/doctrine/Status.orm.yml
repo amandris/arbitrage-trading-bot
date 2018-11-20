@@ -31,7 +31,7 @@ AppBundle\Entity\Status:
             precision: 7
             options:
                 default: 0
-        orderValueUsd:
+        orderValueBtc:
             type: float
             scale: 2
             length: null

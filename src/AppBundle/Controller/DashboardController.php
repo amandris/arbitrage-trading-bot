@@ -64,13 +64,13 @@ class DashboardController extends Controller
         $balanceRepository->deleteAll();
 
         $thresholdUsd =         $request->get('thresholdUsd');
-        $orderValueUsd =        $request->get('orderValueUsd');
+        $orderValueBtc =        $request->get('orderValueBtc');
         $addOrSubToOrderUsd =   $request->get('addOrSubToOrderUsd');
         $tradingTimeMinutes =   $request->get('tradingTimeMinutes') ?: null;
         $maxOpenOrders =        $request->get('maxOpenOrders') ?: null;
 
         $status->setTradingTimeMinutes  ($tradingTimeMinutes);
-        $status->setOrderValueUsd       ($orderValueUsd);
+        $status->setOrderValueBtc       ($orderValueBtc);
         $status->setThresholdUsd        ($thresholdUsd);
         $status->setAddOrSubToOrderUsd  ($addOrSubToOrderUsd);
         $status->setMaxOpenOrders       ($maxOpenOrders);
@@ -217,15 +217,15 @@ class DashboardController extends Controller
         $status = $statusRepository->findStatus();
 
         $thresholdUsd =         $request->get('thresholdUsd');
-        $orderValueUsd =        $request->get('orderValueUsd');
+        $orderValueBtc =        $request->get('orderValueBtc');
         $addOrSubToOrderUsd =   $request->get('addOrSubToOrderUsd');
 
         if($thresholdUsd && is_int(intval($thresholdUsd))) {
             $status->setThresholdUsd(intval($thresholdUsd) <= 1 ? 1 : intval($thresholdUsd));
         }
 
-        if($orderValueUsd && is_int(intval($orderValueUsd))) {
-            $status->setOrderValueUsd(intval($orderValueUsd) <= 5 ? 5 : intval($orderValueUsd));
+        if($orderValueBtc && is_float(floatval($orderValueBtc))) {
+            $status->setOrderValueBtc(floatval($orderValueBtc) <= 0.001 ? 0.001 : floatval($orderValueBtc));
         }
 
         if($addOrSubToOrderUsd && is_int(intval($addOrSubToOrderUsd))) {
@@ -234,6 +234,6 @@ class DashboardController extends Controller
 
         $statusRepository->save($status);
 
-        return new JsonResponse(['thresholdUsd' => $status->getThresholdUsd(), 'orderValueUsd' => $status->getOrderValueUsd(), 'addOrSubToOrderUsd' => $status->getAddOrSubToOrderUsd()]);
+        return new JsonResponse(['thresholdUsd' => $status->getThresholdUsd(), 'orderValueBtc' => $status->getOrderValueBtc(), 'addOrSubToOrderUsd' => $status->getAddOrSubToOrderUsd()]);
     }
 }

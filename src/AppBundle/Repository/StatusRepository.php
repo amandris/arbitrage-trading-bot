@@ -38,7 +38,7 @@ class StatusRepository extends EntityRepository
             $status = new Status();
             $status->setRunning(false);
             $status->setThresholdUsd(50);
-            $status->setOrderValueUsd(20);
+            $status->setOrderValueBtc(0.003);
             $status->setTradingTimeMinutes(null);
             $status->setAddOrSubToOrderUsd(3);
             $status->setStartDate(null);

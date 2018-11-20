@@ -20,12 +20,12 @@ $( document ).ready(function() {
         var form = document.getElementById("trading-form");
         if(form.checkValidity()){
             var thresholdUsd = $("#threshold-usd").val();
-            var orderValueUsd = $("#order-value-usd").val();
+            var orderValueBtc = $("#order-value-btc").val();
             var tradingTimeMinutes = $("#trading-time-minutes").val();
             var addOrSubToOrderUsd = $("#add-or-sub-to-order-usd").val();
             var maxOpenOrders = $("#max-open-orders").val();
 
-            $.post( Routing.generate('startTrading', {thresholdUsd: thresholdUsd, orderValueUsd:orderValueUsd, tradingTimeMinutes:tradingTimeMinutes, addOrSubToOrderUsd:addOrSubToOrderUsd, maxOpenOrders:maxOpenOrders}), function( data ) {
+            $.post( Routing.generate('startTrading', {thresholdUsd: thresholdUsd, orderValueBtc:orderValueBtc, tradingTimeMinutes:tradingTimeMinutes, addOrSubToOrderUsd:addOrSubToOrderUsd, maxOpenOrders:maxOpenOrders}), function( data ) {
                 if(data.running === true) {
                     $("#start-btn").removeClass('btn-primary').addClass('btn-default');
                     $("#stop-btn").removeClass('btn-default').addClass('btn-danger');
@@ -76,26 +76,26 @@ $( document ).ready(function() {
         postTradeParameters();
     });
 
-    $("#increase-order-value-usd").on('click', function (e) {
-        var orderValueUsd = $("#order-value-usd").val();
-        if(!orderValueUsd || isNaN(orderValueUsd)){
-            orderValueUsd = 0;
+    $("#increase-order-value-btc").on('click', function (e) {
+        var orderValueBtc = $("#order-value-btc").val();
+        if(!orderValueBtc || isNaN(orderValueBtc)){
+            orderValueBtc = 0;
         }
-        orderValueUsd ++;
-        $("#order-value-usd").val(orderValueUsd);
+        orderValueBtc  = (parseFloat(orderValueBtc) + 0.001);
+        $("#order-value-btc").val(orderValueBtc);
         postTradeParameters();
     });
 
-    $("#decrease-order-value-usd").on('click', function (e) {
-        var orderValueUsd = $("#order-value-usd").val();
-        if(!orderValueUsd || isNaN(orderValueUsd)){
-            orderValueUsd = 0;
+    $("#decrease-order-value-btc").on('click', function (e) {
+        var orderValueBtc = $("#order-value-btc").val();
+        if(!orderValueBtc || isNaN(orderValueBtc)){
+            orderValueBtc = 0;
         }
-        orderValueUsd --;
-        if(orderValueUsd <= 5){
-            orderValueUsd = 5;
+        orderValueBtc  = (parseFloat(orderValueBtc) - 0.001);
+        if(orderValueBtc <= 0.001){
+            orderValueBtc = 0.001;
         }
-        $("#order-value-usd").val(orderValueUsd);
+        $("#order-value-btc").val(orderValueBtc);
         postTradeParameters();
     });
 
@@ -122,7 +122,7 @@ $( document ).ready(function() {
         postTradeParameters();
     });
 
-    $("#threshold-usd, #order-value-usd, #add-or-sub-to-order-usd").on('change', function (e) {
+    $("#threshold-usd, #order-value-btc, #add-or-sub-to-order-usd").on('change', function (e) {
         if(running === true) {
             postTradeParameters();
         }
@@ -131,11 +131,11 @@ $( document ).ready(function() {
 
 function postTradeParameters() {
     var thresholdUsd = $("#threshold-usd").val();
-    var orderValueUsd = $("#order-value-usd").val();
+    var orderValueBtc = $("#order-value-btc").val();
     var addOrSubToOrderUsd = $("#add-or-sub-to-order-usd").val();
-    $.post(Routing.generate('changeTradeParameters', {thresholdUsd:thresholdUsd, orderValueUsd:orderValueUsd, addOrSubToOrderUsd:addOrSubToOrderUsd}), function (data) {
+    $.post(Routing.generate('changeTradeParameters', {thresholdUsd:thresholdUsd, orderValueBtc:orderValueBtc, addOrSubToOrderUsd:addOrSubToOrderUsd}), function (data) {
         $("#threshold-usd").val(data.thresholdUsd);
-        $("#order-value-usd").val(data.orderValueUsd)
+        $("#order-value-btc").val(data.orderValueBtc)
         $("#add-or-sub-to-order-usd").val(data.addOrSubToOrderUsd)
     });
 }

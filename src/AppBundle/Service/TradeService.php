@@ -77,11 +77,10 @@ class TradeService
         $finalBidPrice = $difference->getBid() - $status->getAddOrSubToOrderUsd();
 
         /** @var float $amountToBuy */
-        $amountToBuy = round($status->getOrderValueUsd() / $finalAskPrice, 8);
-
+        $amountToTrade = round($status->getOrderValueBtc(), 8);
 
         /** @var OrderDTO $buyOrderDTO */
-        $buyOrderDTO = $buyExchangeService->placeBuyOrder($amountToBuy, $finalAskPrice);
+        $buyOrderDTO = $buyExchangeService->placeBuyOrder($amountToTrade, $finalAskPrice);
 
         /** @var OrderPair $orderPair */
         $orderPair = null;
@@ -96,13 +95,8 @@ class TradeService
             $orderPair->setBuyOrderOpen(true);
             $orderPair->setBuyOrderCreated($buyOrderDTO->getCreated());
 
-            /** @var float $amountToSell */
-            $amountToSell = round($status->getOrderValueUsd() / $finalBidPrice, 8);
-
             /** @var OrderDTO $sellOrderDTO */
-
-            dump('---Se va a vender '. $amountToSell.'a '. $finalBidPrice);
-            $sellOrderDTO = $sellExchangeService->placeSellOrder($amountToSell, $finalBidPrice);
+            $sellOrderDTO = $sellExchangeService->placeSellOrder($amountToTrade, $finalBidPrice);
 
             if($sellOrderDTO != null) {
                 $orderPair->setSellOrderId($sellOrderDTO->getOrderId());
