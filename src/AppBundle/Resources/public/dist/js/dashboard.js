@@ -32,6 +32,7 @@ $( document ).ready(function() {
                     $("#trading-since").html("Trading start time: " + data.startDate);
                     $("#max-open-orders").prop('disabled', true);
                     $("#trading-time-minutes").prop('disabled', true);
+                    getAjaxData();
 
                     running = true;
                 }
@@ -127,6 +128,8 @@ $( document ).ready(function() {
             postTradeParameters();
         }
     });
+
+    bindPlaceOrderBtn();
 });
 
 function postTradeParameters() {
@@ -146,6 +149,7 @@ function stopRunning(){
     $("#trading-since").html("");
     $("#trading-time-minutes").prop('disabled', false);
     $("#max-open-orders").prop('disabled', false);
+    getAjaxData();
 }
 
 function getAjaxData(){
@@ -159,9 +163,29 @@ function getAjaxData(){
 
     $.post(Routing.generate('difference', {}), function (data) {
         $("#difference-table").html(data);
+        bindPlaceOrderBtn();
     });
 
     $.post(Routing.generate('orderPair', {}), function (data) {
         $("#order-pair-table").html(data);
+    });
+}
+
+function bindPlaceOrderBtn(){
+    $(".place-order-btn").on('click', function (e) {
+        var differenceId = $(this).data('difference-id');
+        $.post(Routing.generate('placeOrderPair', {differenceId:differenceId}), function (data) {
+            $("#order-placed-modal-text").html(data.message);
+            $("#order-placed-modal").removeClass('modal-success');
+            $("#order-placed-modal").removeClass('modal-danger');
+            if(data.status === 'error'){
+                $("#order-placed-modal").addClass('modal-danger');
+                $("#order-placed-modal-title").html('Error');
+            } else{
+                $("#order-placed-modal").addClass('modal-success');
+                $("#order-placed-modal-title").html('Success');
+            }
+            $("#order-placed-modal").modal();
+        });
     });
 }

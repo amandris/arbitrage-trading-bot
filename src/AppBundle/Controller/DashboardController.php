@@ -2,14 +2,19 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Balance;
+use AppBundle\Entity\Difference;
+use AppBundle\Entity\OrderPair;
 use AppBundle\Entity\Status;
 use AppBundle\Repository\BalanceRepository;
+use AppBundle\Repository\DifferenceRepository;
 use AppBundle\Repository\OrderPairRepository;
 use AppBundle\Repository\StatusRepository;
 use AppBundle\Repository\TickerRepository;
 use AppBundle\Service\BalanceService;
 use AppBundle\Service\DifferenceService;
 use AppBundle\Service\TickerService;
+use AppBundle\Service\TradeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +25,8 @@ class DashboardController extends Controller
 {
     /**
      * @Route("/", name="dashboard")
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -108,6 +115,7 @@ class DashboardController extends Controller
     /**
      * @Route("/is-running", options={"expose"=true}, name="isRunning")
      * @param Request $request
+     * @return Response
      */
     public function isRunningAction(Request $request)
     {
@@ -116,7 +124,6 @@ class DashboardController extends Controller
 
         /** @var Status $status */
         $status = $statusRepository->findStatus();
-
 
         if($status->isRunning() === true && $status->getTradingTimeMinutes() !== null) {
 
@@ -128,8 +135,6 @@ class DashboardController extends Controller
                 $status->setRunning(false);
                 $statusRepository->save($status);
             }
-
-
         }
 
         return new Response($status->isRunning() ? 'ok' : 'ko');
@@ -138,6 +143,7 @@ class DashboardController extends Controller
     /**
      * @Route("/balance", options={"expose"=true}, name="balance")
      * @param Request $request
+     * @return Response
      */
     public function balanceAction(Request $request)
     {
@@ -152,6 +158,7 @@ class DashboardController extends Controller
     /**
      * @Route("/ticker", options={"expose"=true}, name="ticker")
      * @param Request $request
+     * @return Response
      */
     public function tickerAction(Request $request)
     {
@@ -165,6 +172,7 @@ class DashboardController extends Controller
     /**
      * @Route("/difference", options={"expose"=true}, name="difference")
      * @param Request $request
+     * @return Response
      */
     public function differenceAction(Request $request)
     {
@@ -179,13 +187,15 @@ class DashboardController extends Controller
 
         return $this->render('@App/dashboard/difference.html.twig', [
             'differences' => $differenceService->getFormattedDifferences(),
-            'thresholdUsd' => $status->getThresholdUsd()
+            'thresholdUsd' => $status->getThresholdUsd(),
+            'status' => $status
         ]);
     }
 
     /**
      * @Route("/order-pair", options={"expose"=true}, name="orderPair")
      * @param Request $request
+     * @return Response
      */
     public function orderPairAction(Request $request)
     {
@@ -235,5 +245,76 @@ class DashboardController extends Controller
         $statusRepository->save($status);
 
         return new JsonResponse(['thresholdUsd' => $status->getThresholdUsd(), 'orderValueBtc' => $status->getOrderValueBtc(), 'addOrSubToOrderUsd' => $status->getAddOrSubToOrderUsd()]);
+    }
+
+    /**
+     * @Route("/place-order-pair", options={"expose"=true}, name="placeOrderPair")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function placeOrderPairAction(Request $request)
+    {
+        /** @var StatusRepository $statusRepository */
+        $statusRepository = $this->get('app.status.repository');
+
+        /** @var DifferenceRepository $differenceRespository */
+        $differenceRespository = $this->get('app.difference.repository');
+
+        /** @var BalanceRepository $balanceRepository */
+        $balanceRepository = $this->get('app.balance.repository');
+
+        /** @var OrderPairRepository $orderPairRepository */
+        $orderPairRepository  = $this->get('app.order_pair.repository');
+
+        /** @var TradeService $tradeService */
+        $tradeService = $this->get('app.trade.service');
+
+        /** @var Status $status */
+        $status = $statusRepository->findStatus();
+
+        $differenceId = $request->get('differenceId');
+
+        /** @var Difference $difference */
+        $difference = $differenceRespository->findOneById($differenceId);
+
+        if(!$difference){
+            return new JsonResponse(['status' => 'error', 'message' => 'The difference you clicked on is out of date. Try again.']);
+        }
+
+        /** @var Balance $balanceUsd */
+        $balanceBtc = $balanceRepository->findBalanceByExchange($difference->getExchangeSellName());
+
+        /** @var Balance $balanceBtc */
+        $balanceUsd = $balanceRepository->findBalanceByExchange($difference->getExchangeBuyName());
+
+        if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueBtc() * ($difference->getAsk() + $status->getAddOrSubToOrderUsd()))){
+            return new JsonResponse(['status' => 'error', 'message' => 'Your USD balance is not enough']);
+        }
+
+        if(!$balanceBtc || $balanceBtc->getBtc() < ($status->getOrderValueBtc() - ($status->getAddOrSubToOrderUsd()) / $difference->getBid())){
+            return new JsonResponse(['status' => 'error', 'message' => 'Your BTC balance is not enough']);
+        }
+
+        /** @var OrderPair[] $openOrderPairs */
+        $openOrderPairs = $orderPairRepository->findOpenOrderPairs();
+
+        foreach ($openOrderPairs as $openOrderPair) {
+            if( $openOrderPair->getBuyOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getBuyOrderExchange() === $difference->getExchangeBuyName() ||
+                $openOrderPair->getSellOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getSellOrderExchange() === $difference->getExchangeBuyName()){
+                return new JsonResponse(['status' => 'error', 'message' => 'There is orders in those exchanges. Close those orders before place a new one.']);;
+            }
+        }
+
+        $tradePairDTO = $tradeService->placeOrderPair($difference, $status);
+
+        if(!$tradePairDTO){
+            return new JsonResponse(['status' => 'error', 'message' => 'No orders placed.']);
+        }
+
+        if(!$tradePairDTO->getSellOrderId()){
+            return new JsonResponse(['status' => 'error', 'message' => 'No sell order placed.']);
+        }
+
+        return new JsonResponse(['status' => 'ok', 'message' => 'Buy and Sell orders placed successfully']);
     }
 }
