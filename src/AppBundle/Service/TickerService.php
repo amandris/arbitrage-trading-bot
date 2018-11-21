@@ -17,23 +17,13 @@ class TickerService
     /** @var ExchangeServiceInterface[] $exchangeServices */
     private $exchangeServices;
 
-    /** @var StatusRepository $statusRepository */
-    private $statusRepository;
-
-    /** @var TickerRepository $tickerRepository */
-    private $tickerRepository;
-
     /**
      * TickerService constructor.
      * @param array $exchangeServices
-     * @param StatusRepository $statusRepository
-     * @param TickerRepository $tickerRepository
      */
-    public function __construct(array $exchangeServices, StatusRepository $statusRepository, TickerRepository $tickerRepository)
+    public function __construct(array $exchangeServices)
     {
         $this->exchangeServices = $exchangeServices;
-        $this->statusRepository = $statusRepository;
-        $this->tickerRepository = $tickerRepository;
     }
 
     /**

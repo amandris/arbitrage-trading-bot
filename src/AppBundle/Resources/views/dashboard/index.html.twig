@@ -111,20 +111,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="box box-warning">
                 <div class="box-header">
                     <h3 class="box-title">Balances</h3>
+                    <small><span id="balance-date"></span></small>
+                    <button id="refresh-balance-btn" class="btn btn-xs btn-default pull-right" alt="Refresh" title="Refresh"><i class="fa fa-refresh"></i></button>
                 </div>
                 <div class="box-body no-padding">
                     <table class="table table-striped">
                         <tr>
-                            <th style="width: 10px;border-right: 1px solid grey;">Exchange</th>
-                            <th>Initial <i class="fa fa-dollar"></i></th>
-                            <th style="border-right: 1px solid grey;">Current <i class="fa fa-dollar"></i></th>
-                            <th>Initial <i class="fa fa-btc"></i></th>
-                            <th style="border-right: 1px solid grey;">Current <i class="fa fa-btc"></i></th>
-                            <th>Profit</th>
+                            <th>Exchange</th>
+                            <th>Current <i class="fa fa-dollar"></i></th>
+                            <th>Current <i class="fa fa-btc"></i></th>
                         </tr>
                         <tbody id="balance-table">
                         </tbody>
@@ -151,7 +150,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="box box-danger">
                 <div class="box-header">
                     <h3 class="box-title">Differences</h3>
@@ -164,7 +163,7 @@
                             <th>Ask <i class="fa fa-dollar"></i></th>
                             <th>Bid <i class="fa fa-dollar"></i></th>
                             <th>Difference <i class="fa fa-dollar"></i></th>
-                            <th>Trade <i class="fa fa-dollar"></i></th>
+                            <th>Trade</th>
                         </tr>
                         <tbody id="difference-table">
 

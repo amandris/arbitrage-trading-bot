@@ -98,14 +98,11 @@ services:
         class: AppBundle\Service\TickerService
         arguments:
             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service', quadrigacx: '@app.quadrigacx.service'}
-            - '@app.status.repository'
-            - '@app.ticker.repository'
 
     app.balance.service:
         class: AppBundle\Service\BalanceService
         arguments:
             - { bitstamp: '@app.bitstamp.service', itbit: '@app.itbit.service',  kraken: '@app.kraken.service', okcoin: '@app.okcoin.service', binance: '@app.binance.service', cexio: '@app.cexio.service', bittrex: '@app.bittrex.service', quadrigacx: '@app.quadrigacx.service'}
-            - '@app.status.repository'
             - '@app.balance.repository'
 
     app.difference.service:

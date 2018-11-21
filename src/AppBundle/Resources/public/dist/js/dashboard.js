@@ -42,6 +42,21 @@ $( document ).ready(function() {
         }
     });
 
+    $("#refresh-balance-btn").on('click', function() {
+        $.post( Routing.generate('balancesFromExchanges', {}), function( data ) {
+            $.post(Routing.generate('balance', {}), function (data) {
+                $("#balance-table").html(data);
+            });
+            $.post(Routing.generate('balanceDate', {}), function (data) {
+                if(data) {
+                    $("#balance-date").html('Last updated: ' + data);
+                } else{
+                    $("#balance-date").html('');
+                }
+            });
+        });
+    });
+
     $("#stop-btn").on( 'click', function (e) {
         e.preventDefault();
         $.post( Routing.generate('stopTrading', {}), function( data ) {
@@ -74,6 +89,10 @@ $( document ).ready(function() {
             thresholdUsd = 1;
         }
         $("#threshold-usd").val(thresholdUsd);
+        postTradeParameters();
+    });
+
+    $("#threshold-usd, #order-value-btc, #add-or-sub-to-order-usd").on('change', function (e) {
         postTradeParameters();
     });
 
@@ -168,6 +187,14 @@ function getAjaxData(){
 
     $.post(Routing.generate('orderPair', {}), function (data) {
         $("#order-pair-table").html(data);
+    });
+
+    $.post(Routing.generate('balanceDate', {}), function (data) {
+        if(data) {
+            $("#balance-date").html('Last updated: ' + data);
+        } else{
+            $("#balance-date").html('');
+        }
     });
 }
 

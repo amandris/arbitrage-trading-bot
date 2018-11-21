@@ -99,7 +99,7 @@ class TradeCommand extends ContainerAwareCommand
         $status = $this->statusRepository->findStatus();
 
         if( $status->isRunning() === true){
-            $this->getBalanceFromExchanges($output);
+            $this->balanceService->getBalancesFromExchanges();
         }
 
         while(true) {
@@ -178,40 +178,12 @@ class TradeCommand extends ContainerAwareCommand
             }
 
             if($balancesNeedToBeReloaded || ($status->isRunning() === true && $status->isRunning() !== $previousRunning)){
-                $this->getBalanceFromExchanges($output);
+                $this->balanceService->getBalancesFromExchanges();
             }
 
             $status = $this->statusRepository->findStatus();
 
             sleep($this->interValSeconds);
-        }
-    }
-
-    /**
-     * @param OutputInterface $output
-     */
-    function getBalanceFromExchanges(OutputInterface $output)
-    {
-        /** @var BalanceDTO[] $balanceDTOs */
-        $balanceDTOs = $this->balanceService->getBalances();
-
-        if( count($balanceDTOs) < 2){
-            die('Error: At least two exchanges must be setted.');
-        }
-
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
-        $output->writeln('Balances at '. date_format($now, 'd/m/Y H:i:s'));
-
-        foreach ($balanceDTOs as $balanceDTO) {
-            $balance = new Balance();
-            $balance->setName($balanceDTO->getName());
-            $balance->setUsd($balanceDTO->getUsd());
-            $balance->setBtc($balanceDTO->getBtc());
-            $balance->setCreated($now);
-
-            $output->writeln('    '.$balanceDTO->toString());
-
-            $this->balanceRepository->save($balance);
         }
     }
 

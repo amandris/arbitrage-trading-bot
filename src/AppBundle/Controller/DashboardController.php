@@ -147,11 +147,11 @@ class DashboardController extends Controller
      */
     public function balanceAction(Request $request)
     {
-        /** @var BalanceService $balanceService */
-        $balanceService = $this->get('app.balance.service');
+        /** @var BalanceRepository $balanceRepository */
+        $balanceRepository = $this->get('app.balance.repository');
 
         return $this->render('@App/dashboard/balance.html.twig', [
-            'balances' => $balanceService->getFormattedBalances()
+            'balances' =>  $balanceRepository->findAll()
         ]);
     }
 
@@ -316,5 +316,40 @@ class DashboardController extends Controller
         }
 
         return new JsonResponse(['status' => 'ok', 'message' => 'Buy and Sell orders placed successfully']);
+    }
+
+    /**
+     * @Route("/balances-from-exchanges", options={"expose"=true}, name="balancesFromExchanges")
+     * @param Request $request
+     * @return Response
+     */
+    public function balancesFromRepositoryAction(Request $request)
+    {
+        /** @var BalanceService $balanceService */
+        $balanceService = $this->get('app.balance.service');
+
+        $balanceService->getBalancesFromExchanges();
+
+        return new Response('ok');
+    }
+
+    /**
+     * @Route("/balance-date", options={"expose"=true}, name="balanceDate")
+     * @param Request $request
+     * @return Response
+     */
+    public function balanceDateAction(Request $request)
+    {
+        /** @var BalanceRepository $balanceRepository */
+        $balanceRepository = $this->get('app.balance.repository');
+
+        /** @var Balance[] $balances */
+        $balances = $balanceRepository->findAll();
+
+        if($balances && count($balances) > 0){
+            return new Response($balances[0]->getCreated()->format('d/m/y h:i:s'));
+        }
+
+        return new Response('');
     }
 }

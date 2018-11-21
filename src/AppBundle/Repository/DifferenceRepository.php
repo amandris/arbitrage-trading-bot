@@ -28,25 +28,6 @@ class DifferenceRepository extends EntityRepository
      * @param $limit
      * @return Difference[]
      */
-    public function findFirstDifferences($date, $limit)
-    {
-        $queryBuilder = $this->createQueryBuilder('d')
-            ->where('d.created >= :date')
-            ->orderBy('d.created', 'ASC')
-            ->setParameter('date', $date)
-            ->setMaxResults($limit)
-            ->getQuery();
-
-        $results = $queryBuilder->getResult();
-
-        return $results;
-    }
-
-    /**
-     * @param $date
-     * @param $limit
-     * @return Difference[]
-     */
     public function findLastDifferences($date, $limit)
     {
         $queryBuilder = $this->createQueryBuilder('d')

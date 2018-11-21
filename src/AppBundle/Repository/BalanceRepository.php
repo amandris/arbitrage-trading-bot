@@ -24,42 +24,6 @@ class BalanceRepository extends EntityRepository
     }
 
     /**
-     * @param DateTime $date
-     * @return Balance[]
-     */
-    public function findFirstBalances($date, $limit)
-    {
-        $queryBuilder = $this->createQueryBuilder('b')
-            ->where('b.created >= :date')
-            ->orderBy('b.created', 'ASC')
-            ->setParameter('date', $date)
-            ->setMaxResults($limit)
-            ->getQuery();
-
-        $results = $queryBuilder->getResult();
-
-        return $results;
-    }
-
-    /**
-     * @param DateTime $date
-     * @return Balance[]
-     */
-    public function findLastBalances($date, $limit)
-    {
-        $queryBuilder = $this->createQueryBuilder('b')
-            ->where('b.created >= :date')
-            ->orderBy('b.created', 'DESC')
-            ->setParameter('date', $date)
-            ->setMaxResults($limit)
-            ->getQuery();
-
-        $results = $queryBuilder->getResult();
-
-        return $results;
-    }
-
-    /**
      * @param string $exchange
      * @return Balance
      */
