@@ -74,4 +74,11 @@ AppBundle\Entity\Status:
             unique: false
             nullable: true
             precision: 0
+        orderPairLastUpdateDate:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
     lifecycleCallbacks: {  }

@@ -106,6 +106,9 @@ class TradeCommand extends ContainerAwareCommand
             /** @var boolean $previousRunning */
             $previousRunning = $status->isRunning();
 
+            /** @var DateTime $now */
+            $now = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+
             $status = $this->statusRepository->findStatus();
 
             $this->getTickerAndDifferences($output);
@@ -151,29 +154,35 @@ class TradeCommand extends ContainerAwareCommand
                         if(!$exchangeHasOpenOrder) {
                             $this->tradeService->placeOrderPair($difference, $status);
                         }
-                        $openOrderPairs = $this->orderPairRepository->findOpenOrderPairs();
                     }
                 }
+            }
 
-                /** @var OrderDTO[] $orders */
-                $orders = $this->tradeService->getOrders();
-                $orderIds = array_column($orders, 'orderId');
+            $openOrderPairs = $this->orderPairRepository->findOpenOrderPairs();
 
-                foreach ($openOrderPairs as $openOrderPair) {
-                    $orderHasChange = false;
-                    if (!in_array($openOrderPair->getBuyOrderId(), $orderIds)) {
-                        $openOrderPair->setBuyOrderOpen(false);
-                        $orderHasChange = true;
-                    }
-                    if (!in_array($openOrderPair->getSellOrderId(), $orderIds)) {
-                        $openOrderPair->setSellOrderOpen(false);
-                        $orderHasChange = true;
-                    }
+            /** @var OrderDTO[] $orders */
+            $orders = $this->tradeService->getOrders();
 
-                    if ($orderHasChange) {
-                        $this->orderPairRepository->save($openOrderPair);
-                        $balancesNeedToBeReloaded = true;
-                    }
+            $status->setOrderPairLastUpdateDate($now);
+            $this->statusRepository->save($status);
+            $status = $this->statusRepository->findStatus();
+
+            $orderIds = array_column($orders, 'orderId');
+
+            foreach ($openOrderPairs as $openOrderPair) {
+                $orderHasChange = false;
+                if (!in_array($openOrderPair->getBuyOrderId(), $orderIds)) {
+                    $openOrderPair->setBuyOrderOpen(false);
+                    $orderHasChange = true;
+                }
+                if (!in_array($openOrderPair->getSellOrderId(), $orderIds)) {
+                    $openOrderPair->setSellOrderOpen(false);
+                    $orderHasChange = true;
+                }
+
+                if ($orderHasChange) {
+                    $this->orderPairRepository->save($openOrderPair);
+                    $balancesNeedToBeReloaded = true;
                 }
             }
 

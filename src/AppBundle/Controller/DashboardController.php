@@ -6,6 +6,7 @@ use AppBundle\Entity\Balance;
 use AppBundle\Entity\Difference;
 use AppBundle\Entity\OrderPair;
 use AppBundle\Entity\Status;
+use AppBundle\Entity\Ticker;
 use AppBundle\Repository\BalanceRepository;
 use AppBundle\Repository\DifferenceRepository;
 use AppBundle\Repository\OrderPairRepository;
@@ -54,21 +55,12 @@ class DashboardController extends Controller
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->get('app.status.repository');
 
-        /** @var BalanceRepository $balanceRepository */
-        $balanceRepository = $this->get('app.balance.repository');
-
-        /** @var TickerRepository $tickerRepository */
-        $tickerRepository = $this->get('app.ticker.repository');
-
         /** @var Status $status */
         $status = $statusRepository->findStatus();
 
         if($status->isRunning() === true){
             return new JsonResponse(['code' => 200, 'running' => false]);
         }
-
-        $tickerRepository->deleteAll();
-        $balanceRepository->deleteAll();
 
         $thresholdUsd =         $request->get('thresholdUsd');
         $orderValueBtc =        $request->get('orderValueBtc');
@@ -347,7 +339,67 @@ class DashboardController extends Controller
         $balances = $balanceRepository->findAll();
 
         if($balances && count($balances) > 0){
-            return new Response($balances[0]->getCreated()->format('d/m/y h:i:s'));
+            return new Response($balances[0]->getCreated()->format('d/m/y H:i:s'));
+        }
+
+        return new Response('');
+    }
+
+    /**
+     * @Route("/ticker-date", options={"expose"=true}, name="tickerDate")
+     * @param Request $request
+     * @return Response
+     */
+    public function tickerDateAction(Request $request)
+    {
+        /** @var TickerRepository $tickerRepository */
+        $tickerRepository = $this->get('app.ticker.repository');
+
+        /** @var Ticker[] $tickers */
+        $tickers = $tickerRepository->findAll();
+
+        if($tickers && count($tickers) > 0){
+            return new Response($tickers[0]->getCreated()->format('d/m/y H:i:s'));
+        }
+
+        return new Response('');
+    }
+
+    /**
+     * @Route("/difference-date", options={"expose"=true}, name="differenceDate")
+     * @param Request $request
+     * @return Response
+     */
+    public function differenceDateAction(Request $request)
+    {
+        /** @var DifferenceRepository $differenceRepository */
+        $differenceRepository = $this->get('app.difference.repository');
+
+        /** @var Difference[] $differences */
+        $differences = $differenceRepository->findAll();
+
+        if($differences && count($differences) > 0){
+            return new Response($differences[0]->getCreated()->format('d/m/y H:i:s'));
+        }
+
+        return new Response('');
+    }
+
+    /**
+     * @Route("/ordere-pair-date", options={"expose"=true}, name="orderPairDate")
+     * @param Request $request
+     * @return Response
+     */
+    public function orderPairDateAction(Request $request)
+    {
+        /** @var StatusRepository $statusRepository */
+        $statusRepository = $this->get('app.status.repository');
+
+        /** @var Status $status */
+        $status = $statusRepository->findStatus();
+
+        if($status && $status->getOrderPairLastUpdateDate()){
+            return new Response($status->getOrderPairLastUpdateDate()->format('d/m/y H:i:s'));
         }
 
         return new Response('');

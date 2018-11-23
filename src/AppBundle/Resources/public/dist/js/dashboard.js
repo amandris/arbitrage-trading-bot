@@ -196,6 +196,30 @@ function getAjaxData(){
             $("#balance-date").html('');
         }
     });
+
+    $.post(Routing.generate('tickerDate', {}), function (data) {
+        if(data) {
+            $("#ticker-date").html('Last updated: ' + data);
+        } else{
+            $("#ticker-date").html('');
+        }
+    });
+
+    $.post(Routing.generate('differenceDate', {}), function (data) {
+        if(data) {
+            $("#difference-date").html('Last updated: ' + data);
+        } else{
+            $("#difference-date").html('');
+        }
+    });
+
+    $.post(Routing.generate('orderPairDate', {}), function (data) {
+        if(data) {
+            $("#order-pair-date").html('Last updated: ' + data);
+        } else{
+            $("#order-pair-date").html('');
+        }
+    });
 }
 
 function bindPlaceOrderBtn(){

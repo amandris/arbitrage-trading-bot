@@ -51,6 +51,11 @@ class Status
     protected $maxOpenOrders;
 
     /**
+     * @var DateTime $orderPairLastUpdateDate
+     */
+    protected $orderPairLastUpdateDate;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -168,5 +173,21 @@ class Status
     public function setMaxOpenOrders($maxOpenOrders)
     {
         $this->maxOpenOrders = $maxOpenOrders;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getOrderPairLastUpdateDate():? DateTime
+    {
+        return $this->orderPairLastUpdateDate;
+    }
+
+    /**
+     * @param DateTime $orderPairLastUpdateDate
+     */
+    public function setOrderPairLastUpdateDate(?DateTime $orderPairLastUpdateDate)
+    {
+        $this->orderPairLastUpdateDate = $orderPairLastUpdateDate;
     }
 }
