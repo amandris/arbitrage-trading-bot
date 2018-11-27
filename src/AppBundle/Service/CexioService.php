@@ -149,6 +149,9 @@ class CexioService extends ClientAwareService implements ExchangeServiceInterfac
         $result = [];
 
         foreach($openOrders as $openOrder){
+            if(!property_exists($openOrder, 'time')){
+                continue;
+            }
             $timestamp  = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
             $timestamp->setTimestamp($openOrder['time']);
             $orderId    = $openOrder['id'];

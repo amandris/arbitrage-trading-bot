@@ -53,3 +53,12 @@ Installation
  
  *  Open <http://localhost:8000> on your browser
  
+
+Donations
+---------
+
+**Bitcoin**: 35JBxSyefxmVj34obKC2od3r98MuaJ34am 
+
+**Bitcoin Cash**: 3NrTmv4f1752D9vtYTMh8EaqtHQE1ZXdbR
+
+**Litecoin**: MM1p5NRCPqa5EUaU5PNjDqy1FXHQmxsiUF

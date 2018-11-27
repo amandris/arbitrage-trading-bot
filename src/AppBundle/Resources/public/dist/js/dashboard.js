@@ -3,7 +3,7 @@ $( document ).ready(function() {
 
     setInterval(function(){
         if(running === true) {
-            $.get(Routing.generate('isRunning', {}), function (data) {
+            $.post(Routing.generate('isRunning', {}), function (data) {
                 if(data === 'ko'){
                     running = false;
                     stopRunning();
