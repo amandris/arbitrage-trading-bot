@@ -5,19 +5,19 @@ Using the tiny diferences in bitcoin value among several exchanges, this bot pla
 
 **Example:**
 
-Once you are running the web interface, you spot a 100$ difference between sell price in QuadrigaCX and buy price in Bitstamp.
+Once you are running the web interface, you spot a 352.48$ difference between sell price in QuadrigaCX and buy price in Bitstamp.
 
-|            | Ask  | Bid  |
-|------------|------|------|
-| Bitstamp   | **3000** | 2999 |
-| QuadrigaCX | 3001 | **3100** |
+| Exchange Buy | Exchange Sell | Ask     | Bid     | Difference |
+|--------------|---------------|---------|---------|------------|
+|  QuadrigaCX  | Bitstamp      | 3648.52 | 4001.00 | 352.48     |
 
- 1. Deposit 3000$ in Bitstamp.
+
+ 1. Deposit 3648.52$ in Bitstamp.
  2. Deposit 1 BTC in QuadrigaCX.
  3. In the **Order value (BTC)** field set the desired order value (between 0.001BTC and 1 BTC)
- 4. Press play button on the **QuadrigaCX-Bitstamp** difference (where the 100$ difference in value is shown) several times until you spent all your BTC balance on QuadrigaCX. You can also start the automate trading.
- 5. You now have 3100$ in QuadrigaCX and 1 BTC in Bitstamp.
- 6. Withdraw balances on both exchanges. The profit before fees is 100$.
+ 4. Press :arrow_forward: button on the **QuadrigaCX-Bitstamp** difference (where the 352.48$ difference in value is shown) several times until you spent all your BTC balance on QuadrigaCX. You can also start the automate trading.
+ 5. You now have 4001$ in QuadrigaCX and 1 BTC in Bitstamp.
+ 6. Withdraw balances on both exchanges. The profit before fees is 352.48$.
  7. Repeat.
  
  ![Web interface](https://github.com/amandris/arbitrage-trading-bot/blob/master/src/AppBundle/Resources/public/dist/img/screenshot.png)
