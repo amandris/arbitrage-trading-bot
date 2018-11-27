@@ -20,7 +20,7 @@ Once you are running the web interface, you spot a 100$ difference between sell 
  6. Withdraw balances on both exchanges. The profit before fees is 100$.
  7. Repeat.
  
- ![Web interface](https://github.com/amandris/arbitrage-trading-bot/master/src/AppBundle/Resources/public/dist/screenshot.png)
+ ![Web interface](https://github.com/amandris/arbitrage-trading-bot/blob/master/src/AppBundle/Resources/public/dist/img/screenshot.png)
 
 Supported exchanges
 -------------------
