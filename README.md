@@ -9,8 +9,8 @@ Once you are running the web interface, you spot a 100$ difference between sell 
 
 |            | Ask  | Bid  |
 |------------|------|------|
-| Bitstamp   | 3000 | 2999 |
-| QuadrigaCX | 3001 | 3100 |
+| Bitstamp   | **3000** | 2999 |
+| QuadrigaCX | 3001 | **3100** |
 
  1. Deposit 3000$ in Bitstamp.
  2. Deposit 1 BTC in QuadrigaCX.
@@ -26,14 +26,10 @@ Supported exchanges
 -------------------
 
  - [x] Bitstamp
- - [ ] Bitfinex 
  - [x] OkCoin
- - [ ] Poloniex
  - [x] Kraken
  - [x] ItBit
- - [ ] GDAX (Coinbase Pro)
  - [x] QuadrigaCX
- - [ ] Exmo
  - [x] Cexio
  - [x] Bittrex
  - [x] Binance
@@ -81,3 +77,8 @@ Donations
 **Bitcoin Cash**: 3NrTmv4f1752D9vtYTMh8EaqtHQE1ZXdbR
 
 **Litecoin**: MM1p5NRCPqa5EUaU5PNjDqy1FXHQmxsiUF
+
+
+Disclaimer
+----------
+This software project has only educational purposes. Arbitrage trading is a complex and dangerous game. Use this tool at your own risk.
