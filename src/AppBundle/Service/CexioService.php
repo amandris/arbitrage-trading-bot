@@ -8,7 +8,6 @@ use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Ticker;
 use AppBundle\Helper\CexioHelper;
 use AppBundle\Service\Client\ExternalClientInterface;
-use DateTime;
 
 /**
  * Class CexioService

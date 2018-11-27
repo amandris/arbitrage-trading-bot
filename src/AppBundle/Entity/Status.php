@@ -80,7 +80,7 @@ class Status
     }
 
     /**
-     * @return float
+     * @return DateTime|null
      */
     public function getStartDate(): ?DateTime
     {
@@ -88,7 +88,7 @@ class Status
     }
 
     /**
-     * @param float $startDate
+     * @param DateTime|null $startDate
      */
     public function setStartDate(?DateTime $startDate)
     {

@@ -5,7 +5,6 @@ namespace AppBundle\Service;
 use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\DataTransferObject\TickerDTO;
-use AppBundle\Service\Client\ExternalClientInterface;
 
 /**
  * Interface ExchangeServiceInterface

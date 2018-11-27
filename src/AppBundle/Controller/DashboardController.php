@@ -14,9 +14,8 @@ use AppBundle\Repository\StatusRepository;
 use AppBundle\Repository\TickerRepository;
 use AppBundle\Service\BalanceService;
 use AppBundle\Service\DifferenceService;
-use AppBundle\Service\TickerService;
 use AppBundle\Service\TradeService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +28,7 @@ class DashboardController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function dashboardAction(Request $request)
     {
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->get('app.status.repository');
@@ -197,9 +196,6 @@ class DashboardController extends Controller
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->get('app.status.repository');
 
-        /** @var Status $status */
-        $status = $statusRepository->findStatus();
-
         return $this->render('@App/dashboard/order-pair.html.twig', [
             'orderPairs' => $orderPairRepository->findAll()
         ]);
@@ -210,7 +206,7 @@ class DashboardController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function changeValuesAction(Request $request)
+    public function changeTradeParametersAction(Request $request)
     {
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->get('app.status.repository');
@@ -293,7 +289,7 @@ class DashboardController extends Controller
         foreach ($openOrderPairs as $openOrderPair) {
             if( $openOrderPair->getBuyOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getBuyOrderExchange() === $difference->getExchangeBuyName() ||
                 $openOrderPair->getSellOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getSellOrderExchange() === $difference->getExchangeBuyName()){
-                return new JsonResponse(['status' => 'error', 'message' => 'There is orders in those exchanges. Close those orders before place a new one.']);;
+                return new JsonResponse(['status' => 'error', 'message' => 'There is orders in those exchanges. Close those orders before place a new one.']);
             }
         }
 

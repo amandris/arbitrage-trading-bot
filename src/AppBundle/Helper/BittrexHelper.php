@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Helper;
+use \Exception;
 
 /**
  * Class BittrexHelper
@@ -42,6 +43,7 @@ class BittrexHelper
      * @param array $params parameters
      * @param bool $apiKey  use apikey or not
      * @return object
+     * @throws Exception
      */
     private function call ($method, $params = array(), $apiKey = false)
     {
@@ -78,7 +80,7 @@ class BittrexHelper
 
     /**
      * Get the open and available trading markets at Bittrex along with other meta data.
-     * @return array
+     * @return object
      */
     public function getMarkets ()
     {
@@ -87,7 +89,7 @@ class BittrexHelper
 
     /**
      * Get all supported currencies at Bittrex along with other meta data.
-     * @return array
+     * @return object
      */
     public function getCurrencies ()
     {
@@ -97,7 +99,7 @@ class BittrexHelper
     /**
      * Get the current tick values for a market.
      * @param string $market	literal for the market (ex: BTC-LTC)
-     * @return array
+     * @return object
      */
     public function getTicker ($market)
     {
@@ -106,7 +108,7 @@ class BittrexHelper
 
     /**
      * Get the last 24 hour summary of all active exchanges
-     * @return array
+     * @return object
      */
     public function getMarketSummaries ()
     {
@@ -116,7 +118,7 @@ class BittrexHelper
     /**
      * Get the last 24 hour summary of all active exchanges
      * @param string $market literal for the market (ex: BTC-LTC)
-     * @return array
+     * @return object
      */
     public function getMarketSummary ($market)
     {
@@ -128,7 +130,7 @@ class BittrexHelper
      * @param string $market  literal for the market (ex: BTC-LTC)
      * @param string $type	  "buy", "sell" or "both" to identify the type of orderbook to return
      * @param integer $depth  how deep of an order book to retrieve. Max is 50.
-     * @return array
+     * @return object
      */
     public function getOrderBook ($market, $type, $depth = 20)
     {
@@ -144,7 +146,7 @@ class BittrexHelper
      * Get the latest trades that have occured for a specific market
      * @param string $market  literal for the market (ex: BTC-LTC)
      * @param integer $count  number of entries to return. Max is 50.
-     * @return array
+     * @return object
      */
     public function getMarketHistory ($market, $count = 20)
     {
@@ -161,7 +163,7 @@ class BittrexHelper
      * @param string $market  literal for the market (ex: BTC-LTC)
      * @param float $quantity the amount to purchase
      * @param float $rate     the rate at which to place the order
-     * @return array
+     * @return object
      */
     public function buyLimit ($market, $quantity, $rate)
     {
@@ -178,7 +180,7 @@ class BittrexHelper
      * Make sure you have the proper permissions set on your API keys for this call to work
      * @param string $market  literal for the market (ex: BTC-LTC)
      * @param float $quantity the amount to purchase
-     * @return array
+     * @return object
      */
     public function buyMarket ($market, $quantity)
     {
@@ -195,7 +197,7 @@ class BittrexHelper
      * @param string $market  literal for the market (ex: BTC-LTC)
      * @param float $quantity the amount to sell
      * @param float $rate     the rate at which to place the order
-     * @return array
+     * @return object
      */
     public function sellLimit ($market, $quantity, $rate)
     {
@@ -212,7 +214,7 @@ class BittrexHelper
      * Make sure you have the proper permissions set on your API keys for this call to work
      * @param string $market  literal for the market (ex: BTC-LTC)
      * @param float $quantity the amount to sell
-     * @return array
+     * @return object
      */
     public function sellMarket ($market, $quantity)
     {
@@ -226,7 +228,7 @@ class BittrexHelper
     /**
      * Cancel a buy or sell order
      * @param string $uuid id of sell or buy order
-     * @return array
+     * @return object
      */
     public function cancel ($uuid)
     {
@@ -237,7 +239,7 @@ class BittrexHelper
     /**
      * Get all orders that you currently have opened. A specific market can be requested
      * @param string $market  literal for the market (ex: BTC-LTC)
-     * @return array
+     * @return object
      */
     public function getOpenOrders ($market = null)
     {
@@ -247,7 +249,7 @@ class BittrexHelper
 
     /**
      * Retrieve all balances from your account
-     * @return array
+     * @return object
      */
     public function getBalances ()
     {
@@ -257,7 +259,7 @@ class BittrexHelper
     /**
      * Retrieve the balance from your account for a specific currency
      * @param string $currency literal for the currency (ex: LTC)
-     * @return array
+     * @return object
      */
     public function getBalance ($currency)
     {
@@ -270,7 +272,7 @@ class BittrexHelper
      * does not exist, the call will fail and return ADDRESS_GENERATING
      * until one is available.
      * @param string $currency literal for the currency (ex: LTC)
-     * @return array
+     * @return object
      */
     public function getDepositAddress ($currency)
     {
@@ -284,7 +286,7 @@ class BittrexHelper
      * @param float $quantity   the quantity of coins to withdraw
      * @param float $address    the address where to send the funds
      * @param float $paymentid  (optional) used for CryptoNotes/BitShareX/Nxt optional field (memo/paymentid)
-     * @return array
+     * @return object
      */
     public function withdraw ($currency, $quantity, $address, $paymentid = null)
     {
@@ -304,7 +306,7 @@ class BittrexHelper
     /**
      * Retrieve a single order by uuid
      * @param string $uuid 	the uuid of the buy or sell order
-     * @return array
+     * @return object
      */
     public function getOrder ($uuid)
     {
@@ -316,7 +318,7 @@ class BittrexHelper
      * Retrieve your order history
      * @param string $market  (optional) a string literal for the market (ie. BTC-LTC). If ommited, will return for all markets
      * @param integer $count  (optional) the number of records to return
-     * @return array
+     * @return object
      */
     public function getOrderHistory ($market = null, $count = null)
     {
@@ -337,7 +339,7 @@ class BittrexHelper
      * Retrieve your withdrawal history
      * @param string $currency  (optional) a string literal for the currecy (ie. BTC). If omitted, will return for all currencies
      * @param integer $count    (optional) the number of records to return
-     * @return array
+     * @return object
      */
     public function getWithdrawalHistory ($currency = null, $count = null)
     {
@@ -358,7 +360,7 @@ class BittrexHelper
      * Retrieve your deposit history
      * @param string $currency  (optional) a string literal for the currecy (ie. BTC). If omitted, will return for all currencies
      * @param integer $count    (optional) the number of records to return
-     * @return array
+     * @return object
      */
     public function getDepositHistory ($currency = null, $count = null)
     {

@@ -3,7 +3,7 @@ $( document ).ready(function() {
 
     setInterval(function(){
         if(running === true) {
-            $.post(Routing.generate('isRunning', {}), function (data) {
+            $.get(Routing.generate('isRunning', {}), function (data) {
                 if(data === 'ko'){
                     running = false;
                     stopRunning();
@@ -143,9 +143,7 @@ $( document ).ready(function() {
     });
 
     $("#threshold-usd, #order-value-btc, #add-or-sub-to-order-usd").on('change', function (e) {
-        if(running === true) {
-            postTradeParameters();
-        }
+        postTradeParameters();
     });
 
     bindPlaceOrderBtn();

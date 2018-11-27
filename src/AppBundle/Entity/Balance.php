@@ -93,14 +93,6 @@ class Balance
     }
 
     /**
-     * @param float $bid
-     */
-    public function setBid(float $bid)
-    {
-        $this->bid = $bid;
-    }
-
-    /**
      * @return DateTime
      */
     public function getCreated(): DateTime

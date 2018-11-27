@@ -4,9 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\Entity\Balance;
-use AppBundle\Entity\Status;
 use AppBundle\Repository\BalanceRepository;
-use AppBundle\Repository\StatusRepository;
 
 /**
  * Class BalanceService

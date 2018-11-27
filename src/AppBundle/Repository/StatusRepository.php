@@ -4,7 +4,6 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Status;
 use Doctrine\ORM\EntityRepository;
-use Experiencia\DktCard\Repository\StatusRepositoryInterface;
 
 /**
  * Class StatusRepository

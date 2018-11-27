@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Ticker;
-use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**

@@ -3,10 +3,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\DataTransferObject\TickerDTO;
-use AppBundle\Entity\Status;
-use AppBundle\Entity\Ticker;
-use AppBundle\Repository\StatusRepository;
-use AppBundle\Repository\TickerRepository;
 
 /**
  * Class TickerService

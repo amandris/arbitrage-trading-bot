@@ -2,15 +2,11 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\Entity\Difference;
 use AppBundle\Entity\OrderPair;
 use AppBundle\Entity\Status;
-use AppBundle\Entity\Ticker;
-use AppBundle\Repository\BalanceRepository;
 use AppBundle\Repository\OrderPairRepository;
-use AppBundle\Repository\StatusRepository;
 
 /**
  * Class TradeService

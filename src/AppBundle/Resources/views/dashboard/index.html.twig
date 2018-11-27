@@ -18,7 +18,7 @@
                             <div class="row">
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Threshold (USD)</label>
+                                        <label for="threshold-usd">Threshold (USD)</label>
                                         <div class="input-group">
                                             <div class="input-group-btn">
                                                 <button type="button" class="btn btn-danger" id="decrease-threshold-usd">
@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Order value (BTC)</label>
+                                        <label for="order-value-btc">Order value (BTC)</label>
                                         <div class="input-group">
                                             <div class="input-group-btn">
                                                 <button type="button" class="btn btn-danger" id="decrease-order-value-btc">
@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Add or substract to order (USD)</label>
+                                        <label for="add-or-sub-to-order-usd">Add or substract to order (USD)</label>
                                         <div class="input-group">
                                             <div class="input-group-btn">
                                                 <button type="button" class="btn btn-danger" id="decrease-add-or-sub-to-order-usd">
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Max open orders</label>
+                                        <label for="max-open-orders">Max open orders</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-line-chart"></i></span>
                                             <input type="number" min="1" step="1" class="form-control" id="max-open-orders" value="{{ status.maxOpenOrders  }}" {{ status.running ? 'disabled' : '' }}>
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Trading time (Minutes)</label>
+                                        <label for="trading-time-minutes">Trading time (Minutes)</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                             <input type="number" min="1" step="1" class="form-control" id="trading-time-minutes" value="{{ status.tradingTimeMinutes }}" {{ status.running ? 'disabled' : '' }}>
@@ -116,7 +116,7 @@
                 <div class="box-header">
                     <h3 class="box-title">Balances</h3>
                     <small><span id="balance-date"></span></small>
-                    <button id="refresh-balance-btn" class="btn btn-xs btn-default pull-right" alt="Refresh" title="Refresh"><i class="fa fa-refresh"></i></button>
+                    <button id="refresh-balance-btn" class="btn btn-xs btn-default pull-right" title="Refresh"><i class="fa fa-refresh"></i></button>
                 </div>
                 <div class="box-body no-padding">
                     <table class="table table-striped">

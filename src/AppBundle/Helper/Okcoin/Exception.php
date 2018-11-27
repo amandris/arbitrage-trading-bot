@@ -9,6 +9,16 @@ namespace AppBundle\Helper\Okcoin;
 class Exception extends \Exception
 {
     /**
+     * @var string
+     */
+    private $http_code;
+
+    /**
+     * @var null
+     */
+    private $response;
+
+    /**
      * Exception constructor.
      * @param string $message
      * @param null $http_code
@@ -21,12 +31,17 @@ class Exception extends \Exception
         $this->response = $response;
     }
 
-
+    /**
+     * @return null
+     */
     public function getResponse()
     {
         return $this->response;
     }
 
+    /**
+     * @return null
+     */
     public function getHttpCode()
     {
         return $this->http_code;

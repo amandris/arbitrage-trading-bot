@@ -36,7 +36,7 @@ class KrakenHelper
      *
      * @param string $key API key
      * @param string $secret API secret
-     * @param string $url base URL for Kraken API
+     * @param string $baseUri URL for Kraken API
      * @param bool $sslverify enable/disable SSL peer verification.  disable if using beta.api.kraken.com
      */
     function __construct($key, $secret, $baseUri, $sslverify=true)

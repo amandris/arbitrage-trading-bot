@@ -103,9 +103,9 @@ class CexioHelper
      * Send API call (over post request), to Cex.io server.
      * @param string $method
      * @param array $param
-     * @param string $private
+     * @param boolean $private
      * @param string $couple
-     * @return array JSON results
+     * @return array
      */
     public function api_call($method, $param = array(), $private = false, $couple = '')
     {
@@ -180,7 +180,7 @@ class CexioHelper
     /**
      * Cancel the given order for the account.
      * @param int $order_id
-     * @return boolean success
+     * @return array
      */
     public function cancel_order($order_id)
     {
@@ -195,7 +195,7 @@ class CexioHelper
      * @param string $couple
      * @return array JSON order data
      */
-    public function place_order($ptype = 'buy', $amount = 1, $price = 1, $couple = 'GHS/BTC')
+    public function place_order($ptype = 'buy', $amount = 0.1, $price = 1.0, $couple = 'GHS/BTC')
     {
         return $this->api_call('place_order/', array(
             "type" => $ptype,

@@ -2,8 +2,6 @@
 
 namespace AppBundle\Command;
 
-
-use AppBundle\DataTransferObject\BalanceDTO;
 use AppBundle\DataTransferObject\OrderDTO;
 use AppBundle\DataTransferObject\TickerDTO;
 use AppBundle\Entity\Balance;

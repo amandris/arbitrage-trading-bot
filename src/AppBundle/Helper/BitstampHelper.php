@@ -127,7 +127,7 @@ class BitstampHelper
 
     /**
      * Returns current ticker from Bitstamp
-     * @return $ticker
+     * @return mixed
      */
     function ticker()
     {
@@ -138,7 +138,7 @@ class BitstampHelper
 
     /**
      * Returns current EUR/USD rate from Bitstamp
-     * @return $eurusd
+     * @return mixed
      */
     function eurusd()
     {
@@ -150,6 +150,7 @@ class BitstampHelper
     /**
      * @param float $amount
      * @param float $price
+     * @return mixed
      */
     function buyBTC($amount, $price=NULL)
     {
@@ -166,6 +167,7 @@ class BitstampHelper
     /**
      * @param float $amount
      * @param float $price
+     * @return mixed
      */
     function sellBTC($amount, $price=NULL)
     {
@@ -181,6 +183,7 @@ class BitstampHelper
 
     /**
      * @param string $time
+     * @return mixed
      */
     function transactions($time='hour')
     {
@@ -189,6 +192,7 @@ class BitstampHelper
 
     /**
      * @param int $group
+     * @return mixed
      */
     function orderBook($group=1)
     {
@@ -205,6 +209,8 @@ class BitstampHelper
 
     /**
      * @param int $id
+     * @return mixed
+     * @throws Exception
      */
     function cancelOrder($id=NULL)
     {
@@ -219,7 +225,6 @@ class BitstampHelper
     function balance()
     {
         $balance = $this->bitstamp_query('balance');
-        $this->balance = $balance;
         return $balance;
     }
 
@@ -230,7 +235,6 @@ class BitstampHelper
     function unconfirmedbtc()
     {
         $unconfirmedbtc = $this->bitstamp_query('unconfirmed_btc');
-        $this->unconfirmedbtc = $unconfirmedbtc;
         return $unconfirmedbtc;
     }
 
@@ -240,13 +244,13 @@ class BitstampHelper
     function bitcoindepositaddress()
     {
         $bitcoindepositaddress = $this->bitstamp_query('bitcoin_deposit_address');
-        $this->bitcoindepositaddress = $bitcoindepositaddress;
         return $bitcoindepositaddress;
     }
 
     /**
      * Compute bitstamp signature
      * @param float $nonce
+     * @return mixed
      */
     private function get_signature($nonce)
     {

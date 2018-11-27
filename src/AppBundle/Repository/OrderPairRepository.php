@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\OrderPair;
-use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**

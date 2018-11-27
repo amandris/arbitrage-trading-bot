@@ -16,7 +16,7 @@ class Rpc {
     /**
      * @var Authentication $authentication
      */
-	private $authentication;
+	private $_authentication;
 
     /**
      * Rpc constructor.

@@ -14,6 +14,11 @@ class QuadrigacxHelper
     private $base_uri;
 
     /**
+     * @var array
+     */
+    private $credentials;
+
+    /**
      * QuadrigacxHelper constructor.
      * @param $key
      * @param $secret
@@ -383,17 +388,6 @@ class QuadrigacxHelper
             return FALSE;
         }
     }
-
-    /**
-     * @param $address
-     * @param $amount
-     * @return mixed
-     */
-    public function btc_out($address, $amount)
-    {
-        return $this->bitcoin_withdrawal($address, $amount);
-    }
-
 
     public function ether_deposit_address()
     {

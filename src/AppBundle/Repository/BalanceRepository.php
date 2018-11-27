@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Balance;
-use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -29,8 +28,6 @@ class BalanceRepository extends EntityRepository
      */
     public function findBalanceByExchange($exchange)
     {
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
-
         $queryBuilder = $this->createQueryBuilder('b')
             ->where('b.name = :exchange')
             ->orderBy('b.created', 'DESC')
