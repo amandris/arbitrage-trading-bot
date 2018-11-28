@@ -7,9 +7,9 @@ Using the tiny diferences in bitcoin value among several exchanges, this bot pla
 
 Once you are running the web interface, you spot a 352.48$ difference between sell price in QuadrigaCX and buy price in Bitstamp.
 
-| Exchange Buy | Exchange Sell | Ask     | Bid     | Difference |
-|--------------|---------------|---------|---------|------------|
-|  QuadrigaCX  | Bitstamp      | 3648.52 | 4001.00 | 352.48     |
+| Exchange Sell | Exchange Buy | Ask     | Bid     | Difference |
+|---------------|--------------|---------|---------|------------|
+|  QuadrigaCX   | Bitstamp     | 3648.52 | 4001.00 | 352.48     |
 
 
  1. Deposit 3648.52$ in Bitstamp.
