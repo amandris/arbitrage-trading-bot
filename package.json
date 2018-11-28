@@ -9,12 +9,6 @@
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "bootstrap-datepicker": "^1.7.1",
-    "bootstrap-toggle": "^2.2.2",
-    "datatables.net": "^1.10.16",
-    "datatables.net-bs": "^1.10.16",
-    "datatables.net-buttons": "^1.5.1",
-    "daterangepicker": "^2.1.27",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-clean": "^0.4.0",
@@ -27,9 +21,7 @@
     "gulp-sequence": "^1.0.0",
     "gulp-uglify": "^3.0.0",
     "jquery": "^3.2.1",
-    "materialize-css": "^0.100.2",
-    "moment": "^2.20.1",
-    "select2": "^4.0.6-rc.1"
+    "materialize-css": "^0.100.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

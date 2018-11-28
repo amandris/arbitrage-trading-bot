@@ -382,7 +382,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * @Route("/ordere-pair-date", options={"expose"=true}, name="orderPairDate")
+     * @Route("/order-pair-date", options={"expose"=true}, name="orderPairDate")
      * @param Request $request
      * @return Response
      */

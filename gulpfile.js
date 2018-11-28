@@ -19,10 +19,7 @@ gulp.task('base:css', getTask('baseCss'));
 gulp.task('base:js', getTask('baseJs'));
 gulp.task('base', ['base:css', 'base:js']);
 
-/** 2. Navigation assets **/
-gulp.task('navigation:js', getTask('navigationJs'));
-
-/** 3. Dashboard assets **/
+/** 2. Dashboard assets **/
 gulp.task('dashboard:css', getTask('dashboardCss'));
 gulp.task('dashboard:js', getTask('dashboardJs'));
 gulp.task('dashboard', ['dashboard:css', 'dashboard:js']);
@@ -33,7 +30,6 @@ gulp.task('default', sequence(
     'img',
     'fonts',
     'base',
-    'navigation:js',
     'dashboard'
 ));
 
