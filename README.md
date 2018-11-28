@@ -52,15 +52,17 @@ Installation
  
  * `composer install`
  
- * Set the database parameters in `app/config/parameters.yml`
+ * Set the database parameters in `app/config/parameters.yml` file
 
  * Create database and run `bin/console doctrine:schema:update --force`
  
- * Set the api keys of the exchanges you want to use in `app/config/parameters.yml`. At least two exchange api keys should be setted.
-
  * `npm install`
  
  * `gulp`
+ 
+ * Set the api keys of the exchanges you want to use in `app/config/parameters.yml`. At least two exchange api keys should be setted.
+ 
+ * Enable or disable exchanges on `app/config/config.yml` file
 
  * `bin/console server:run localhost:8000`
 
