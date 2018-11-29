@@ -63,4 +63,40 @@ class BalanceService
 
         return $balanceDTOs;
     }
+
+    /**
+     * @return array
+     */
+    public function getUsdBalancesFormatted()
+    {
+        /** @var Balance[] $balances */
+        $balances = $this->balanceRepository->findAll();
+
+        /** @var array $result */
+        $result = [];
+
+        foreach ($balances as $balance){
+            $result[$balance->getName()] = $balance->getUsd();
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBtcBalancesFormatted()
+    {
+        /** @var Balance[] $balances */
+        $balances = $this->balanceRepository->findAll();
+
+        /** @var array $result */
+        $result = [];
+
+        foreach ($balances as $balance){
+            $result[$balance->getName()] = $balance->getBtc();
+        }
+
+        return $result;
+    }
 }

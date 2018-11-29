@@ -1,27 +1,40 @@
-
 {% set total_usd = 0 %}
 {% set total_btc = 0 %}
 {% for balance in balances %}
     <tr>
-
         <td>{{ balance.name | capitalize }}</td>
         <td>
-            {{ balance.usd | number_format(2, '.', ',') }}
+            {% if balance.usd != 0 %}
+                <strong class="text-success">{{ balance.usd | number_format(2, '.', ',') }}</strong>
+            {% else %}
+                {{ balance.usd | number_format(2, '.', ',') }}
+            {% endif %}
             {% set total_usd =  total_usd + (balance.usd is defined and balance.usd != ''? balance.usd : 0 )%}
         </td>
         <td>
-            {{ balance.btc | number_format(8, '.', ',') }}
+            {% if balance.btc != 0 %}
+                <strong class="text-success">{{ balance.btc | number_format(8, '.', ',') }}</strong>
+            {% else %}
+                {{ balance.btc | number_format(8, '.', ',') }}
+            {% endif %}
             {% set total_btc =  total_btc + (balance.btc is defined and balance.btc != ''? balance.btc : 0 )%}
         </td>
     </tr>
 {% endfor %}
-<tr style="background-color: #A0A0A0;">
+<tr style="background-color: #A0A0A0;font-weight:bold;">
     <td>Total</td>
     <td>
-        {{ total_usd | number_format(2, '.', ',') }}
+        {% if total_usd != 0 %}
+            <span class="text-success">{{ total_usd | number_format(2, '.', ',') }}</span>
+        {% else %}
+            <strong>{{ total_usd | number_format(2, '.', ',') }}</strong>
+        {% endif %}
     </td>
     <td>
-        {{ total_btc | number_format(8, '.', ',') }}
-
+        {% if total_btc != 0 %}
+            <span class="text-success">{{ total_btc | number_format(8, '.', ',') }}</span>
+        {% else %}
+            <strong>{{ total_btc | number_format(8, '.', ',') }}</strong>
+        {% endif %}
     </td>
 </tr>

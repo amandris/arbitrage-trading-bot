@@ -14,7 +14,6 @@ $( document ).ready(function() {
         getAjaxData();
     }, interval * 1000);
 
-
     $("#start-btn").on( 'click', function (e) {
         e.preventDefault();
         var form = document.getElementById("trading-form");

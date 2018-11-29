@@ -170,16 +170,27 @@ class DashboardController extends Controller
         /** @var DifferenceService $differenceService */
         $differenceService = $this->get('app.difference.service');
 
+        /** @var BalanceService $balanceService */
+        $balanceService = $this->get('app.balance.service');
+
         /** @var StatusRepository $statusRepository */
         $statusRepository = $this->get('app.status.repository');
 
         /** @var Status $status */
         $status = $statusRepository->findStatus();
 
+        /** @var array $usdBalances */
+        $usdBalances = $balanceService->getUsdBalancesFormatted();
+
+        /** @var array $btcBalances */
+        $btcBalances = $balanceService->getBtcBalancesFormatted();
+
         return $this->render('@App/dashboard/difference.html.twig', [
             'differences' => $differenceService->getFormattedDifferences(),
             'thresholdUsd' => $status->getThresholdUsd(),
-            'status' => $status
+            'status' => $status,
+            'usdBalances' => $usdBalances,
+            'btcBalances' => $btcBalances
         ]);
     }
 
@@ -192,9 +203,6 @@ class DashboardController extends Controller
     {
         /** @var OrderPairRepository $orderPairRepository */
         $orderPairRepository = $this->get('app.order_pair.repository');
-
-        /** @var StatusRepository $statusRepository */
-        $statusRepository = $this->get('app.status.repository');
 
         return $this->render('@App/dashboard/order-pair.html.twig', [
             'orderPairs' => $orderPairRepository->findAll()
@@ -275,12 +283,12 @@ class DashboardController extends Controller
         /** @var Balance $balanceBtc */
         $balanceUsd = $balanceRepository->findBalanceByExchange($difference->getExchangeBuyName());
 
-        if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueBtc() * ($difference->getAsk() + $status->getAddOrSubToOrderUsd()))){
-            return new JsonResponse(['status' => 'error', 'message' => 'Your USD balance is not enough']);
+        if(!$balanceBtc || $balanceBtc->getBtc() < $status->getOrderValueBtc()){
+            return new JsonResponse(['status' => 'error', 'message' => 'Your BTC balance is not enough']);
         }
 
-        if(!$balanceBtc || $balanceBtc->getBtc() < ($status->getOrderValueBtc() - ($status->getAddOrSubToOrderUsd()) / $difference->getBid())){
-            return new JsonResponse(['status' => 'error', 'message' => 'Your BTC balance is not enough']);
+        if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueBtc() * ($difference->getAsk() + $status->getAddOrSubToOrderUsd()))){
+            return new JsonResponse(['status' => 'error', 'message' => 'Your USD balance is not enough']);
         }
 
         /** @var OrderPair[] $openOrderPairs */

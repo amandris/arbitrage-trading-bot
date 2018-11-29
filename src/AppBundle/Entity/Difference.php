@@ -25,7 +25,6 @@ class Difference
      */
     protected $exchangeBuyName;
 
-
     /**
      * @var string
      */
