@@ -21,16 +21,16 @@
         </td>
     </tr>
 {% endfor %}
-<tr style="background-color: #A0A0A0;font-weight:bold;">
-    <td class="table-border">Total</td>
-    <td>
+<tr>
+    <td class="table-border table-totals">Total</td>
+    <td class="table-totals">
         {% if total_usd != 0 %}
             <span class="text-success">{{ total_usd | number_format(2, '.', ',') }}</span>
         {% else %}
             <strong>{{ total_usd | number_format(2, '.', ',') }}</strong>
         {% endif %}
     </td>
-    <td>
+    <td class="table-totals">
         {% if total_btc != 0 %}
             <span class="text-success">{{ total_btc | number_format(8, '.', ',') }}</span>
         {% else %}

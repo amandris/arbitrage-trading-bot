@@ -14,9 +14,9 @@
         </td>
         <td>
             {% if difference.difference >= thresholdUsd %}
-                <span class="text-success" style="font-weight: bold;">{{ difference.difference | number_format(2, '.', ',') }}</span>
+                <span class="text-success"><strong>{{ difference.difference | number_format(2, '.', ',') }}</strong></span>
             {% else %}
-                <span class="text-default" style="font-weight: bold;">{{ difference.difference | number_format(2, '.', ',') }}</span>
+                <span class="text-default"><strong>{{ difference.difference | number_format(2, '.', ',') }}</strong></span>
             {% endif %}
         </td>
         <td>

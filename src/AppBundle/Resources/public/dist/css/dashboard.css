@@ -1,3 +1,12 @@
 .table-border{
     border-right: 1px solid grey;
 }
+
+.settings-group{
+    margin-bottom: -20px;
+}
+
+.table-totals{
+    background-color: #A0A0A0;
+    font-weight:bold;
+}
