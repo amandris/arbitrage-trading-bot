@@ -2,7 +2,7 @@
 {% set total_btc = 0 %}
 {% for balance in balances %}
     <tr>
-        <td>{{ balance.name | capitalize }}</td>
+        <td class="table-border">{{ balance.name | capitalize }}</td>
         <td>
             {% if balance.usd != 0 %}
                 <strong class="text-success">{{ balance.usd | number_format(2, '.', ',') }}</strong>
@@ -22,7 +22,7 @@
     </tr>
 {% endfor %}
 <tr style="background-color: #A0A0A0;font-weight:bold;">
-    <td>Total</td>
+    <td class="table-border">Total</td>
     <td>
         {% if total_usd != 0 %}
             <span class="text-success">{{ total_usd | number_format(2, '.', ',') }}</span>

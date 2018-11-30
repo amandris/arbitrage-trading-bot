@@ -5,7 +5,7 @@
         <td><i class="fa fa-btc"></i> {{ orderPair.buyOrderAmountBtc | number_format(8, '.', ',') }}</td>
         <td><i class="fa fa-dollar"></i> {{ orderPair.buyOrderPrice | number_format(2, '.', ',') }}</td>
         <td><i class="fa fa-dollar"></i> {{ orderPair.buyOrderAmountUsd | number_format(2, '.', ',') }}</td>
-        <td style="border-right: 1px solid grey;">
+        <td class="table-border">
             {% if orderPair.buyOrderOpen %}
                 <span class="label label-success lb-sm">Yes</span>
             {% else %}
@@ -17,7 +17,7 @@
         <td><i class="fa fa-btc"></i> {{ orderPair.sellOrderAmountBtc | number_format(8, '.', ',') }}</td>
         <td><i class="fa fa-dollar"></i> {{ orderPair.sellOrderPrice | number_format(2, '.', ',') }}</td>
         <td><i class="fa fa-dollar"></i> {{ orderPair.sellOrderAmountUsd | number_format(2, '.', ',') }}</td>
-        <td style="border-right: 1px solid grey;">
+        <td class="table-border">
             {% if orderPair.sellOrderOpen %}
                 <span class="label label-success lb-sm">Yes</span>
             {% else %}

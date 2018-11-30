@@ -1,15 +1,15 @@
 {% for difference in differences %}
     <tr>
-        <td style="border-right: 1px solid grey;">
+        <td class="table-border">
             {{ difference.exchangeSellName | capitalize }}
         </td>
-        <td style="border-right: 1px solid grey;">
+        <td class="table-border">
             {{ difference.exchangeBuyName | capitalize }}
         </td>
         <td>
             {{ difference.ask | number_format(2, '.', ',') }}
         </td>
-        <td style="border-right: 1px solid grey;">
+        <td class="table-border">
             {{ difference.bid | number_format(2, '.', ',') }}
         </td>
         <td>

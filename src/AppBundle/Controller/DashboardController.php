@@ -297,7 +297,7 @@ class DashboardController extends Controller
         foreach ($openOrderPairs as $openOrderPair) {
             if( $openOrderPair->getBuyOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getBuyOrderExchange() === $difference->getExchangeBuyName() ||
                 $openOrderPair->getSellOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getSellOrderExchange() === $difference->getExchangeBuyName()){
-                return new JsonResponse(['status' => 'error', 'message' => 'There is orders in those exchanges. Close those orders before place a new one.']);
+                return new JsonResponse(['status' => 'error', 'message' => 'There are orders in those exchanges. Close those orders before place a new one.']);
             }
         }
 

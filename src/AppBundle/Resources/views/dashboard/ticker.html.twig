@@ -1,7 +1,7 @@
 {% for ticker in tickers %}
     <tr>
 
-        <td style="border-right: 1px solid grey;">{{ ticker.name | capitalize }}</td>
+        <td class="table-border">{{ ticker.name | capitalize }}</td>
         <td>
             {{ ticker.ask | number_format(2, '.', ',') }}
         </td>
