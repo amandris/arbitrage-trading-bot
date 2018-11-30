@@ -24,9 +24,9 @@
                 <button data-difference-id="{{ difference.id }}" class="btn btn-sm btn-default place-order-btn" disabled title="Place order pair"><i class="fa fa-play"></i></button>
             {% else %}
                 {% if ((btcBalances[difference.exchangeSellName]) | number_format(8, '.', ',')) < status.orderValueBtc %}
-                    <button data-difference-id="{{ difference.id }}" class="btn btn-sm btn-danger place-order-btn" title="Not enough btc balance to place order pair"><i class="fa fa-play"></i></button>
+                    <button data-difference-id="{{ difference.id }}" class="btn btn-sm btn-warning place-order-btn" title="Not enough btc balance to place order pair"><i class="fa fa-play"></i></button>
                 {% elseif usdBalances[difference.exchangeBuyName] < (status.orderValueBtc * (difference.ask + status.addOrSubToOrderUsd)) %}
-                    <button data-difference-id="{{ difference.id }}" class="btn btn-sm btn-danger place-order-btn" title="Not enough usd balance to place order pair"><i class="fa fa-play"></i></button>
+                    <button data-difference-id="{{ difference.id }}" class="btn btn-sm btn-warning place-order-btn" title="Not enough usd balance to place order pair"><i class="fa fa-play"></i></button>
                 {% else %}
                     <button data-difference-id="{{ difference.id }}" class="btn btn-sm btn-success place-order-btn" title="Place order pair"><i class="fa fa-play"></i></button>
                 {% endif %}

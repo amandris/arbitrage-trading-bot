@@ -284,11 +284,11 @@ class DashboardController extends Controller
         $balanceUsd = $balanceRepository->findBalanceByExchange($difference->getExchangeBuyName());
 
         if(!$balanceBtc || $balanceBtc->getBtc() < $status->getOrderValueBtc()){
-            return new JsonResponse(['status' => 'error', 'message' => 'Your BTC balance is not enough']);
+            return new JsonResponse(['status' => 'warning', 'message' => 'Your BTC balance is not enough']);
         }
 
         if(!$balanceUsd || $balanceUsd->getUsd() < ($status->getOrderValueBtc() * ($difference->getAsk() + $status->getAddOrSubToOrderUsd()))){
-            return new JsonResponse(['status' => 'error', 'message' => 'Your USD balance is not enough']);
+            return new JsonResponse(['status' => 'warning', 'message' => 'Your USD balance is not enough']);
         }
 
         /** @var OrderPair[] $openOrderPairs */
@@ -297,7 +297,7 @@ class DashboardController extends Controller
         foreach ($openOrderPairs as $openOrderPair) {
             if( $openOrderPair->getBuyOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getBuyOrderExchange() === $difference->getExchangeBuyName() ||
                 $openOrderPair->getSellOrderExchange() === $difference->getExchangeSellName() || $openOrderPair->getSellOrderExchange() === $difference->getExchangeBuyName()){
-                return new JsonResponse(['status' => 'error', 'message' => 'There are orders in those exchanges. Close those orders before place a new one.']);
+                return new JsonResponse(['status' => 'warning', 'message' => 'There are orders in those exchanges. Close those orders before place a new one.']);
             }
         }
 
@@ -308,7 +308,7 @@ class DashboardController extends Controller
         }
 
         if(!$tradePairDTO->getSellOrderId()){
-            return new JsonResponse(['status' => 'error', 'message' => 'No sell order placed.']);
+            return new JsonResponse(['status' => 'warning', 'message' => 'No sell order placed.']);
         }
 
         return new JsonResponse(['status' => 'ok', 'message' => 'Buy and Sell orders placed successfully']);

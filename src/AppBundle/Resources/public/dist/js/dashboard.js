@@ -42,6 +42,7 @@ $( document ).ready(function() {
     });
 
     $("#refresh-balance-btn").on('click', function() {
+        $("#refresh-icon").addClass('fa-spin');
         $.post( Routing.generate('balancesFromExchanges', {}), function( data ) {
             $.post(Routing.generate('balance', {}), function (data) {
                 $("#balance-table").html(data);
@@ -52,6 +53,7 @@ $( document ).ready(function() {
                 } else{
                     $("#balance-date").html('');
                 }
+                $("#refresh-icon").removeClass('fa-spin');
             });
         });
     });
@@ -225,10 +227,14 @@ function bindPlaceOrderBtn(){
         $.post(Routing.generate('placeOrderPair', {differenceId:differenceId}), function (data) {
             $("#order-placed-modal-text").html(data.message);
             $("#order-placed-modal").removeClass('modal-success');
+            $("#order-placed-modal").removeClass('modal-warning');
             $("#order-placed-modal").removeClass('modal-danger');
             if(data.status === 'error'){
                 $("#order-placed-modal").addClass('modal-danger');
                 $("#order-placed-modal-title").html('Error');
+            }else if(data.status === 'warning'){
+                $("#order-placed-modal").addClass('modal-warning');
+                $("#order-placed-modal-title").html('Warning');
             } else{
                 $("#order-placed-modal").addClass('modal-success');
                 $("#order-placed-modal-title").html('Success');
