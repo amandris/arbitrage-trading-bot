@@ -25,7 +25,7 @@
             {% endif %}
         </td>
         <td>
-            <i class="fa fa-btc"></i> {{ (orderPair.sellOrderAmountUsd - orderPair.buyOrderAmountUsd) | number_format(2, '.', ',') }}
+            <i class="fa fa-dollar"></i> {{ (orderPair.sellOrderAmountUsd - orderPair.buyOrderAmountUsd) | number_format(2, '.', ',') }}
         </td>
     </tr>
 {% endfor %}
