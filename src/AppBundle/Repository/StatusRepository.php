@@ -29,7 +29,9 @@ class StatusRepository extends EntityRepository
     {
         $status = $this->findOneBy([]);
 
-        $this->getEntityManager()->detach($status);
+        if ($status !== null){
+            $this->getEntityManager()->detach($status);
+        }
 
         $status = $this->findOneBy([]);
 
