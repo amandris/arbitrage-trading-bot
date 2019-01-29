@@ -54,7 +54,9 @@ Installation
  
  * Set the database parameters in `app/config/parameters.yml` file
 
- * Create database and run `bin/console doctrine:schema:update --force`
+ * Create database with `php bin/console doctrine:database:create`
+ 
+ * Create schema with `bin/console doctrine:schema:update --force`
  
  * `npm install`
  
