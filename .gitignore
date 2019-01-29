@@ -17,3 +17,6 @@
 /web/bundles/
 node_modules
 web/build
+.idea
+app
+var
