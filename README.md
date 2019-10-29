@@ -40,7 +40,7 @@ Prerequisites
  * PHP 7.1
  * Composer
  * Some RDBS (Mysql, Postgres, Sqlite, ...)
- * Node.js
+ * Node.js (Known issues with versions higher than 10. Try with 10 or lower)
  * Gulp
 
 Installation
@@ -68,7 +68,7 @@ Installation
 
  * `bin/console server:run localhost:8000`
 
- * `bin/console bot:trade`
+ * `bin/console bot:trade` on a new console
  
  *  Open <http://localhost:8000> on your browser
  
